@@ -847,7 +847,7 @@
             "panier.html";
 
         const SELL_PAGE_URL =
-            "vendre.html";
+            "vend.html";
 
         const PROFILE_PAGE_URL =
             "profil.html";
@@ -1545,7 +1545,9 @@
                         SELL_PAGE_URL;
                 },
 
-                "Vous devez vous connecter avant de vendre un produit."
+                "Vous devez vous connecter avant de vendre un produit.",
+
+                SELL_PAGE_URL
             );
         }
 
@@ -1556,13 +1558,16 @@
                         PROFILE_PAGE_URL;
                 },
 
-                "Vous devez vous connecter pour accéder à votre profil."
+                "Vous devez vous connecter pour accéder à votre profil.",
+
+                PROFILE_PAGE_URL
             );
         }
 
         function requireAuthentication(
             action,
-            message
+            message,
+            redirectPage
         ) {
             const token =
                 localStorage.getItem(
@@ -1579,9 +1584,13 @@
                 "Vous devez vous connecter."
             );
 
+            /*
+             * Mémorise la page demandée pour pouvoir
+             * y envoyer l'utilisateur après sa connexion.
+             */
             localStorage.setItem(
                 "redirect_after_login",
-                window.location.pathname
+                redirectPage || HOME_PAGE_URL
             );
 
             window.location.href =

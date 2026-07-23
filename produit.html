@@ -698,7 +698,7 @@
             "panier.html";
 
         const SHOP_PAGE_URL =
-            "boutique.html";
+            "boutiques.html";
 
         const CART_STORAGE_KEY =
             "djassaci_cart";
@@ -957,7 +957,7 @@
         }
 
         /**
-         * Ouvre boutique.html avec les informations du vendeur.
+         * Ouvre boutiques.html avec les informations du vendeur.
          */
         function openSellerShop() {
             if (!currentProduct) {
@@ -1105,8 +1105,13 @@
                             currentProduct
                         );
 
+                    const sellerName =
+                        getSellerName(
+                            currentProduct
+                        );
+
                     const message =
-                        `Bonjour ! Je viens de voir votre annonce sur DJASSACI.\n\n` +
+                        `Bonjour ${sellerName} ! Je viens de voir votre annonce sur DJASSACI.\n\n` +
                         `Produit : ${name}\n` +
                         `Prix : ${price} FCFA\n` +
                         `Localisation : ${location}\n\n` +
@@ -1296,6 +1301,11 @@
                 return "Vendeur";
             }
 
+            const vendeurDirect =
+                typeof product.vendeur === "string"
+                    ? product.vendeur
+                    : "";
+
             return getFirstValue(
                 product.sellerName,
                 product.seller_name,
@@ -1306,7 +1316,13 @@
                 product.boutiqueName,
                 product.boutique_name,
 
-                product.vendeur,
+                vendeurDirect,
+
+                product.vendeur?.nom,
+                product.vendeur?.name,
+                product.vendeur?.prenom,
+                product.vendeur?.username,
+
                 product.vendorName,
                 product.vendor_name,
 
@@ -1318,9 +1334,13 @@
 
                 product.user?.nom,
                 product.user?.name,
+                product.user?.prenom,
+                product.user?.username,
 
                 product.seller?.nom,
                 product.seller?.name,
+                product.seller?.prenom,
+                product.seller?.username,
 
                 product.owner?.nom,
                 product.owner?.name,
@@ -1335,15 +1355,20 @@
             }
 
             return getFirstValue(
+                /*
+                 * Numéro saisi lors de la publication.
+                 */
+                product.whatsapp,
+                product.whatsappNumber,
+                product.whatsapp_number,
+                product.numeroWhatsApp,
+                product.numero_whatsapp,
+
                 product.telephone,
                 product.numero,
                 product.phone,
                 product.phoneNumber,
                 product.phone_number,
-
-                product.whatsapp,
-                product.whatsappNumber,
-                product.whatsapp_number,
 
                 product.sellerPhone,
                 product.seller_phone,
@@ -1354,10 +1379,18 @@
                 product.vendorPhone,
                 product.vendor_phone,
 
+                product.vendeur?.whatsapp,
+                product.vendeur?.numeroWhatsApp,
+                product.vendeur?.numero,
+                product.vendeur?.telephone,
+                product.vendeur?.phone,
+
+                product.user?.whatsapp,
                 product.user?.numero,
                 product.user?.telephone,
                 product.user?.phone,
 
+                product.seller?.whatsapp,
                 product.seller?.numero,
                 product.seller?.telephone,
                 product.seller?.phone,
@@ -1372,6 +1405,10 @@
             }
 
             return getFirstValue(
+                product.vendeurLocalisation,
+                product.sellerLocation,
+                product.seller_location,
+
                 product.location,
                 product.localisation,
                 product.city,
@@ -1380,9 +1417,18 @@
                 product.adresse,
                 product.address,
 
+                product.vendeur?.localisation,
+                product.vendeur?.location,
+                product.vendeur?.ville,
+                product.vendeur?.commune,
+                product.vendeur?.adresse,
+                product.vendeur?.address,
+
+                product.user?.localisation,
                 product.user?.adresse,
                 product.user?.location,
 
+                product.seller?.localisation,
                 product.seller?.adresse,
                 product.seller?.location,
 
@@ -1425,6 +1471,13 @@
 
                     product.seller?.verified,
                     product.seller?.isVerified,
+                    product.seller?.certified,
+                    product.seller?.isCertified,
+
+                    product.vendeur?.verified,
+                    product.vendeur?.isVerified,
+                    product.vendeur?.certified,
+                    product.vendeur?.isCertified,
 
                     false
                 );
