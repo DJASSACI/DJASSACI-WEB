@@ -375,10 +375,10 @@ html = r'''<!DOCTYPE html>
       const numero = normalizePhone(
         document.getElementById("numero").value.trim()
       );
-      const adresse = document.getElementById("adresse").value.trim();
+      const address = document.getElementById("adresse").value.trim();
       const password = passwordInput.value;
 
-      if (!nom || !prenom || !numero || !adresse || !password) {
+      if (!nom || !prenom || !numero || !address || !password) {
         showMessage("Veuillez remplir tous les champs.", "error");
         return;
       }
@@ -404,7 +404,7 @@ html = r'''<!DOCTYPE html>
             nom: nom,
             prenom: prenom,
             numero: numero,
-            adresse: adresse,
+            address: address,
             password: password
           })
         });
