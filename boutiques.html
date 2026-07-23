@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        http-equiv="Content-Security-Policy"
+        content="
+            default-src 'self';
+            script-src 'self' 'unsafe-inline'
+                https://cdnjs.cloudflare.com;
+            style-src 'self' 'unsafe-inline'
+                https://fonts.googleapis.com
+                https://cdnjs.cloudflare.com;
+            font-src 'self'
+                https://fonts.gstatic.com
+                https://cdnjs.cloudflare.com;
+            img-src 'self' data: blob: http: https:;
+            connect-src 'self'
+                https://djassa-backend-imxo.onrender.com;
+        "
+    >
+
+    <title>Boutique vendeur - DJASSACI</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            font-family: "Poppins", sans-serif;
+            color: #222;
+            background: #f7f7fb;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 1100px;
+            min-height: 100vh;
+
+            margin: 0 auto;
+            padding-bottom: 35px;
+
+            background: #f7f7fb;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            min-height: 65px;
+            padding: 0 18px;
+
+            display: grid;
+            grid-template-columns: 50px 1fr 50px;
+            align-items: center;
+
+            background: rgba(255, 255, 255, 0.97);
+
+            box-shadow:
+                0 2px 10px
+                rgba(0, 0, 0, 0.08);
+        }
+
+        .topbar-title {
+            margin: 0;
+
+            overflow: hidden;
+            text-align: center;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            color: #6957df;
+            font-size: 27px;
+            font-weight: 400;
+        }
+
+        .topbar-button {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: none;
+            border-radius: 50%;
+
+            color: #6957df;
+            background: transparent;
+
+            font-size: 23px;
+        }
+
+        .topbar-button:hover {
+            background: #ece9ff;
+        }
+
+        .shop-header {
+            margin: 25px 20px;
+            padding: 28px 24px;
+
+            display: flex;
+            align-items: center;
+            gap: 22px;
+
+            background: white;
+            border-radius: 18px;
+
+            box-shadow:
+                0 5px 15px
+                rgba(0, 0, 0, 0.14);
+        }
+
+        .shop-avatar {
+            width: 95px;
+            height: 95px;
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #6957df;
+            background: #ebe8ff;
+
+            border-radius: 50%;
+
+            font-size: 42px;
+            font-weight: 600;
+        }
+
+        .shop-info {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .shop-name {
+            margin: 0 0 6px;
+
+            color: #222;
+            font-size: 27px;
+            font-weight: 600;
+
+            word-break: break-word;
+        }
+
+        .shop-location {
+            margin: 0 0 8px;
+
+            color: #6b6b74;
+            font-size: 16px;
+        }
+
+        .shop-badge {
+            display: none;
+            align-items: center;
+            gap: 8px;
+
+            color: #222;
+            font-weight: 600;
+        }
+
+        .shop-badge.active {
+            display: flex;
+        }
+
+        .shop-badge i {
+            color: #6957df;
+        }
+
+        .shop-contact-button {
+            padding: 12px 18px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            color: white;
+            background: #25d366;
+
+            border: none;
+            border-radius: 10px;
+
+            font-weight: 600;
+        }
+
+        .shop-contact-button:hover {
+            background: #1ebd5b;
+        }
+
+        .section {
+            margin: 0 20px;
+            padding: 25px;
+
+            background: white;
+            border-radius: 18px;
+
+            box-shadow:
+                0 5px 15px
+                rgba(0, 0, 0, 0.12);
+        }
+
+        .section-title {
+            margin: 0 0 20px;
+            padding-bottom: 14px;
+
+            color: #2d3748;
+            border-bottom: 3px solid #6957df;
+
+            font-size: 24px;
+        }
+
+        .products-count {
+            color: #6957df;
+        }
+
+        .products-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(250px, 1fr)
+                );
+
+            gap: 22px;
+        }
+
+        .product-card {
+            overflow: hidden;
+
+            display: flex;
+            flex-direction: column;
+
+            background: #fff;
+            border-radius: 14px;
+
+            box-shadow:
+                0 4px 13px
+                rgba(0, 0, 0, 0.14);
+
+            cursor: pointer;
+
+            transition:
+                transform 0.25s,
+                box-shadow 0.25s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 8px 20px
+                rgba(0, 0, 0, 0.18);
+        }
+
+        .product-image-container {
+            position: relative;
+
+            width: 100%;
+            height: 220px;
+
+            overflow: hidden;
+            background: #edf2f7;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+
+            display: block;
+
+            object-fit: cover;
+        }
+
+        .image-loading {
+            position: absolute;
+            inset: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #6957df;
+            background: #edf2f7;
+
+            font-size: 28px;
+        }
+
+        .product-content {
+            flex: 1;
+            padding: 16px;
+
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-name {
+            margin: 0 0 8px;
+
+            color: #222;
+            font-size: 19px;
+        }
+
+        .product-description {
+            flex: 1;
+
+            margin: 0 0 12px;
+
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .product-meta {
+            margin: 0 0 7px;
+
+            color: #777;
+            font-size: 13px;
+        }
+
+        .product-price {
+            margin: 6px 0 15px;
+
+            color: #6957df;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .product-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .product-button {
+            min-height: 43px;
+            padding: 9px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+
+            border: none;
+            border-radius: 8px;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .details-button {
+            color: white;
+            background: #6957df;
+        }
+
+        .cart-button {
+            color: white;
+            background: #2998e9;
+        }
+
+        .loading-message,
+        .empty-message,
+        .error-message {
+            grid-column: 1 / -1;
+
+            padding: 45px 20px;
+
+            text-align: center;
+        }
+
+        .loading-message {
+            color: #6957df;
+        }
+
+        .empty-message {
+            color: #666;
+        }
+
+        .error-message {
+            color: #c53030;
+            background: #fff5f5;
+
+            border: 1px solid #feb2b2;
+            border-radius: 12px;
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 25px;
+            z-index: 1000;
+
+            width: calc(100% - 40px);
+            max-width: 450px;
+
+            padding: 14px 18px;
+
+            color: white;
+            background: #2f855a;
+
+            border-radius: 10px;
+            text-align: center;
+
+            opacity: 0;
+            pointer-events: none;
+
+            transform:
+                translate(-50%, 80px);
+
+            transition:
+                opacity 0.3s,
+                transform 0.3s;
+        }
+
+        .toast.active {
+            opacity: 1;
+
+            transform:
+                translate(-50%, 0);
+        }
+
+        .toast.error {
+            background: #c53030;
+        }
+
+        @media screen and (max-width: 650px) {
+            .shop-header {
+                align-items: flex-start;
+                flex-direction: column;
+
+                margin: 18px 12px;
+                padding: 22px 18px;
+            }
+
+            .shop-avatar {
+                width: 82px;
+                height: 82px;
+
+                font-size: 36px;
+            }
+
+            .shop-name {
+                font-size: 23px;
+            }
+
+            .section {
+                margin: 0 12px;
+                padding: 20px 14px;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-image-container {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page">
+
+        <header class="topbar">
+
+            <button
+                type="button"
+                class="topbar-button"
+                onclick="goBack()"
+                aria-label="Retour"
+            >
+                <i class="fas fa-arrow-left"></i>
+            </button>
+
+            <h1
+                class="topbar-title"
+                id="topbar-title"
+            >
+                Boutique
+            </h1>
+
+            <button
+                type="button"
+                class="topbar-button"
+                onclick="goToHome()"
+                aria-label="Accueil"
+            >
+                <i class="fas fa-house"></i>
+            </button>
+
+        </header>
+
+        <section class="shop-header">
+
+            <div
+                class="shop-avatar"
+                id="shop-avatar"
+            >
+                B
+            </div>
+
+            <div class="shop-info">
+
+                <h2
+                    class="shop-name"
+                    id="shop-name"
+                >
+                    Boutique
+                </h2>
+
+                <p
+                    class="shop-location"
+                    id="shop-location"
+                >
+                    Localisation non renseignée
+                </p>
+
+                <div
+                    class="shop-badge"
+                    id="shop-badge"
+                >
+                    <i class="fas fa-shield-halved"></i>
+                    Boutique certifiée
+                </div>
+
+            </div>
+
+            <button
+                type="button"
+                class="shop-contact-button"
+                onclick="contactShopOnWhatsApp()"
+            >
+                <i class="fab fa-whatsapp"></i>
+                Contacter
+            </button>
+
+        </section>
+
+        <section class="section">
+
+            <h2 class="section-title">
+                Produits de la boutique
+                <span
+                    class="products-count"
+                    id="products-count"
+                >
+                    (0)
+                </span>
+            </h2>
+
+            <div
+                class="products-grid"
+                id="products-grid"
+            >
+
+                <div class="loading-message">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Chargement des produits...
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <div
+        class="toast"
+        id="toast"
+    ></div>
+
+    <script>
+        const API_URL =
+            "https://djassa-backend-imxo.onrender.com";
+
+        const PRODUCTS_ROUTE =
+            "/api/products";
+
+        const HOME_PAGE_URL =
+            "index.html";
+
+        const PRODUCT_PAGE_URL =
+            "produit.html";
+
+        const CART_STORAGE_KEY =
+            "djassaci_cart";
+
+        const SELECTED_PRODUCT_STORAGE_KEY =
+            "djassaci_selected_product";
+
+        const SELECTED_SHOP_STORAGE_KEY =
+            "djassaci_selected_shop";
+
+        let selectedShop = null;
+        let shopProducts = [];
+
+        const DEFAULT_IMAGE =
+            "data:image/svg+xml;charset=UTF-8," +
+            encodeURIComponent(`
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="600"
+                    height="400"
+                    viewBox="0 0 600 400"
+                >
+                    <rect
+                        width="600"
+                        height="400"
+                        fill="#edf2f7"
+                    />
+
+                    <text
+                        x="300"
+                        y="175"
+                        text-anchor="middle"
+                        font-family="Arial"
+                        font-size="42"
+                        font-weight="bold"
+                        fill="#6957df"
+                    >
+                        DJASSACI
+                    </text>
+
+                    <text
+                        x="300"
+                        y="225"
+                        text-anchor="middle"
+                        font-family="Arial"
+                        font-size="22"
+                        fill="#718096"
+                    >
+                        Image indisponible
+                    </text>
+                </svg>
+            `);
+
+        /**
+         * Charge les informations de la boutique choisie.
+         */
+        function loadSelectedShop() {
+            try {
+                const storedShop =
+                    localStorage.getItem(
+                        SELECTED_SHOP_STORAGE_KEY
+                    );
+
+                if (!storedShop) {
+                    showError(
+                        "Aucune boutique n’a été sélectionnée."
+                    );
+
+                    return false;
+                }
+
+                selectedShop =
+                    JSON.parse(storedShop);
+
+                displayShopInformation();
+
+                return true;
+
+            } catch (error) {
+                console.error(
+                    "Boutique invalide :",
+                    error
+                );
+
+                showError(
+                    "Impossible de lire les informations de la boutique."
+                );
+
+                return false;
+            }
+        }
+
+        /**
+         * Affiche les informations générales de la boutique.
+         */
+        function displayShopInformation() {
+            const sellerName =
+                getFirstValue(
+                    selectedShop.sellerName,
+                    selectedShop.shopName,
+                    selectedShop.name,
+                    selectedShop.vendeur,
+                    "Boutique"
+                );
+
+            const location =
+                getFirstValue(
+                    selectedShop.location,
+                    selectedShop.localisation,
+                    selectedShop.city,
+                    selectedShop.ville,
+                    selectedShop.commune,
+                    "Localisation non renseignée"
+                );
+
+            const verified =
+                isVerifiedValue(
+                    getFirstValue(
+                        selectedShop.verified,
+                        selectedShop.isVerified,
+                        selectedShop.certified,
+                        selectedShop.isCertified,
+                        false
+                    )
+                );
+
+            document.title =
+                `${sellerName} - DJASSACI`;
+
+            document
+                .getElementById(
+                    "topbar-title"
+                )
+                .textContent =
+                sellerName;
+
+            document
+                .getElementById(
+                    "shop-name"
+                )
+                .textContent =
+                sellerName;
+
+            document
+                .getElementById(
+                    "shop-location"
+                )
+                .textContent =
+                location;
+
+            document
+                .getElementById(
+                    "shop-avatar"
+                )
+                .textContent =
+                String(sellerName)
+                    .trim()
+                    .charAt(0)
+                    .toUpperCase() || "B";
+
+            if (verified) {
+                document
+                    .getElementById(
+                        "shop-badge"
+                    )
+                    .classList
+                    .add("active");
+            }
+        }
+
+        /**
+         * Charge tous les produits puis garde uniquement
+         * ceux qui appartiennent au vendeur choisi.
+         */
+        async function fetchShopProducts() {
+            const grid =
+                document.getElementById(
+                    "products-grid"
+                );
+
+            try {
+                const response =
+                    await fetch(
+                        `${API_URL}${PRODUCTS_ROUTE}`,
+                        {
+                            method: "GET",
+
+                            headers: {
+                                "Accept":
+                                    "application/json"
+                            }
+                        }
+                    );
+
+                if (!response.ok) {
+                    throw new Error(
+                        `Erreur ${response.status}`
+                    );
+                }
+
+                const data =
+                    await response.json();
+
+                const allProducts =
+                    extractProducts(data);
+
+                shopProducts =
+                    allProducts.filter(
+                        productBelongsToSelectedShop
+                    );
+
+                renderShopProducts();
+
+            } catch (error) {
+                console.error(
+                    "Erreur produits boutique :",
+                    error
+                );
+
+                showError(
+                    "Impossible de charger les produits de cette boutique."
+                );
+            }
+        }
+
+        /**
+         * Vérifie si un produit appartient au vendeur choisi.
+         */
+        function productBelongsToSelectedShop(product) {
+            const selectedShopId =
+                getFirstValue(
+                    selectedShop.shopId,
+                    selectedShop.shop_id,
+                    selectedShop.boutiqueId,
+                    selectedShop.boutique_id,
+                    selectedShop.sellerId,
+                    selectedShop.seller_id,
+                    selectedShop.userId,
+                    selectedShop.user_id,
+                    selectedShop.id,
+                    selectedShop._id
+                );
+
+            const productShopId =
+                getFirstValue(
+                    product.shopId,
+                    product.shop_id,
+                    product.boutiqueId,
+                    product.boutique_id,
+                    product.sellerId,
+                    product.seller_id,
+                    product.userId,
+                    product.user_id,
+                    product.ownerId,
+                    product.owner_id
+                );
+
+            /*
+             * La comparaison par identifiant est prioritaire.
+             */
+            if (
+                selectedShopId &&
+                productShopId
+            ) {
+                return (
+                    String(selectedShopId) ===
+                    String(productShopId)
+                );
+            }
+
+            /*
+             * Si aucun identifiant n’est disponible,
+             * on compare le nom du vendeur.
+             */
+            const selectedSellerName =
+                normalizeText(
+                    getFirstValue(
+                        selectedShop.sellerName,
+                        selectedShop.shopName,
+                        selectedShop.name,
+                        selectedShop.vendeur,
+                        ""
+                    )
+                );
+
+            const productSellerName =
+                normalizeText(
+                    getFirstValue(
+                        product.sellerName,
+                        product.seller_name,
+                        product.shopName,
+                        product.shop_name,
+                        product.vendeur,
+                        product.vendorName,
+                        product.ownerName,
+                        product.userName,
+                        ""
+                    )
+                );
+
+            return (
+                selectedSellerName &&
+                productSellerName &&
+                selectedSellerName ===
+                    productSellerName
+            );
+        }
+
+        /**
+         * Affiche les produits de la boutique.
+         */
+        function renderShopProducts() {
+            const grid =
+                document.getElementById(
+                    "products-grid"
+                );
+
+            const count =
+                document.getElementById(
+                    "products-count"
+                );
+
+            grid.innerHTML = "";
+
+            count.textContent =
+                `(${shopProducts.length})`;
+
+            if (
+                shopProducts.length === 0
+            ) {
+                grid.innerHTML = `
+                    <div class="empty-message">
+
+                        <i class="fas fa-box-open"></i>
+
+                        <p>
+                            Cette boutique ne possède aucun produit publié.
+                        </p>
+
+                    </div>
+                `;
+
+                return;
+            }
+
+            shopProducts.forEach(
+                function (product) {
+                    grid.appendChild(
+                        createProductCard(
+                            product
+                        )
+                    );
+                }
+            );
+        }
+
+        /**
+         * Crée une carte produit.
+         */
+        function createProductCard(product) {
+            const card =
+                document.createElement(
+                    "article"
+                );
+
+            card.className =
+                "product-card";
+
+            const name =
+                getFirstValue(
+                    product.name,
+                    product.nom,
+                    product.title,
+                    product.titre,
+                    "Produit DJASSACI"
+                );
+
+            const description =
+                getFirstValue(
+                    product.description,
+                    product.details,
+                    product.detail,
+                    "Aucune description disponible."
+                );
+
+            const price =
+                formatPrice(
+                    getFirstValue(
+                        product.price,
+                        product.prix,
+                        product.amount,
+                        product.montant,
+                        0
+                    )
+                );
+
+            const category =
+                getFirstValue(
+                    product.category,
+                    product.categorie,
+                    "Autre"
+                );
+
+            const location =
+                getFirstValue(
+                    product.location,
+                    product.localisation,
+                    product.city,
+                    product.ville,
+                    product.commune,
+                    ""
+                );
+
+            const image =
+                getFullImageUrl(
+                    extractImageValue(
+                        product
+                    )
+                );
+
+            card.innerHTML = `
+                <div class="product-image-container">
+
+                    <div class="image-loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+
+                    <img
+                        class="product-image"
+                        src="${escapeHtml(image)}"
+                        alt="${escapeHtml(name)}"
+                        loading="lazy"
+                    >
+
+                </div>
+
+                <div class="product-content">
+
+                    <h3 class="product-name">
+                        ${escapeHtml(name)}
+                    </h3>
+
+                    <p class="product-description">
+                        ${escapeHtml(description)}
+                    </p>
+
+                    <p class="product-meta">
+                        <i class="fas fa-tag"></i>
+                        ${escapeHtml(category)}
+                    </p>
+
+                    ${
+                        location
+                            ? `
+                                <p class="product-meta">
+                                    <i class="fas fa-location-dot"></i>
+                                    ${escapeHtml(location)}
+                                </p>
+                            `
+                            : ""
+                    }
+
+                    <p class="product-price">
+                        ${escapeHtml(price)} FCFA
+                    </p>
+
+                    <div class="product-buttons">
+
+                        <button
+                            type="button"
+                            class="product-button details-button"
+                        >
+                            <i class="fas fa-eye"></i>
+                            Voir détails
+                        </button>
+
+                        <button
+                            type="button"
+                            class="product-button cart-button"
+                        >
+                            <i class="fas fa-cart-plus"></i>
+                            Panier
+                        </button>
+
+                    </div>
+
+                </div>
+            `;
+
+            const imageElement =
+                card.querySelector(
+                    ".product-image"
+                );
+
+            const loadingElement =
+                card.querySelector(
+                    ".image-loading"
+                );
+
+            imageElement.addEventListener(
+                "load",
+                function () {
+                    loadingElement.style.display =
+                        "none";
+                }
+            );
+
+            imageElement.addEventListener(
+                "error",
+                function () {
+                    loadingElement.style.display =
+                        "none";
+
+                    if (
+                        imageElement.dataset.fallback !==
+                        "true"
+                    ) {
+                        imageElement.dataset.fallback =
+                            "true";
+
+                        imageElement.src =
+                            DEFAULT_IMAGE;
+                    }
+                }
+            );
+
+            const detailsButton =
+                card.querySelector(
+                    ".details-button"
+                );
+
+            detailsButton.addEventListener(
+                "click",
+                function (event) {
+                    event.stopPropagation();
+
+                    openProductDetails(
+                        product
+                    );
+                }
+            );
+
+            const cartButton =
+                card.querySelector(
+                    ".cart-button"
+                );
+
+            cartButton.addEventListener(
+                "click",
+                function (event) {
+                    event.stopPropagation();
+
+                    addToCart(
+                        product
+                    );
+                }
+            );
+
+            card.addEventListener(
+                "click",
+                function () {
+                    openProductDetails(
+                        product
+                    );
+                }
+            );
+
+            return card;
+        }
+
+        /**
+         * Ouvre la page détail du produit.
+         */
+        function openProductDetails(product) {
+            localStorage.setItem(
+                SELECTED_PRODUCT_STORAGE_KEY,
+                JSON.stringify(product)
+            );
+
+            window.location.href =
+                PRODUCT_PAGE_URL;
+        }
+
+        /**
+         * Ajout au panier.
+         */
+        function addToCart(product) {
+            let cart =
+                getStoredCart();
+
+            const productId =
+                getProductId(product);
+
+            const existingProduct =
+                cart.find(
+                    function (item) {
+                        return (
+                            String(
+                                getProductId(item)
+                            ) ===
+                            String(productId)
+                        );
+                    }
+                );
+
+            if (existingProduct) {
+                existingProduct.quantity =
+                    Math.max(
+                        1,
+                        Number(
+                            existingProduct.quantity ||
+                            1
+                        )
+                    ) + 1;
+
+            } else {
+                cart.push({
+                    ...product,
+                    quantity: 1
+                });
+            }
+
+            localStorage.setItem(
+                CART_STORAGE_KEY,
+                JSON.stringify(cart)
+            );
+
+            showToast(
+                "Le produit a été ajouté au panier."
+            );
+        }
+
+        function getStoredCart() {
+            try {
+                const storedCart =
+                    localStorage.getItem(
+                        CART_STORAGE_KEY
+                    );
+
+                const parsedCart =
+                    storedCart
+                        ? JSON.parse(storedCart)
+                        : [];
+
+                return Array.isArray(parsedCart)
+                    ? parsedCart
+                    : [];
+
+            } catch (error) {
+                return [];
+            }
+        }
+
+        /**
+         * Contact de la boutique.
+         */
+        function contactShopOnWhatsApp() {
+            const phone =
+                getFirstValue(
+                    selectedShop.phone,
+                    selectedShop.telephone,
+                    selectedShop.numero,
+                    selectedShop.whatsapp,
+                    selectedShop.sellerPhone,
+                    ""
+                );
+
+            if (!phone) {
+                showToast(
+                    "Le numéro de cette boutique est indisponible.",
+                    "error"
+                );
+
+                return;
+            }
+
+            const sellerName =
+                getFirstValue(
+                    selectedShop.sellerName,
+                    selectedShop.shopName,
+                    selectedShop.name,
+                    "votre boutique"
+                );
+
+            const message =
+                `Bonjour ! Je viens de consulter votre boutique ${sellerName} sur DJASSACI. ` +
+                `Je souhaite avoir plus d’informations sur vos produits.`;
+
+            const number =
+                normalizeWhatsAppNumber(
+                    phone
+                );
+
+            const url =
+                `https://wa.me/${number}` +
+                `?text=${encodeURIComponent(message)}`;
+
+            const newWindow =
+                window.open(
+                    url,
+                    "_blank",
+                    "noopener,noreferrer"
+                );
+
+            if (!newWindow) {
+                window.location.href =
+                    url;
+            }
+        }
+
+        function extractProducts(data) {
+            if (Array.isArray(data)) {
+                return data;
+            }
+
+            if (!data) {
+                return [];
+            }
+
+            if (Array.isArray(data.products)) {
+                return data.products;
+            }
+
+            if (Array.isArray(data.articles)) {
+                return data.articles;
+            }
+
+            if (Array.isArray(data.data)) {
+                return data.data;
+            }
+
+            if (Array.isArray(data.items)) {
+                return data.items;
+            }
+
+            if (
+                data.data &&
+                Array.isArray(
+                    data.data.products
+                )
+            ) {
+                return data.data.products;
+            }
+
+            return [];
+        }
+
+        function extractImageValue(product) {
+            const directImage =
+                getFirstValue(
+                    product.imageUrl,
+                    product.imageURL,
+                    product.image_url,
+                    product.image,
+                    product.photoUrl,
+                    product.photo_url,
+                    product.photo,
+                    product.picture,
+                    product.thumbnail,
+                    product.firebaseUrl,
+                    product.downloadUrl,
+                    ""
+                );
+
+            if (directImage) {
+                return extractUrlFromValue(
+                    directImage
+                );
+            }
+
+            const arrays = [
+                product.images,
+                product.photos,
+                product.pictures,
+                product.media
+            ];
+
+            for (const array of arrays) {
+                if (
+                    Array.isArray(array) &&
+                    array.length > 0
+                ) {
+                    return extractUrlFromValue(
+                        array[0]
+                    );
+                }
+            }
+
+            return "";
+        }
+
+        function extractUrlFromValue(value) {
+            if (!value) {
+                return "";
+            }
+
+            if (typeof value === "string") {
+                return value;
+            }
+
+            if (typeof value === "object") {
+                return getFirstValue(
+                    value.url,
+                    value.imageUrl,
+                    value.image_url,
+                    value.downloadUrl,
+                    value.secure_url,
+                    value.path,
+                    value.src,
+                    ""
+                );
+            }
+
+            return String(value);
+        }
+
+        function getFullImageUrl(imagePath) {
+            if (!imagePath) {
+                return DEFAULT_IMAGE;
+            }
+
+            let path =
+                String(imagePath)
+                    .trim()
+                    .replace(
+                        /^["']|["']$/g,
+                        ""
+                    )
+                    .replaceAll(
+                        "\\",
+                        "/"
+                    );
+
+            if (
+                path.startsWith("https://") ||
+                path.startsWith("http://") ||
+                path.startsWith("data:") ||
+                path.startsWith("blob:")
+            ) {
+                return path;
+            }
+
+            if (path.startsWith("//")) {
+                return `https:${path}`;
+            }
+
+            if (
+                path.startsWith(
+                    "firebasestorage.googleapis.com"
+                ) ||
+                path.startsWith(
+                    "storage.googleapis.com"
+                ) ||
+                path.startsWith(
+                    "res.cloudinary.com"
+                )
+            ) {
+                return `https://${path}`;
+            }
+
+            if (path.startsWith("/")) {
+                return `${API_URL}${path}`;
+            }
+
+            if (!path.includes("/")) {
+                return (
+                    `${API_URL}/uploads/` +
+                    encodeURIComponent(path)
+                );
+            }
+
+            return `${API_URL}/${path}`;
+        }
+
+        function getProductId(product) {
+            return getFirstValue(
+                product.id,
+                product._id,
+                product.productId,
+                product.product_id,
+                product.uuid,
+                `${getFirstValue(
+                    product.name,
+                    product.nom,
+                    product.title,
+                    "produit"
+                )}-${getFirstValue(
+                    product.price,
+                    product.prix,
+                    0
+                )}`
+            );
+        }
+
+        function isVerifiedValue(value) {
+            return (
+                value === true ||
+                value === 1 ||
+                String(value).toLowerCase() ===
+                    "true" ||
+                String(value).toLowerCase() ===
+                    "certifié" ||
+                String(value).toLowerCase() ===
+                    "certified"
+            );
+        }
+
+        function normalizeText(value) {
+            return String(value || "")
+                .trim()
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(
+                    /[\u0300-\u036f]/g,
+                    ""
+                );
+        }
+
+        function normalizeWhatsAppNumber(phone) {
+            let number =
+                String(phone || "")
+                    .replace(/\D/g, "");
+
+            if (number.startsWith("00")) {
+                number =
+                    number.substring(2);
+            }
+
+            if (
+                number.startsWith("0") &&
+                number.length === 10
+            ) {
+                number =
+                    number.substring(1);
+            }
+
+            if (!number.startsWith("225")) {
+                number =
+                    `225${number}`;
+            }
+
+            return number;
+        }
+
+        function formatPrice(price) {
+            const numericPrice =
+                Number(
+                    String(price ?? 0)
+                        .replace(/\s/g, "")
+                        .replace(/[^\d,.-]/g, "")
+                        .replace(",", ".")
+                );
+
+            if (Number.isNaN(numericPrice)) {
+                return String(price || 0);
+            }
+
+            return new Intl.NumberFormat(
+                "fr-FR",
+                {
+                    maximumFractionDigits: 0
+                }
+            ).format(numericPrice);
+        }
+
+        function getFirstValue(...values) {
+            for (const value of values) {
+                if (
+                    value !== undefined &&
+                    value !== null &&
+                    String(value).trim() !== ""
+                ) {
+                    return value;
+                }
+            }
+
+            return "";
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? "")
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+        }
+
+        function showError(message) {
+            document
+                .getElementById(
+                    "products-grid"
+                )
+                .innerHTML = `
+                    <div class="error-message">
+
+                        <i class="fas fa-triangle-exclamation"></i>
+
+                        <p>
+                            ${escapeHtml(message)}
+                        </p>
+
+                    </div>
+                `;
+        }
+
+        let toastTimer = null;
+
+        function showToast(
+            message,
+            type = ""
+        ) {
+            const toast =
+                document.getElementById(
+                    "toast"
+                );
+
+            toast.textContent =
+                message;
+
+            toast.className =
+                `toast active ${type}`;
+
+            clearTimeout(
+                toastTimer
+            );
+
+            toastTimer =
+                setTimeout(
+                    function () {
+                        toast.className =
+                            "toast";
+                    },
+                    3200
+                );
+        }
+
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                goToHome();
+            }
+        }
+
+        function goToHome() {
+            window.location.href =
+                HOME_PAGE_URL;
+        }
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+                if (!loadSelectedShop()) {
+                    return;
+                }
+
+                fetchShopProducts();
+            }
+        );
+    </script>
+
+</body>
+</html>

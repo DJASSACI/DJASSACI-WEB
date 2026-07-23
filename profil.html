@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        http-equiv="Content-Security-Policy"
+        content="
+            default-src 'self';
+            script-src 'self' 'unsafe-inline'
+                https://cdnjs.cloudflare.com;
+            style-src 'self' 'unsafe-inline'
+                https://fonts.googleapis.com
+                https://cdnjs.cloudflare.com;
+            font-src 'self'
+                https://fonts.gstatic.com
+                https://cdnjs.cloudflare.com;
+            img-src 'self' data: blob: http: https:;
+            connect-src 'self'
+                https://djassa-backend-imxo.onrender.com;
+        "
+    >
+
+    <title>Mon profil - DJASSACI</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            font-family: "Poppins", sans-serif;
+            color: #222;
+            background: #f7f7fb;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 650px;
+            min-height: 100vh;
+
+            margin: 0 auto;
+            padding-bottom: 35px;
+
+            background: #f8f8fc;
+
+            box-shadow:
+                0 0 25px
+                rgba(0, 0, 0, 0.08);
+        }
+
+        /* Barre supérieure */
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            min-height: 66px;
+            padding: 0 18px;
+
+            display: grid;
+            grid-template-columns: 50px 1fr 50px;
+            align-items: center;
+
+            background: rgba(248, 248, 252, 0.98);
+
+            box-shadow:
+                0 2px 10px
+                rgba(0, 0, 0, 0.05);
+        }
+
+        .topbar-title {
+            margin: 0;
+
+            text-align: center;
+            color: #6957df;
+
+            font-size: 30px;
+            font-weight: 400;
+        }
+
+        .topbar-button {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: none;
+            border-radius: 50%;
+
+            color: #6957df;
+            background: transparent;
+
+            font-size: 23px;
+        }
+
+        .back-button {
+            color: #333;
+        }
+
+        .topbar-button:hover {
+            background: #ece9ff;
+        }
+
+        /* En-tête du profil */
+
+        .profile-header {
+            padding: 12px 20px 32px;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 135px;
+            height: 135px;
+
+            margin: 0 auto 22px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #33285d;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #e2dcff,
+                    #d5caff
+                );
+
+            border-radius: 50%;
+
+            font-size: 58px;
+            font-weight: 500;
+            text-transform: uppercase;
+
+            box-shadow:
+                0 8px 20px
+                rgba(105, 87, 223, 0.15);
+        }
+
+        .profile-name {
+            margin: 0 0 4px;
+
+            color: #111;
+            font-size: 29px;
+            font-weight: 500;
+
+            word-break: break-word;
+        }
+
+        .profile-phone {
+            margin: 0;
+
+            color: #444;
+            font-size: 19px;
+        }
+
+        .certified-label {
+            display: none;
+
+            width: max-content;
+            max-width: 100%;
+
+            margin: 14px auto 0;
+            padding: 8px 14px;
+
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+
+            color: #5c49d4;
+            background: #ebe8ff;
+
+            border-radius: 20px;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .certified-label.active {
+            display: flex;
+        }
+
+        /* Contenu */
+
+        .content {
+            padding: 0 22px;
+        }
+
+        .info-card {
+            min-height: 100px;
+            margin-bottom: 14px;
+            padding: 17px 21px;
+
+            display: flex;
+            align-items: center;
+            gap: 20px;
+
+            background: white;
+            border-radius: 17px;
+
+            box-shadow:
+                0 5px 14px
+                rgba(0, 0, 0, 0.15);
+        }
+
+        .info-icon {
+            width: 38px;
+            flex-shrink: 0;
+
+            display: flex;
+            justify-content: center;
+
+            color: #555562;
+            font-size: 26px;
+        }
+
+        .info-content {
+            min-width: 0;
+        }
+
+        .info-title {
+            margin: 0 0 3px;
+
+            color: #222;
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        .info-value {
+            margin: 0;
+
+            color: #60606b;
+            font-size: 17px;
+
+            word-break: break-word;
+        }
+
+        /* Actions principales */
+
+        .main-actions {
+            margin-top: 28px;
+        }
+
+        .action-button {
+            width: 100%;
+            min-height: 67px;
+            margin-bottom: 10px;
+            padding: 14px 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 11px;
+
+            border: none;
+            border-radius: 16px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6957df,
+                    #7459eb
+                );
+
+            font-size: 18px;
+            font-weight: 600;
+
+            box-shadow:
+                0 5px 13px
+                rgba(105, 87, 223, 0.2);
+
+            transition:
+                transform 0.2s,
+                opacity 0.2s;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            opacity: 0.94;
+        }
+
+        .cart-button {
+            background:
+                linear-gradient(
+                    135deg,
+                    #2998e9,
+                    #1687d8
+                );
+        }
+
+        .delete-button {
+            min-height: 92px;
+            padding: 18px 24px;
+
+            justify-content: flex-start;
+            text-align: left;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff4f5f,
+                    #f54355
+                );
+        }
+
+        .certification-button {
+            background:
+                linear-gradient(
+                    135deg,
+                    #6957df,
+                    #7359e9
+                );
+        }
+
+        /* Actions secondaires */
+
+        .secondary-actions {
+            margin-top: 18px;
+        }
+
+        .secondary-card {
+            width: 100%;
+            min-height: 100px;
+            margin-bottom: 14px;
+            padding: 16px 20px;
+
+            display: flex;
+            align-items: center;
+            gap: 20px;
+
+            text-align: left;
+
+            border: none;
+            border-radius: 17px;
+
+            color: #222;
+            background: white;
+
+            box-shadow:
+                0 5px 14px
+                rgba(0, 0, 0, 0.15);
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
+        }
+
+        .secondary-card:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 18px
+                rgba(0, 0, 0, 0.18);
+        }
+
+        .secondary-icon {
+            width: 38px;
+            flex-shrink: 0;
+
+            display: flex;
+            justify-content: center;
+
+            color: #f3a900;
+            font-size: 27px;
+        }
+
+        .secondary-content {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .secondary-title {
+            display: block;
+
+            color: #222;
+            font-size: 21px;
+            font-weight: 500;
+        }
+
+        .secondary-subtitle {
+            display: block;
+            margin-top: 3px;
+
+            color: #666;
+            font-size: 16px;
+        }
+
+        .secondary-arrow {
+            flex-shrink: 0;
+
+            color: #4c4c55;
+            font-size: 21px;
+        }
+
+        /* Modal */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+
+            display: none;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            background:
+                rgba(0, 0, 0, 0.65);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-box {
+            width: 100%;
+            max-width: 430px;
+
+            padding: 28px 22px;
+
+            text-align: center;
+
+            background: white;
+            border-radius: 18px;
+
+            box-shadow:
+                0 18px 45px
+                rgba(0, 0, 0, 0.32);
+        }
+
+        .modal-icon {
+            width: 72px;
+            height: 72px;
+
+            margin: 0 auto 17px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: white;
+            background: #6957df;
+
+            border-radius: 50%;
+
+            font-size: 30px;
+        }
+
+        .modal-icon.delete {
+            background: #ef4444;
+        }
+
+        .modal-box h2 {
+            margin: 0 0 10px;
+
+            color: #222;
+            font-size: 23px;
+        }
+
+        .modal-box p {
+            margin: 0 0 22px;
+
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-button {
+            flex: 1;
+            padding: 13px 10px;
+
+            border: none;
+            border-radius: 9px;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .modal-cancel {
+            color: #4a5568;
+            background: #edf2f7;
+        }
+
+        .modal-confirm {
+            color: white;
+            background: #6957df;
+        }
+
+        .modal-confirm.delete {
+            background: #ef4444;
+        }
+
+        /* Notification */
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 25px;
+            z-index: 2000;
+
+            width: calc(100% - 40px);
+            max-width: 450px;
+
+            padding: 14px 18px;
+
+            color: white;
+            background: #2d3748;
+
+            border-radius: 10px;
+            text-align: center;
+
+            opacity: 0;
+            pointer-events: none;
+
+            transform:
+                translate(-50%, 80px);
+
+            transition:
+                opacity 0.3s,
+                transform 0.3s;
+        }
+
+        .toast.active {
+            opacity: 1;
+
+            transform:
+                translate(-50%, 0);
+        }
+
+        .toast.success {
+            background: #2f855a;
+        }
+
+        .toast.error {
+            background: #c53030;
+        }
+
+        @media screen and (max-width: 500px) {
+            .topbar {
+                min-height: 60px;
+                padding: 0 12px;
+            }
+
+            .topbar-title {
+                font-size: 26px;
+            }
+
+            .profile-header {
+                padding-bottom: 27px;
+            }
+
+            .avatar {
+                width: 120px;
+                height: 120px;
+
+                font-size: 51px;
+            }
+
+            .profile-name {
+                font-size: 25px;
+            }
+
+            .profile-phone {
+                font-size: 17px;
+            }
+
+            .content {
+                padding: 0 14px;
+            }
+
+            .info-card,
+            .secondary-card {
+                min-height: 90px;
+                padding: 14px 16px;
+            }
+
+            .info-title,
+            .secondary-title {
+                font-size: 19px;
+            }
+
+            .info-value,
+            .secondary-subtitle {
+                font-size: 15px;
+            }
+
+            .action-button {
+                min-height: 62px;
+                font-size: 16px;
+            }
+
+            .delete-button {
+                min-height: 88px;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page">
+
+        <header class="topbar">
+
+            <button
+                type="button"
+                class="topbar-button back-button"
+                onclick="goBack()"
+                aria-label="Retour"
+            >
+                <i class="fas fa-arrow-left"></i>
+            </button>
+
+            <h1 class="topbar-title">
+                Profil
+            </h1>
+
+            <button
+                type="button"
+                class="topbar-button"
+                onclick="logout()"
+                aria-label="Déconnexion"
+                title="Déconnexion"
+            >
+                <i class="fas fa-right-from-bracket"></i>
+            </button>
+
+        </header>
+
+        <section class="profile-header">
+
+            <div
+                class="avatar"
+                id="profile-avatar"
+            >
+                U
+            </div>
+
+            <h2
+                class="profile-name"
+                id="profile-name"
+            >
+                Utilisateur
+            </h2>
+
+            <p
+                class="profile-phone"
+                id="profile-phone"
+            >
+                Numéro non renseigné
+            </p>
+
+            <div
+                class="certified-label"
+                id="certified-label"
+            >
+                <i class="fas fa-shield-halved"></i>
+                Compte certifié
+            </div>
+
+        </section>
+
+        <main class="content">
+
+            <section>
+
+                <div class="info-card">
+
+                    <div class="info-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+
+                    <div class="info-content">
+
+                        <p class="info-title">
+                            Téléphone
+                        </p>
+
+                        <p
+                            class="info-value"
+                            id="phone-value"
+                        >
+                            Non renseigné
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="info-card">
+
+                    <div class="info-icon">
+                        <i class="fas fa-location-dot"></i>
+                    </div>
+
+                    <div class="info-content">
+
+                        <p class="info-title">
+                            Adresse
+                        </p>
+
+                        <p
+                            class="info-value"
+                            id="address-value"
+                        >
+                            Non renseignée
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="info-card">
+
+                    <div class="info-icon">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+
+                    <div class="info-content">
+
+                        <p class="info-title">
+                            Identifiant du compte
+                        </p>
+
+                        <p
+                            class="info-value"
+                            id="user-id-value"
+                        >
+                            Non disponible
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section class="main-actions">
+
+                <button
+                    type="button"
+                    class="action-button"
+                    onclick="goToHome()"
+                >
+                    <i class="fas fa-house"></i>
+                    Accueil
+                </button>
+
+                <button
+                    type="button"
+                    class="action-button"
+                    onclick="goToMyProducts()"
+                >
+                    <i class="fas fa-box-archive"></i>
+                    Mes produits
+                </button>
+
+                <button
+                    type="button"
+                    class="action-button"
+                    onclick="goToSellPage()"
+                >
+                    <i class="fas fa-circle-plus"></i>
+                    Vendre un produit
+                </button>
+
+                <button
+                    type="button"
+                    class="action-button cart-button"
+                    onclick="goToCart()"
+                >
+                    <i class="fas fa-cart-shopping"></i>
+                    Mon panier
+                </button>
+
+                <button
+                    type="button"
+                    class="action-button certification-button"
+                    id="certification-button"
+                    onclick="openCertificationModal()"
+                >
+                    <i class="fas fa-shield-halved"></i>
+                    Demander la certification
+                </button>
+
+                <button
+                    type="button"
+                    class="action-button delete-button"
+                    onclick="openDeleteModal()"
+                >
+                    <i class="fas fa-trash-can"></i>
+
+                    <span>
+                        Demander la suppression de mon compte
+                    </span>
+                </button>
+
+            </section>
+
+            <section class="secondary-actions">
+
+                <button
+                    type="button"
+                    class="secondary-card"
+                    onclick="openPrivacyPolicy()"
+                >
+
+                    <span class="secondary-icon">
+                        <i class="fas fa-lock"></i>
+                    </span>
+
+                    <span class="secondary-content">
+
+                        <span class="secondary-title">
+                            Politique de confidentialité
+                        </span>
+
+                        <span class="secondary-subtitle">
+                            Consulter les règles de confidentialité
+                        </span>
+
+                    </span>
+
+                    <span class="secondary-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </span>
+
+                </button>
+
+                <button
+                    type="button"
+                    class="secondary-card"
+                    onclick="contactSupport()"
+                >
+
+                    <span class="secondary-icon">
+                        <i class="fas fa-headset"></i>
+                    </span>
+
+                    <span class="secondary-content">
+
+                        <span class="secondary-title">
+                            Support / Contact
+                        </span>
+
+                        <span class="secondary-subtitle">
+                            07 15 92 64 01
+                        </span>
+
+                    </span>
+
+                    <span class="secondary-arrow">
+                        <i class="fab fa-whatsapp"></i>
+                    </span>
+
+                </button>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- Confirmation certification -->
+
+    <div
+        class="modal"
+        id="certification-modal"
+    >
+
+        <div class="modal-box">
+
+            <div class="modal-icon">
+                <i class="fas fa-shield-halved"></i>
+            </div>
+
+            <h2>
+                Demander la certification ?
+            </h2>
+
+            <p>
+                WhatsApp va s’ouvrir avec un message automatiquement rempli.
+                Vérifiez le message, puis appuyez sur Envoyer.
+            </p>
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="modal-button modal-cancel"
+                    onclick="closeModal('certification-modal')"
+                >
+                    Annuler
+                </button>
+
+                <button
+                    type="button"
+                    class="modal-button modal-confirm"
+                    onclick="requestCertification()"
+                >
+                    Ouvrir WhatsApp
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Confirmation suppression -->
+
+    <div
+        class="modal"
+        id="delete-modal"
+    >
+
+        <div class="modal-box">
+
+            <div class="modal-icon delete">
+                <i class="fas fa-trash-can"></i>
+            </div>
+
+            <h2>
+                Supprimer votre compte ?
+            </h2>
+
+            <p>
+                Cette action envoie seulement une demande au support.
+                Le compte ne sera pas immédiatement supprimé.
+                Une vérification pourra être demandée.
+            </p>
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="modal-button modal-cancel"
+                    onclick="closeModal('delete-modal')"
+                >
+                    Annuler
+                </button>
+
+                <button
+                    type="button"
+                    class="modal-button modal-confirm delete"
+                    onclick="requestAccountDeletion()"
+                >
+                    Ouvrir WhatsApp
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div
+        class="toast"
+        id="toast"
+    ></div>
+
+    <script>
+        /*
+         * Pages liées au profil.
+         */
+        const HOME_PAGE_URL =
+            "index.html";
+
+        const MY_PRODUCTS_PAGE_URL =
+            "mes-produits.html";
+
+        const SELL_PAGE_URL =
+            "vendre.html";
+
+        const CART_PAGE_URL =
+            "panier.html";
+
+        /*
+         * Adresse de la politique de confidentialité.
+         */
+        const PRIVACY_POLICY_URL =
+            "https://djassaci.github.io/politique-confidentialit-/";
+
+        /*
+         * Numéro WhatsApp du support.
+         *
+         * Format WhatsApp :
+         * indicatif pays + numéro sans espace ni signe +.
+         */
+        const SUPPORT_WHATSAPP_NUMBER =
+            "2250715926401";
+
+        /*
+         * Clés utilisées par index.html pour la connexion.
+         */
+        const TOKEN_STORAGE_KEY =
+            "djassaci_token";
+
+        const USER_STORAGE_KEY =
+            "djassaci_user";
+
+        let currentUser =
+            null;
+
+        /**
+         * Vérifie la connexion.
+         */
+        function checkAuthentication() {
+            const token =
+                localStorage.getItem(
+                    TOKEN_STORAGE_KEY
+                );
+
+            if (!token) {
+                alert(
+                    "Vous devez vous connecter pour accéder à votre profil."
+                );
+
+                window.location.href =
+                    HOME_PAGE_URL;
+
+                return false;
+            }
+
+            return true;
+        }
+
+        /**
+         * Charge le profil.
+         */
+        function loadUserProfile() {
+            currentUser =
+                getStoredUser() || {};
+
+            const name =
+                getUserName(
+                    currentUser
+                );
+
+            const phone =
+                getUserPhone(
+                    currentUser
+                );
+
+            const address =
+                getUserAddress(
+                    currentUser
+                );
+
+            const userId =
+                getUserId(
+                    currentUser
+                );
+
+            const initial =
+                String(name)
+                    .trim()
+                    .charAt(0)
+                    .toUpperCase() || "U";
+
+            document
+                .getElementById(
+                    "profile-avatar"
+                )
+                .textContent =
+                initial;
+
+            document
+                .getElementById(
+                    "profile-name"
+                )
+                .textContent =
+                name;
+
+            document
+                .getElementById(
+                    "profile-phone"
+                )
+                .textContent =
+                formatPhoneForDisplay(
+                    phone
+                );
+
+            document
+                .getElementById(
+                    "phone-value"
+                )
+                .textContent =
+                formatPhoneForDisplay(
+                    phone
+                );
+
+            document
+                .getElementById(
+                    "address-value"
+                )
+                .textContent =
+                address;
+
+            document
+                .getElementById(
+                    "user-id-value"
+                )
+                .textContent =
+                userId;
+
+            if (
+                isUserCertified(
+                    currentUser
+                )
+            ) {
+                document
+                    .getElementById(
+                        "certified-label"
+                    )
+                    .classList
+                    .add("active");
+
+                const certificationButton =
+                    document.getElementById(
+                        "certification-button"
+                    );
+
+                certificationButton.innerHTML = `
+                    <i class="fas fa-circle-check"></i>
+                    Compte déjà certifié
+                `;
+
+                certificationButton.disabled =
+                    true;
+
+                certificationButton.style.opacity =
+                    "0.65";
+
+                certificationButton.style.cursor =
+                    "not-allowed";
+            }
+        }
+
+        /**
+         * Lecture de l'utilisateur enregistré.
+         */
+        function getStoredUser() {
+            try {
+                const storedUser =
+                    localStorage.getItem(
+                        USER_STORAGE_KEY
+                    );
+
+                if (!storedUser) {
+                    return null;
+                }
+
+                return JSON.parse(
+                    storedUser
+                );
+
+            } catch (error) {
+                console.error(
+                    "Impossible de lire le profil :",
+                    error
+                );
+
+                return null;
+            }
+        }
+
+        /**
+         * Informations utilisateur.
+         */
+        function getUserName(user) {
+            return getFirstValue(
+                user?.nom,
+                user?.name,
+                user?.fullName,
+                user?.full_name,
+                user?.prenom,
+                user?.username,
+                "Utilisateur"
+            );
+        }
+
+        function getUserPhone(user) {
+            return getFirstValue(
+                user?.numero,
+                user?.telephone,
+                user?.phone,
+                user?.phoneNumber,
+                user?.phone_number,
+                "Non renseigné"
+            );
+        }
+
+        function getUserAddress(user) {
+            return getFirstValue(
+                user?.adresse,
+                user?.address,
+                user?.localisation,
+                user?.location,
+                user?.ville,
+                user?.city,
+                user?.commune,
+                "Non renseignée"
+            );
+        }
+
+        function getUserId(user) {
+            return getFirstValue(
+                user?.id,
+                user?._id,
+                user?.userId,
+                user?.user_id,
+                user?.uuid,
+                "Non disponible"
+            );
+        }
+
+        /**
+         * Vérifie si le compte est certifié.
+         */
+        function isUserCertified(user) {
+            const value =
+                getFirstValue(
+                    user?.verified,
+                    user?.isVerified,
+                    user?.is_verified,
+                    user?.certified,
+                    user?.isCertified,
+                    user?.is_certified,
+                    user?.sellerVerified,
+                    user?.seller_verified,
+                    false
+                );
+
+            const normalized =
+                String(value)
+                    .trim()
+                    .toLowerCase();
+
+            return (
+                value === true ||
+                value === 1 ||
+                normalized === "true" ||
+                normalized === "1" ||
+                normalized === "oui" ||
+                normalized === "certifié" ||
+                normalized === "certified"
+            );
+        }
+
+        /**
+         * Demande de certification.
+         */
+        function openCertificationModal() {
+            document
+                .getElementById(
+                    "certification-modal"
+                )
+                .classList
+                .add("active");
+        }
+
+        function requestCertification() {
+            closeModal(
+                "certification-modal"
+            );
+
+            const user =
+                currentUser ||
+                getStoredUser() ||
+                {};
+
+            const name =
+                getUserName(user);
+
+            const phone =
+                getUserPhone(user);
+
+            const address =
+                getUserAddress(user);
+
+            const userId =
+                getUserId(user);
+
+            const message =
+                `Bonjour l’équipe DJASSACI,\n\n` +
+                `Je souhaite demander la certification de mon compte vendeur / boutique.\n\n` +
+                `Nom : ${name}\n` +
+                `Numéro du compte : ${phone}\n` +
+                `Adresse : ${address}\n` +
+                `Identifiant utilisateur : ${userId}\n\n` +
+                `Je suis disponible pour fournir les documents et informations nécessaires à la vérification de mon compte.\n\n` +
+                `Merci de m’indiquer la procédure à suivre.`;
+
+            openWhatsAppMessage(
+                message
+            );
+        }
+
+        /**
+         * Demande de suppression du compte.
+         */
+        function openDeleteModal() {
+            document
+                .getElementById(
+                    "delete-modal"
+                )
+                .classList
+                .add("active");
+        }
+
+        function requestAccountDeletion() {
+            closeModal(
+                "delete-modal"
+            );
+
+            const user =
+                currentUser ||
+                getStoredUser() ||
+                {};
+
+            const name =
+                getUserName(user);
+
+            const phone =
+                getUserPhone(user);
+
+            const address =
+                getUserAddress(user);
+
+            const userId =
+                getUserId(user);
+
+            const message =
+                `Bonjour l’équipe DJASSACI,\n\n` +
+                `Je souhaite demander la suppression définitive de mon compte DJASSACI.\n\n` +
+                `Nom : ${name}\n` +
+                `Numéro du compte : ${phone}\n` +
+                `Adresse : ${address}\n` +
+                `Identifiant utilisateur : ${userId}\n\n` +
+                `Je confirme que cette demande concerne bien mon compte.\n\n` +
+                `Merci de me contacter si une vérification supplémentaire est nécessaire avant la suppression.`;
+
+            openWhatsAppMessage(
+                message
+            );
+        }
+
+        /**
+         * Contact support.
+         */
+        function contactSupport() {
+            const user =
+                currentUser ||
+                getStoredUser() ||
+                {};
+
+            const name =
+                getUserName(user);
+
+            const phone =
+                getUserPhone(user);
+
+            const message =
+                `Bonjour l’équipe DJASSACI,\n\n` +
+                `Je souhaite contacter le support.\n\n` +
+                `Nom : ${name}\n` +
+                `Numéro du compte : ${phone}\n\n` +
+                `Ma demande : `;
+
+            openWhatsAppMessage(
+                message
+            );
+        }
+
+        /**
+         * Ouvre WhatsApp.
+         */
+        function openWhatsAppMessage(message) {
+            const whatsappUrl =
+                `https://wa.me/${SUPPORT_WHATSAPP_NUMBER}` +
+                `?text=${encodeURIComponent(message)}`;
+
+            const newWindow =
+                window.open(
+                    whatsappUrl,
+                    "_blank",
+                    "noopener,noreferrer"
+                );
+
+            if (!newWindow) {
+                window.location.href =
+                    whatsappUrl;
+            }
+        }
+
+        /**
+         * Navigation.
+         */
+        function goBack() {
+            if (
+                window.history.length > 1
+            ) {
+                window.history.back();
+            } else {
+                goToHome();
+            }
+        }
+
+        function goToHome() {
+            window.location.href =
+                HOME_PAGE_URL;
+        }
+
+        function goToMyProducts() {
+            window.location.href =
+                MY_PRODUCTS_PAGE_URL;
+        }
+
+        function goToSellPage() {
+            window.location.href =
+                SELL_PAGE_URL;
+        }
+
+        function goToCart() {
+            window.location.href =
+                CART_PAGE_URL;
+        }
+
+        function openPrivacyPolicy() {
+            window.open(
+                PRIVACY_POLICY_URL,
+                "_blank",
+                "noopener,noreferrer"
+            );
+        }
+
+        /**
+         * Déconnexion.
+         */
+        function logout() {
+            const confirmation =
+                confirm(
+                    "Voulez-vous vraiment vous déconnecter ?"
+                );
+
+            if (!confirmation) {
+                return;
+            }
+
+            localStorage.removeItem(
+                TOKEN_STORAGE_KEY
+            );
+
+            localStorage.removeItem(
+                USER_STORAGE_KEY
+            );
+
+            showToast(
+                "Vous êtes déconnecté.",
+                "success"
+            );
+
+            setTimeout(
+                function () {
+                    window.location.href =
+                        HOME_PAGE_URL;
+                },
+                500
+            );
+        }
+
+        /**
+         * Fermeture des fenêtres.
+         */
+        function closeModal(modalId) {
+            document
+                .getElementById(
+                    modalId
+                )
+                .classList
+                .remove("active");
+        }
+
+        document.addEventListener(
+            "click",
+            function (event) {
+                if (
+                    event.target.classList.contains(
+                        "modal"
+                    )
+                ) {
+                    event.target.classList.remove(
+                        "active"
+                    );
+                }
+            }
+        );
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+                if (
+                    event.key === "Escape"
+                ) {
+                    document
+                        .querySelectorAll(
+                            ".modal"
+                        )
+                        .forEach(
+                            function (modal) {
+                                modal.classList.remove(
+                                    "active"
+                                );
+                            }
+                        );
+                }
+            }
+        );
+
+        /**
+         * Affichage du téléphone.
+         */
+        function formatPhoneForDisplay(phone) {
+            if (
+                !phone ||
+                phone === "Non renseigné"
+            ) {
+                return "Non renseigné";
+            }
+
+            let number =
+                String(phone)
+                    .replace(/\D/g, "");
+
+            if (
+                number.startsWith("225")
+            ) {
+                number =
+                    number.substring(3);
+            }
+
+            if (number.length === 10) {
+                return (
+                    number.substring(0, 2) +
+                    " " +
+                    number.substring(2, 4) +
+                    " " +
+                    number.substring(4, 6) +
+                    " " +
+                    number.substring(6, 8) +
+                    " " +
+                    number.substring(8, 10)
+                );
+            }
+
+            return number || phone;
+        }
+
+        function getFirstValue(...values) {
+            for (const value of values) {
+                if (
+                    value !== undefined &&
+                    value !== null &&
+                    String(value).trim() !== ""
+                ) {
+                    return value;
+                }
+            }
+
+            return "";
+        }
+
+        /**
+         * Notification.
+         */
+        let toastTimer =
+            null;
+
+        function showToast(
+            message,
+            type = ""
+        ) {
+            const toast =
+                document.getElementById(
+                    "toast"
+                );
+
+            toast.textContent =
+                message;
+
+            toast.className =
+                `toast active ${type}`;
+
+            clearTimeout(
+                toastTimer
+            );
+
+            toastTimer =
+                setTimeout(
+                    function () {
+                        toast.className =
+                            "toast";
+                    },
+                    3000
+                );
+        }
+
+        /**
+         * Démarrage.
+         */
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+                if (!checkAuthentication()) {
+                    return;
+                }
+
+                loadUserProfile();
+            }
+        );
+    </script>
+
+</body>
+</html>

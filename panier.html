@@ -1,0 +1,1980 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        http-equiv="Content-Security-Policy"
+        content="
+            default-src 'self';
+            script-src 'self' 'unsafe-inline'
+                https://cdnjs.cloudflare.com;
+            style-src 'self' 'unsafe-inline'
+                https://fonts.googleapis.com
+                https://cdnjs.cloudflare.com;
+            font-src 'self'
+                https://fonts.gstatic.com
+                https://cdnjs.cloudflare.com;
+            img-src 'self' data: blob: http: https:;
+            connect-src 'self'
+                https://djassa-backend-imxo.onrender.com;
+        "
+    >
+
+    <title>Panier - DJASSACI</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: "Poppins", sans-serif;
+            color: #222;
+            background: #f8f8fc;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 700px;
+            min-height: 100vh;
+
+            margin: 0 auto;
+
+            display: flex;
+            flex-direction: column;
+
+            background: #f8f8fc;
+
+            box-shadow:
+                0 0 25px
+                rgba(0, 0, 0, 0.06);
+        }
+
+        /* Barre du haut */
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            min-height: 65px;
+            padding: 0 18px;
+
+            display: grid;
+            grid-template-columns: 48px 1fr auto;
+            align-items: center;
+            gap: 8px;
+
+            background: rgba(255, 255, 255, 0.97);
+
+            box-shadow:
+                0 2px 10px
+                rgba(0, 0, 0, 0.05);
+        }
+
+        .topbar-title {
+            margin: 0;
+            text-align: center;
+
+            color: #6957df;
+            font-size: 31px;
+            font-weight: 400;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .topbar-button {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #6957df;
+            background: transparent;
+
+            border: none;
+            border-radius: 50%;
+
+            font-size: 23px;
+
+            transition:
+                background 0.2s,
+                transform 0.2s;
+        }
+
+        .back-button {
+            color: #333;
+        }
+
+        .topbar-button:hover {
+            background: #eeecff;
+            transform: scale(1.04);
+        }
+
+        /* Produits du panier */
+
+        .cart-content {
+            flex: 1;
+            padding: 12px 0 230px;
+        }
+
+        .cart-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .cart-item {
+            width: 100%;
+            min-height: 145px;
+
+            padding: 18px 22px;
+
+            display: grid;
+            grid-template-columns: 92px minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 18px;
+
+            background: white;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 5px 13px
+                rgba(0, 0, 0, 0.2);
+        }
+
+        .product-image-container {
+            width: 88px;
+            height: 88px;
+
+            overflow: hidden;
+            flex-shrink: 0;
+
+            background: #ececf3;
+            border-radius: 50%;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            display: block;
+
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .product-info {
+            min-width: 0;
+        }
+
+        .product-name {
+            margin: 0 0 5px;
+
+            color: #191919;
+            font-size: 23px;
+            font-weight: 500;
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .product-details {
+            margin: 0;
+
+            color: #57575f;
+            font-size: 17px;
+            line-height: 1.55;
+
+            word-break: break-word;
+        }
+
+        .product-right {
+            min-width: 120px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 15px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .quantity-button {
+            width: 33px;
+            height: 33px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #333;
+            background: transparent;
+
+            border: none;
+            border-radius: 50%;
+
+            font-size: 22px;
+        }
+
+        .quantity-button:hover {
+            background: #f0efff;
+            color: #6957df;
+        }
+
+        .quantity-value {
+            min-width: 25px;
+            text-align: center;
+
+            color: #333;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .product-price {
+            margin: 0;
+
+            color: #303039;
+            font-size: 17px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .remove-item-button {
+            margin-top: 2px;
+            padding: 5px 7px;
+
+            color: #e53e3e;
+            background: transparent;
+
+            border: none;
+            border-radius: 6px;
+
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .remove-item-button:hover {
+            background: #fff0f0;
+        }
+
+        /* Panier vide */
+
+        .empty-cart {
+            min-height: 450px;
+            padding: 50px 25px;
+
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+        }
+
+        .empty-cart.active {
+            display: flex;
+        }
+
+        .empty-icon {
+            width: 115px;
+            height: 115px;
+
+            margin-bottom: 22px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #6957df;
+            background: #ebe8ff;
+
+            border-radius: 50%;
+            font-size: 48px;
+        }
+
+        .empty-cart h2 {
+            margin: 0 0 10px;
+
+            color: #2d2d35;
+            font-size: 25px;
+        }
+
+        .empty-cart p {
+            max-width: 390px;
+            margin: 0 0 25px;
+
+            color: #777783;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .continue-shopping-button {
+            padding: 13px 22px;
+
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            color: white;
+            background:
+                linear-gradient(
+                    135deg,
+                    #6957df,
+                    #7359eb
+                );
+
+            border: none;
+            border-radius: 10px;
+
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        /* Résumé fixé en bas */
+
+        .cart-footer {
+            position: fixed;
+            left: 50%;
+            bottom: 0;
+            z-index: 200;
+
+            width: 100%;
+            max-width: 700px;
+
+            padding: 14px 22px 18px;
+
+            transform: translateX(-50%);
+
+            background:
+                linear-gradient(
+                    to top,
+                    #f8f8fc 78%,
+                    rgba(248, 248, 252, 0)
+                );
+        }
+
+        .total-card {
+            min-height: 96px;
+            padding: 20px 25px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+
+            background: white;
+
+            box-shadow:
+                0 4px 18px
+                rgba(0, 0, 0, 0.13);
+        }
+
+        .total-label {
+            color: #161616;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .total-value {
+            color: #6957df;
+            font-size: 26px;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .whatsapp-order-button {
+            width: 100%;
+            min-height: 70px;
+            margin-top: 18px;
+            padding: 13px 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+
+            color: white;
+            background: #48b653;
+
+            border: none;
+            border-radius: 17px;
+
+            font-size: 19px;
+            font-weight: 500;
+
+            box-shadow:
+                0 5px 12px
+                rgba(72, 182, 83, 0.25);
+        }
+
+        .whatsapp-order-button:hover {
+            background: #39a846;
+        }
+
+        .whatsapp-order-button:disabled {
+            cursor: not-allowed;
+            background: #a0aec0;
+            box-shadow: none;
+        }
+
+        /* Fenêtre de confirmation */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+
+            display: none;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            background: rgba(0, 0, 0, 0.62);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-box {
+            width: 100%;
+            max-width: 420px;
+
+            padding: 28px 22px;
+
+            text-align: center;
+
+            background: white;
+            border-radius: 18px;
+
+            box-shadow:
+                0 18px 45px
+                rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-icon {
+            width: 70px;
+            height: 70px;
+
+            margin: 0 auto 17px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: white;
+            background: #ff5361;
+
+            border-radius: 50%;
+            font-size: 30px;
+        }
+
+        .modal-box h2 {
+            margin: 0 0 10px;
+            font-size: 23px;
+        }
+
+        .modal-box p {
+            margin: 0 0 22px;
+
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-button {
+            flex: 1;
+            padding: 13px 10px;
+
+            border: none;
+            border-radius: 9px;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .modal-cancel {
+            color: #4a5568;
+            background: #edf2f7;
+        }
+
+        .modal-confirm {
+            color: white;
+            background: #ff5361;
+        }
+
+        /* Notification */
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 215px;
+            z-index: 1500;
+
+            width: calc(100% - 40px);
+            max-width: 450px;
+
+            padding: 14px 17px;
+
+            color: white;
+            background: #2d3748;
+
+            border-radius: 10px;
+            text-align: center;
+
+            opacity: 0;
+            pointer-events: none;
+
+            transform:
+                translate(-50%, 80px);
+
+            transition:
+                opacity 0.3s,
+                transform 0.3s;
+        }
+
+        .toast.active {
+            opacity: 1;
+
+            transform:
+                translate(-50%, 0);
+        }
+
+        @media screen and (max-width: 560px) {
+            .topbar {
+                min-height: 58px;
+                padding: 0 10px;
+            }
+
+            .topbar-title {
+                font-size: 27px;
+            }
+
+            .topbar-button {
+                width: 38px;
+                height: 38px;
+                font-size: 20px;
+            }
+
+            .cart-content {
+                padding-bottom: 210px;
+            }
+
+            .cart-list {
+                gap: 10px;
+            }
+
+            .cart-item {
+                min-height: 125px;
+                padding: 15px 14px;
+
+                grid-template-columns:
+                    72px minmax(0, 1fr) auto;
+
+                gap: 12px;
+                border-radius: 15px;
+            }
+
+            .product-image-container {
+                width: 70px;
+                height: 70px;
+            }
+
+            .product-name {
+                font-size: 19px;
+            }
+
+            .product-details {
+                font-size: 14px;
+            }
+
+            .product-right {
+                min-width: 96px;
+                gap: 10px;
+            }
+
+            .quantity-controls {
+                gap: 5px;
+            }
+
+            .quantity-button {
+                width: 28px;
+                height: 28px;
+                font-size: 18px;
+            }
+
+            .quantity-value {
+                min-width: 20px;
+                font-size: 15px;
+            }
+
+            .product-price {
+                font-size: 14px;
+            }
+
+            .remove-item-button {
+                font-size: 10px;
+            }
+
+            .cart-footer {
+                padding: 12px 16px 14px;
+            }
+
+            .total-card {
+                min-height: 82px;
+                padding: 17px 18px;
+            }
+
+            .total-label {
+                font-size: 23px;
+            }
+
+            .total-value {
+                font-size: 21px;
+            }
+
+            .whatsapp-order-button {
+                min-height: 62px;
+                margin-top: 13px;
+
+                border-radius: 14px;
+                font-size: 16px;
+            }
+        }
+
+        @media screen and (max-width: 390px) {
+            .cart-item {
+                grid-template-columns:
+                    62px minmax(0, 1fr) 82px;
+
+                padding: 13px 10px;
+                gap: 9px;
+            }
+
+            .product-image-container {
+                width: 60px;
+                height: 60px;
+            }
+
+            .product-name {
+                font-size: 17px;
+            }
+
+            .product-details {
+                font-size: 12px;
+            }
+
+            .product-right {
+                min-width: 82px;
+            }
+
+            .product-price {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page">
+
+        <header class="topbar">
+
+            <button
+                type="button"
+                class="topbar-button back-button"
+                onclick="goBack()"
+                aria-label="Retour"
+            >
+                <i class="fas fa-arrow-left"></i>
+            </button>
+
+            <h1 class="topbar-title">
+                Panier
+            </h1>
+
+            <div class="topbar-actions">
+
+                <button
+                    type="button"
+                    class="topbar-button"
+                    onclick="openClearCartModal()"
+                    aria-label="Vider le panier"
+                    title="Vider le panier"
+                >
+                    <i class="fas fa-trash-can"></i>
+                </button>
+
+                <button
+                    type="button"
+                    class="topbar-button"
+                    onclick="goToHome()"
+                    aria-label="Accueil"
+                    title="Accueil"
+                >
+                    <i class="fas fa-house"></i>
+                </button>
+
+            </div>
+
+        </header>
+
+        <main class="cart-content">
+
+            <div
+                class="cart-list"
+                id="cart-list"
+            ></div>
+
+            <section
+                class="empty-cart"
+                id="empty-cart"
+            >
+
+                <div class="empty-icon">
+                    <i class="fas fa-cart-shopping"></i>
+                </div>
+
+                <h2>
+                    Votre panier est vide
+                </h2>
+
+                <p>
+                    Ajoutez des produits depuis la page d’accueil
+                    pour les retrouver ici.
+                </p>
+
+                <button
+                    type="button"
+                    class="continue-shopping-button"
+                    onclick="goToHome()"
+                >
+                    <i class="fas fa-store"></i>
+                    Voir les produits
+                </button>
+
+            </section>
+
+        </main>
+
+        <footer
+            class="cart-footer"
+            id="cart-footer"
+        >
+
+            <div class="total-card">
+
+                <span class="total-label">
+                    Total :
+                </span>
+
+                <span
+                    class="total-value"
+                    id="total-value"
+                >
+                    0 FCFA
+                </span>
+
+            </div>
+
+            <button
+                type="button"
+                class="whatsapp-order-button"
+                id="whatsapp-order-button"
+                onclick="orderOnWhatsApp()"
+            >
+                <i class="fab fa-whatsapp"></i>
+                Commander sur WhatsApp
+            </button>
+
+        </footer>
+
+    </div>
+
+    <!-- Confirmation pour vider le panier -->
+
+    <div
+        class="modal"
+        id="clear-cart-modal"
+    >
+
+        <div class="modal-box">
+
+            <div class="modal-icon">
+                <i class="fas fa-trash-can"></i>
+            </div>
+
+            <h2>
+                Vider le panier ?
+            </h2>
+
+            <p>
+                Tous les produits seront retirés de votre panier.
+                Cette action ne peut pas être annulée.
+            </p>
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="modal-button modal-cancel"
+                    onclick="closeModal('clear-cart-modal')"
+                >
+                    Annuler
+                </button>
+
+                <button
+                    type="button"
+                    class="modal-button modal-confirm"
+                    onclick="clearCart()"
+                >
+                    Vider
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div
+        class="toast"
+        id="toast"
+    ></div>
+
+    <script>
+        /*
+         * Page d'accueil.
+         */
+        const HOME_PAGE_URL =
+            "index.html";
+
+        /*
+         * Clé utilisée pour conserver les produits du panier.
+         *
+         * La page d'accueil doit utiliser exactement la même clé.
+         */
+        const CART_STORAGE_KEY =
+            "djassaci_cart";
+
+        /*
+         * Numéro général DJASSACI utilisé lorsqu'un produit
+         * ne possède aucun numéro de vendeur.
+         */
+        const SUPPORT_WHATSAPP_NUMBER =
+            "2250715926401";
+
+        /*
+         * Image affichée si aucune image n'est disponible.
+         */
+        const DEFAULT_IMAGE =
+            "data:image/svg+xml;charset=UTF-8," +
+            encodeURIComponent(`
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="400"
+                    height="400"
+                    viewBox="0 0 400 400"
+                >
+                    <rect
+                        width="400"
+                        height="400"
+                        fill="#ebe8ff"
+                    />
+
+                    <text
+                        x="200"
+                        y="190"
+                        text-anchor="middle"
+                        font-family="Arial"
+                        font-size="35"
+                        font-weight="bold"
+                        fill="#6957df"
+                    >
+                        DJASSACI
+                    </text>
+
+                    <text
+                        x="200"
+                        y="230"
+                        text-anchor="middle"
+                        font-family="Arial"
+                        font-size="18"
+                        fill="#777783"
+                    >
+                        Image indisponible
+                    </text>
+                </svg>
+            `);
+
+        let cart = [];
+
+        /**
+         * Charge le panier enregistré.
+         */
+        function loadCart() {
+            try {
+                const storedCart =
+                    localStorage.getItem(
+                        CART_STORAGE_KEY
+                    );
+
+                const parsedCart =
+                    storedCart
+                        ? JSON.parse(storedCart)
+                        : [];
+
+                cart =
+                    Array.isArray(parsedCart)
+                        ? parsedCart
+                        : [];
+
+            } catch (error) {
+                console.error(
+                    "Impossible de lire le panier :",
+                    error
+                );
+
+                cart = [];
+            }
+
+            normalizeCart();
+            renderCart();
+        }
+
+        /**
+         * Corrige les anciens produits enregistrés.
+         */
+        function normalizeCart() {
+            cart = cart.map(
+                function (item, index) {
+                    return {
+                        ...item,
+
+                        id:
+                            getFirstValue(
+                                item.id,
+                                item._id,
+                                item.productId,
+                                item.product_id,
+                                `cart-item-${index}`
+                            ),
+
+                        quantity:
+                            Math.max(
+                                1,
+                                Number(
+                                    item.quantity ||
+                                    item.quantite ||
+                                    1
+                                )
+                            )
+                    };
+                }
+            );
+
+            saveCart();
+        }
+
+        /**
+         * Enregistre le panier.
+         */
+        function saveCart() {
+            localStorage.setItem(
+                CART_STORAGE_KEY,
+                JSON.stringify(cart)
+            );
+
+            updateGlobalCartCount();
+        }
+
+        /**
+         * Affiche le contenu du panier.
+         */
+        function renderCart() {
+            const cartList =
+                document.getElementById(
+                    "cart-list"
+                );
+
+            const emptyCart =
+                document.getElementById(
+                    "empty-cart"
+                );
+
+            const cartFooter =
+                document.getElementById(
+                    "cart-footer"
+                );
+
+            const orderButton =
+                document.getElementById(
+                    "whatsapp-order-button"
+                );
+
+            cartList.innerHTML = "";
+
+            if (cart.length === 0) {
+                emptyCart.classList.add(
+                    "active"
+                );
+
+                cartFooter.style.display =
+                    "none";
+
+                orderButton.disabled =
+                    true;
+
+                updateTotal();
+
+                return;
+            }
+
+            emptyCart.classList.remove(
+                "active"
+            );
+
+            cartFooter.style.display =
+                "block";
+
+            orderButton.disabled =
+                false;
+
+            cart.forEach(
+                function (item, index) {
+                    cartList.appendChild(
+                        createCartItem(
+                            item,
+                            index
+                        )
+                    );
+                }
+            );
+
+            updateTotal();
+        }
+
+        /**
+         * Crée une ligne du panier.
+         */
+        function createCartItem(
+            item,
+            index
+        ) {
+            const card =
+                document.createElement(
+                    "article"
+                );
+
+            card.className =
+                "cart-item";
+
+            const name =
+                getFirstValue(
+                    item.name,
+                    item.nom,
+                    item.title,
+                    item.titre,
+                    "Produit DJASSACI"
+                );
+
+            const category =
+                getFirstValue(
+                    item.category,
+                    item.categorie,
+                    "Autre"
+                );
+
+            const location =
+                getFirstValue(
+                    item.location,
+                    item.localisation,
+                    item.city,
+                    item.ville,
+                    item.commune,
+                    ""
+                );
+
+            const price =
+                getNumericPrice(
+                    getFirstValue(
+                        item.price,
+                        item.prix,
+                        item.amount,
+                        item.montant,
+                        0
+                    )
+                );
+
+            const quantity =
+                Math.max(
+                    1,
+                    Number(item.quantity || 1)
+                );
+
+            const image =
+                getFullImageUrl(
+                    extractImageValue(item)
+                );
+
+            const lineTotal =
+                price * quantity;
+
+            card.innerHTML = `
+                <div class="product-image-container">
+
+                    <img
+                        class="product-image"
+                        src="${escapeHtml(image)}"
+                        alt="${escapeHtml(name)}"
+                        loading="lazy"
+                    >
+
+                </div>
+
+                <div class="product-info">
+
+                    <h2 class="product-name">
+                        ${escapeHtml(name)}
+                    </h2>
+
+                    <p class="product-details">
+                        ${escapeHtml(category)}
+                        ${
+                            location
+                                ? ` • ${escapeHtml(location)}`
+                                : ""
+                        }
+                    </p>
+
+                </div>
+
+                <div class="product-right">
+
+                    <div class="quantity-controls">
+
+                        <button
+                            type="button"
+                            class="quantity-button"
+                            onclick="decreaseQuantity(${index})"
+                            aria-label="Diminuer la quantité"
+                        >
+                            <i class="fas fa-minus"></i>
+                        </button>
+
+                        <span class="quantity-value">
+                            ${quantity}
+                        </span>
+
+                        <button
+                            type="button"
+                            class="quantity-button"
+                            onclick="increaseQuantity(${index})"
+                            aria-label="Augmenter la quantité"
+                        >
+                            <i class="fas fa-plus"></i>
+                        </button>
+
+                    </div>
+
+                    <p class="product-price">
+                        ${formatPrice(lineTotal)} FCFA
+                    </p>
+
+                    <button
+                        type="button"
+                        class="remove-item-button"
+                        onclick="removeItem(${index})"
+                    >
+                        Retirer
+                    </button>
+
+                </div>
+            `;
+
+            const imageElement =
+                card.querySelector(
+                    ".product-image"
+                );
+
+            imageElement.addEventListener(
+                "error",
+                function () {
+                    if (
+                        imageElement.dataset.fallback !==
+                        "true"
+                    ) {
+                        imageElement.dataset.fallback =
+                            "true";
+
+                        imageElement.src =
+                            DEFAULT_IMAGE;
+                    }
+                }
+            );
+
+            return card;
+        }
+
+        /**
+         * Augmente la quantité.
+         */
+        function increaseQuantity(index) {
+            if (!cart[index]) {
+                return;
+            }
+
+            cart[index].quantity =
+                Math.max(
+                    1,
+                    Number(
+                        cart[index].quantity || 1
+                    )
+                ) + 1;
+
+            saveCart();
+            renderCart();
+        }
+
+        /**
+         * Diminue la quantité.
+         *
+         * Lorsque la quantité est déjà égale à 1,
+         * le produit est retiré.
+         */
+        function decreaseQuantity(index) {
+            if (!cart[index]) {
+                return;
+            }
+
+            const quantity =
+                Math.max(
+                    1,
+                    Number(
+                        cart[index].quantity || 1
+                    )
+                );
+
+            if (quantity <= 1) {
+                removeItem(index);
+                return;
+            }
+
+            cart[index].quantity =
+                quantity - 1;
+
+            saveCart();
+            renderCart();
+        }
+
+        /**
+         * Retire un produit.
+         */
+        function removeItem(index) {
+            if (!cart[index]) {
+                return;
+            }
+
+            const productName =
+                getFirstValue(
+                    cart[index].name,
+                    cart[index].nom,
+                    cart[index].title,
+                    "Le produit"
+                );
+
+            cart.splice(
+                index,
+                1
+            );
+
+            saveCart();
+            renderCart();
+
+            showToast(
+                `${productName} a été retiré du panier.`
+            );
+        }
+
+        /**
+         * Calcule et affiche le total.
+         */
+        function updateTotal() {
+            const total =
+                cart.reduce(
+                    function (
+                        currentTotal,
+                        item
+                    ) {
+                        const price =
+                            getNumericPrice(
+                                getFirstValue(
+                                    item.price,
+                                    item.prix,
+                                    item.amount,
+                                    item.montant,
+                                    0
+                                )
+                            );
+
+                        const quantity =
+                            Math.max(
+                                1,
+                                Number(
+                                    item.quantity ||
+                                    1
+                                )
+                            );
+
+                        return (
+                            currentTotal +
+                            price * quantity
+                        );
+                    },
+                    0
+                );
+
+            document
+                .getElementById(
+                    "total-value"
+                )
+                .textContent =
+                `${formatPrice(total)} FCFA`;
+        }
+
+        /**
+         * Prépare la commande WhatsApp.
+         *
+         * Lorsque le panier contient plusieurs vendeurs,
+         * une fenêtre WhatsApp est ouverte pour chaque vendeur.
+         */
+        function orderOnWhatsApp() {
+            if (cart.length === 0) {
+                showToast(
+                    "Votre panier est vide."
+                );
+
+                return;
+            }
+
+            const sellerGroups =
+                groupProductsBySeller();
+
+            const sellerNumbers =
+                Object.keys(sellerGroups);
+
+            if (sellerNumbers.length === 0) {
+                showToast(
+                    "Aucun numéro de vendeur n’est disponible."
+                );
+
+                return;
+            }
+
+            sellerNumbers.forEach(
+                function (
+                    sellerNumber,
+                    groupIndex
+                ) {
+                    const products =
+                        sellerGroups[
+                            sellerNumber
+                        ];
+
+                    const message =
+                        buildWhatsAppMessage(
+                            products
+                        );
+
+                    const whatsappUrl =
+                        `https://wa.me/${sellerNumber}` +
+                        `?text=${encodeURIComponent(message)}`;
+
+                    /*
+                     * Petit délai pour éviter que toutes
+                     * les fenêtres s’ouvrent exactement
+                     * au même moment.
+                     */
+                    setTimeout(
+                        function () {
+                            const newWindow =
+                                window.open(
+                                    whatsappUrl,
+                                    "_blank",
+                                    "noopener,noreferrer"
+                                );
+
+                            if (
+                                !newWindow &&
+                                sellerNumbers.length === 1
+                            ) {
+                                window.location.href =
+                                    whatsappUrl;
+                            }
+                        },
+                        groupIndex * 500
+                    );
+                }
+            );
+        }
+
+        /**
+         * Regroupe les produits par numéro de vendeur.
+         */
+        function groupProductsBySeller() {
+            const groups = {};
+
+            cart.forEach(
+                function (item) {
+                    const rawPhone =
+                        getFirstValue(
+                            item.telephone,
+                            item.numero,
+                            item.phone,
+                            item.phoneNumber,
+                            item.whatsapp,
+                            item.sellerPhone,
+                            item.seller_phone,
+                            SUPPORT_WHATSAPP_NUMBER
+                        );
+
+                    const sellerNumber =
+                        normalizeWhatsAppNumber(
+                            rawPhone
+                        );
+
+                    if (!sellerNumber) {
+                        return;
+                    }
+
+                    if (!groups[sellerNumber]) {
+                        groups[sellerNumber] =
+                            [];
+                    }
+
+                    groups[
+                        sellerNumber
+                    ].push(item);
+                }
+            );
+
+            return groups;
+        }
+
+        /**
+         * Crée le texte de commande.
+         */
+        function buildWhatsAppMessage(
+            products
+        ) {
+            let message =
+                `Bonjour ! Je souhaite commander les produits suivants vus sur DJASSACI :\n\n`;
+
+            let sellerTotal = 0;
+
+            products.forEach(
+                function (
+                    item,
+                    index
+                ) {
+                    const name =
+                        getFirstValue(
+                            item.name,
+                            item.nom,
+                            item.title,
+                            item.titre,
+                            "Produit"
+                        );
+
+                    const price =
+                        getNumericPrice(
+                            getFirstValue(
+                                item.price,
+                                item.prix,
+                                item.amount,
+                                item.montant,
+                                0
+                            )
+                        );
+
+                    const quantity =
+                        Math.max(
+                            1,
+                            Number(
+                                item.quantity ||
+                                1
+                            )
+                        );
+
+                    const lineTotal =
+                        price * quantity;
+
+                    sellerTotal +=
+                        lineTotal;
+
+                    message +=
+                        `${index + 1}. ${name}\n` +
+                        `Quantité : ${quantity}\n` +
+                        `Prix unitaire : ${formatPrice(price)} FCFA\n` +
+                        `Sous-total : ${formatPrice(lineTotal)} FCFA\n\n`;
+                }
+            );
+
+            message +=
+                `Total : ${formatPrice(sellerTotal)} FCFA\n\n` +
+                `Ces produits sont-ils toujours disponibles ?`;
+
+            return message;
+        }
+
+        /**
+         * Vide complètement le panier.
+         */
+        function openClearCartModal() {
+            if (cart.length === 0) {
+                showToast(
+                    "Votre panier est déjà vide."
+                );
+
+                return;
+            }
+
+            document
+                .getElementById(
+                    "clear-cart-modal"
+                )
+                .classList
+                .add("active");
+        }
+
+        function clearCart() {
+            cart = [];
+
+            saveCart();
+            renderCart();
+
+            closeModal(
+                "clear-cart-modal"
+            );
+
+            showToast(
+                "Le panier a été vidé."
+            );
+        }
+
+        function closeModal(modalId) {
+            document
+                .getElementById(modalId)
+                .classList
+                .remove("active");
+        }
+
+        /**
+         * Met à jour le compteur global.
+         */
+        function updateGlobalCartCount() {
+            const quantity =
+                cart.reduce(
+                    function (
+                        total,
+                        item
+                    ) {
+                        return (
+                            total +
+                            Math.max(
+                                1,
+                                Number(
+                                    item.quantity ||
+                                    1
+                                )
+                            )
+                        );
+                    },
+                    0
+                );
+
+            localStorage.setItem(
+                "djassaci_cart_count",
+                String(quantity)
+            );
+        }
+
+        /**
+         * Cherche l’image dans plusieurs champs possibles.
+         */
+        function extractImageValue(item) {
+            const directImage =
+                getFirstValue(
+                    item.imageUrl,
+                    item.imageURL,
+                    item.image_url,
+                    item.image,
+                    item.photoUrl,
+                    item.photo_url,
+                    item.photo,
+                    item.picture,
+                    item.thumbnail,
+                    item.firebaseUrl,
+                    item.downloadUrl,
+                    ""
+                );
+
+            if (directImage) {
+                return extractUrlFromValue(
+                    directImage
+                );
+            }
+
+            const arrays = [
+                item.images,
+                item.photos,
+                item.pictures,
+                item.media
+            ];
+
+            for (const array of arrays) {
+                if (
+                    Array.isArray(array) &&
+                    array.length > 0
+                ) {
+                    return extractUrlFromValue(
+                        array[0]
+                    );
+                }
+            }
+
+            return "";
+        }
+
+        function extractUrlFromValue(value) {
+            if (!value) {
+                return "";
+            }
+
+            if (typeof value === "string") {
+                return value;
+            }
+
+            if (typeof value === "object") {
+                return getFirstValue(
+                    value.url,
+                    value.imageUrl,
+                    value.image_url,
+                    value.downloadUrl,
+                    value.secure_url,
+                    value.path,
+                    value.src,
+                    ""
+                );
+            }
+
+            return String(value);
+        }
+
+        /**
+         * Corrige les chemins d’image.
+         */
+        function getFullImageUrl(imagePath) {
+            if (!imagePath) {
+                return DEFAULT_IMAGE;
+            }
+
+            let path =
+                String(imagePath)
+                    .trim()
+                    .replace(
+                        /^["']|["']$/g,
+                        ""
+                    )
+                    .replaceAll(
+                        "\\",
+                        "/"
+                    );
+
+            if (!path) {
+                return DEFAULT_IMAGE;
+            }
+
+            if (
+                path.startsWith("https://") ||
+                path.startsWith("http://") ||
+                path.startsWith("data:") ||
+                path.startsWith("blob:")
+            ) {
+                return path;
+            }
+
+            if (path.startsWith("//")) {
+                return `https:${path}`;
+            }
+
+            if (
+                path.startsWith(
+                    "firebasestorage.googleapis.com"
+                ) ||
+                path.startsWith(
+                    "storage.googleapis.com"
+                ) ||
+                path.startsWith(
+                    "res.cloudinary.com"
+                )
+            ) {
+                return `https://${path}`;
+            }
+
+            const backendUrl =
+                "https://djassa-backend-imxo.onrender.com";
+
+            if (path.startsWith("/")) {
+                return `${backendUrl}${path}`;
+            }
+
+            if (!path.includes("/")) {
+                return (
+                    `${backendUrl}/uploads/` +
+                    encodeURIComponent(path)
+                );
+            }
+
+            return `${backendUrl}/${path}`;
+        }
+
+        /**
+         * Nettoie un numéro pour WhatsApp.
+         */
+        function normalizeWhatsAppNumber(
+            phone
+        ) {
+            let number =
+                String(phone || "")
+                    .replace(/\D/g, "");
+
+            if (!number) {
+                return "";
+            }
+
+            if (
+                number.startsWith("00")
+            ) {
+                number =
+                    number.substring(2);
+            }
+
+            if (
+                number.startsWith("0") &&
+                number.length === 10
+            ) {
+                number =
+                    number.substring(1);
+            }
+
+            if (
+                !number.startsWith("225")
+            ) {
+                number =
+                    `225${number}`;
+            }
+
+            return number;
+        }
+
+        /**
+         * Convertit le prix en nombre.
+         */
+        function getNumericPrice(value) {
+            const cleanedValue =
+                String(value ?? 0)
+                    .replace(/\s/g, "")
+                    .replace(/[^\d,.-]/g, "")
+                    .replace(",", ".");
+
+            const numericValue =
+                Number(cleanedValue);
+
+            return Number.isFinite(
+                numericValue
+            )
+                ? numericValue
+                : 0;
+        }
+
+        function formatPrice(price) {
+            return new Intl.NumberFormat(
+                "fr-FR",
+                {
+                    maximumFractionDigits: 0
+                }
+            ).format(
+                Number(price || 0)
+            );
+        }
+
+        function getFirstValue(...values) {
+            for (const value of values) {
+                if (
+                    value !== undefined &&
+                    value !== null &&
+                    String(value).trim() !== ""
+                ) {
+                    return value;
+                }
+            }
+
+            return "";
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? "")
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+        }
+
+        /**
+         * Notification.
+         */
+        let toastTimer = null;
+
+        function showToast(message) {
+            const toast =
+                document.getElementById(
+                    "toast"
+                );
+
+            toast.textContent =
+                message;
+
+            toast.classList.add(
+                "active"
+            );
+
+            clearTimeout(
+                toastTimer
+            );
+
+            toastTimer =
+                setTimeout(
+                    function () {
+                        toast.classList.remove(
+                            "active"
+                        );
+                    },
+                    3000
+                );
+        }
+
+        /**
+         * Navigation.
+         */
+        function goBack() {
+            if (
+                window.history.length > 1
+            ) {
+                window.history.back();
+            } else {
+                goToHome();
+            }
+        }
+
+        function goToHome() {
+            window.location.href =
+                HOME_PAGE_URL;
+        }
+
+        /*
+         * Ferme une fenêtre en cliquant dans le fond.
+         */
+        document.addEventListener(
+            "click",
+            function (event) {
+                if (
+                    event.target.classList.contains(
+                        "modal"
+                    )
+                ) {
+                    event.target.classList.remove(
+                        "active"
+                    );
+                }
+            }
+        );
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+                if (
+                    event.key === "Escape"
+                ) {
+                    document
+                        .querySelectorAll(
+                            ".modal"
+                        )
+                        .forEach(
+                            function (modal) {
+                                modal.classList.remove(
+                                    "active"
+                                );
+                            }
+                        );
+                }
+            }
+        );
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            loadCart
+        );
+    </script>
+
+</body>
+</html>
