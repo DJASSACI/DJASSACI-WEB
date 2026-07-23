@@ -26,7 +26,7 @@
         "
     >
 
-    <title>Boutique vendeur - DJASSACI</title>
+    <title>Boutique - DJASSACI</title>
 
     <link
         rel="stylesheet"
@@ -41,6 +41,10 @@
     <style>
         * {
             box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -59,32 +63,38 @@
 
         .page {
             width: 100%;
-            max-width: 1100px;
+            max-width: 900px;
             min-height: 100vh;
 
             margin: 0 auto;
             padding-bottom: 35px;
 
             background: #f7f7fb;
+
+            box-shadow:
+                0 0 24px
+                rgba(0, 0, 0, 0.06);
         }
+
+        /* Barre supérieure */
 
         .topbar {
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
 
-            min-height: 65px;
-            padding: 0 18px;
+            min-height: 72px;
+            padding: 0 20px;
 
             display: grid;
             grid-template-columns: 50px 1fr 50px;
             align-items: center;
 
-            background: rgba(255, 255, 255, 0.97);
+            background: rgba(255, 255, 255, 0.98);
 
             box-shadow:
                 0 2px 10px
-                rgba(0, 0, 0, 0.08);
+                rgba(0, 0, 0, 0.05);
         }
 
         .topbar-title {
@@ -96,13 +106,13 @@
             white-space: nowrap;
 
             color: #6957df;
-            font-size: 27px;
+            font-size: 28px;
             font-weight: 400;
         }
 
         .topbar-button {
-            width: 42px;
-            height: 42px;
+            width: 44px;
+            height: 44px;
 
             display: flex;
             align-items: center;
@@ -115,142 +125,120 @@
             background: transparent;
 
             font-size: 23px;
+
+            transition:
+                background 0.2s,
+                transform 0.2s;
+        }
+
+        .topbar-button.back {
+            color: #222;
         }
 
         .topbar-button:hover {
             background: #ece9ff;
+            transform: scale(1.04);
         }
 
-        .shop-header {
-            margin: 25px 20px;
-            padding: 28px 24px;
+        /* En-tête vendeur */
+
+        .seller-header {
+            margin: 22px 24px 8px;
+            padding: 18px 20px;
 
             display: flex;
             align-items: center;
-            gap: 22px;
+            gap: 15px;
 
             background: white;
-            border-radius: 18px;
+
+            border-radius: 16px;
 
             box-shadow:
-                0 5px 15px
-                rgba(0, 0, 0, 0.14);
+                0 4px 14px
+                rgba(0, 0, 0, 0.09);
         }
 
-        .shop-avatar {
-            width: 95px;
-            height: 95px;
+        .seller-avatar {
+            width: 62px;
+            height: 62px;
+
             flex-shrink: 0;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
-            color: #6957df;
-            background: #ebe8ff;
+            color: white;
+            background:
+                linear-gradient(
+                    135deg,
+                    #6957df,
+                    #826bf0
+                );
 
             border-radius: 50%;
 
-            font-size: 42px;
-            font-weight: 600;
+            font-size: 27px;
         }
 
-        .shop-info {
+        .seller-details {
             min-width: 0;
             flex: 1;
         }
 
-        .shop-name {
-            margin: 0 0 6px;
-
-            color: #222;
-            font-size: 27px;
-            font-weight: 600;
-
-            word-break: break-word;
-        }
-
-        .shop-location {
-            margin: 0 0 8px;
-
-            color: #6b6b74;
-            font-size: 16px;
-        }
-
-        .shop-badge {
-            display: none;
+        .seller-name-row {
+            display: flex;
             align-items: center;
             gap: 8px;
+            flex-wrap: wrap;
+        }
 
-            color: #222;
+        .seller-name {
+            margin: 0;
+
+            color: #202026;
+            font-size: 21px;
             font-weight: 600;
         }
 
-        .shop-badge.active {
+        .verified-badge {
+            display: none;
+
+            align-items: center;
+            gap: 5px;
+
+            color: #6957df;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .verified-badge.active {
             display: flex;
         }
 
-        .shop-badge i {
+        .seller-location {
+            margin: 5px 0 0;
+
+            color: #777783;
+            font-size: 14px;
+        }
+
+        .seller-location i {
+            margin-right: 6px;
             color: #6957df;
         }
 
-        .shop-contact-button {
-            padding: 12px 18px;
+        /* Produits */
 
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-
-            color: white;
-            background: #25d366;
-
-            border: none;
-            border-radius: 10px;
-
-            font-weight: 600;
-        }
-
-        .shop-contact-button:hover {
-            background: #1ebd5b;
-        }
-
-        .section {
-            margin: 0 20px;
-            padding: 25px;
-
-            background: white;
-            border-radius: 18px;
-
-            box-shadow:
-                0 5px 15px
-                rgba(0, 0, 0, 0.12);
-        }
-
-        .section-title {
-            margin: 0 0 20px;
-            padding-bottom: 14px;
-
-            color: #2d3748;
-            border-bottom: 3px solid #6957df;
-
-            font-size: 24px;
-        }
-
-        .products-count {
-            color: #6957df;
+        .products-section {
+            padding: 20px 24px 30px;
         }
 
         .products-grid {
             display: grid;
-
-            grid-template-columns:
-                repeat(
-                    auto-fit,
-                    minmax(250px, 1fr)
-                );
-
-            gap: 22px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 28px;
         }
 
         .product-card {
@@ -259,12 +247,12 @@
             display: flex;
             flex-direction: column;
 
-            background: #fff;
-            border-radius: 14px;
+            background: white;
+            border-radius: 17px;
 
             box-shadow:
-                0 4px 13px
-                rgba(0, 0, 0, 0.14);
+                0 5px 14px
+                rgba(0, 0, 0, 0.2);
 
             cursor: pointer;
 
@@ -277,18 +265,18 @@
             transform: translateY(-4px);
 
             box-shadow:
-                0 8px 20px
-                rgba(0, 0, 0, 0.18);
+                0 9px 20px
+                rgba(0, 0, 0, 0.22);
         }
 
         .product-image-container {
             position: relative;
 
             width: 100%;
-            height: 220px;
+            height: 350px;
 
             overflow: hidden;
-            background: #edf2f7;
+            background: #e9e9ef;
         }
 
         .product-image {
@@ -298,6 +286,7 @@
             display: block;
 
             object-fit: cover;
+            object-position: center;
         }
 
         .image-loading {
@@ -309,81 +298,44 @@
             justify-content: center;
 
             color: #6957df;
-            background: #edf2f7;
+            background: #ececf3;
 
-            font-size: 28px;
+            font-size: 30px;
         }
 
         .product-content {
-            flex: 1;
-            padding: 16px;
-
-            display: flex;
-            flex-direction: column;
+            padding: 14px 14px 16px;
         }
 
         .product-name {
-            margin: 0 0 8px;
+            margin: 0 0 4px;
 
-            color: #222;
-            font-size: 19px;
-        }
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
 
-        .product-description {
-            flex: 1;
-
-            margin: 0 0 12px;
-
-            color: #666;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .product-meta {
-            margin: 0 0 7px;
-
-            color: #777;
-            font-size: 13px;
+            color: #29292f;
+            font-size: 18px;
+            font-weight: 500;
         }
 
         .product-price {
-            margin: 6px 0 15px;
+            margin: 0 0 4px;
 
-            color: #6957df;
-            font-size: 20px;
+            color: #111;
+            font-size: 19px;
             font-weight: 700;
         }
 
-        .product-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
+        .product-meta {
+            margin: 0;
 
-        .product-button {
-            min-height: 43px;
-            padding: 9px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 7px;
-
-            border: none;
-            border-radius: 8px;
-
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .details-button {
-            color: white;
-            background: #6957df;
-        }
-
-        .cart-button {
-            color: white;
-            background: #2998e9;
+            color: #a0a0a7;
+            font-size: 14px;
         }
 
         .loading-message,
@@ -391,13 +343,23 @@
         .error-message {
             grid-column: 1 / -1;
 
-            padding: 45px 20px;
+            padding: 55px 20px;
 
             text-align: center;
         }
 
         .loading-message {
             color: #6957df;
+        }
+
+        .loading-message i,
+        .empty-message i,
+        .error-message i {
+            display: block;
+
+            margin-bottom: 15px;
+
+            font-size: 42px;
         }
 
         .empty-message {
@@ -409,79 +371,128 @@
             background: #fff5f5;
 
             border: 1px solid #feb2b2;
-            border-radius: 12px;
+            border-radius: 15px;
         }
 
-        .toast {
-            position: fixed;
-            left: 50%;
-            bottom: 25px;
-            z-index: 1000;
-
-            width: calc(100% - 40px);
-            max-width: 450px;
-
-            padding: 14px 18px;
+        .retry-button {
+            margin-top: 14px;
+            padding: 11px 20px;
 
             color: white;
-            background: #2f855a;
+            background: #6957df;
 
-            border-radius: 10px;
-            text-align: center;
+            border: none;
+            border-radius: 9px;
 
-            opacity: 0;
-            pointer-events: none;
-
-            transform:
-                translate(-50%, 80px);
-
-            transition:
-                opacity 0.3s,
-                transform 0.3s;
+            font-weight: 600;
         }
 
-        .toast.active {
-            opacity: 1;
+        /* Mobile */
 
-            transform:
-                translate(-50%, 0);
+        @media screen and (max-width: 700px) {
+            .topbar {
+                min-height: 64px;
+                padding: 0 11px;
+
+                grid-template-columns: 44px 1fr 44px;
+            }
+
+            .topbar-title {
+                font-size: 24px;
+            }
+
+            .topbar-button {
+                width: 40px;
+                height: 40px;
+
+                font-size: 21px;
+            }
+
+            .seller-header {
+                margin: 17px 14px 5px;
+                padding: 15px;
+            }
+
+            .seller-avatar {
+                width: 55px;
+                height: 55px;
+                font-size: 24px;
+            }
+
+            .seller-name {
+                font-size: 18px;
+            }
+
+            .products-section {
+                padding: 18px 14px 28px;
+            }
+
+            .products-grid {
+                gap: 15px;
+            }
+
+            .product-image-container {
+                height: 285px;
+            }
+
+            .product-content {
+                padding: 12px 12px 14px;
+            }
+
+            .product-name {
+                font-size: 16px;
+            }
+
+            .product-price {
+                font-size: 17px;
+            }
+
+            .product-meta {
+                font-size: 12px;
+            }
         }
 
-        .toast.error {
-            background: #c53030;
+        @media screen and (max-width: 450px) {
+            .topbar-title {
+                font-size: 21px;
+            }
+
+            .seller-header {
+                margin-top: 14px;
+            }
+
+            .products-grid {
+                gap: 11px;
+            }
+
+            .product-image-container {
+                height: 220px;
+            }
+
+            .product-content {
+                padding: 10px 10px 12px;
+            }
+
+            .product-name {
+                font-size: 14px;
+            }
+
+            .product-price {
+                font-size: 15px;
+            }
+
+            .product-meta {
+                font-size: 11px;
+            }
         }
 
-        @media screen and (max-width: 650px) {
-            .shop-header {
-                align-items: flex-start;
-                flex-direction: column;
-
-                margin: 18px 12px;
-                padding: 22px 18px;
-            }
-
-            .shop-avatar {
-                width: 82px;
-                height: 82px;
-
-                font-size: 36px;
-            }
-
-            .shop-name {
-                font-size: 23px;
-            }
-
-            .section {
-                margin: 0 12px;
-                padding: 20px 14px;
-            }
-
+        @media screen and (max-width: 340px) {
             .products-grid {
                 grid-template-columns: 1fr;
             }
 
             .product-image-container {
-                height: 250px;
+                height: 310px;
             }
         }
     </style>
@@ -495,16 +506,17 @@
 
             <button
                 type="button"
-                class="topbar-button"
+                class="topbar-button back"
                 onclick="goBack()"
                 aria-label="Retour"
+                title="Retour"
             >
                 <i class="fas fa-arrow-left"></i>
             </button>
 
             <h1
                 class="topbar-title"
-                id="topbar-title"
+                id="shop-title"
             >
                 Boutique
             </h1>
@@ -514,69 +526,56 @@
                 class="topbar-button"
                 onclick="goToHome()"
                 aria-label="Accueil"
+                title="Accueil"
             >
                 <i class="fas fa-house"></i>
             </button>
 
         </header>
 
-        <section class="shop-header">
+        <section
+            class="seller-header"
+            id="seller-header"
+        >
 
-            <div
-                class="shop-avatar"
-                id="shop-avatar"
-            >
-                B
+            <div class="seller-avatar">
+                <i class="fas fa-store"></i>
             </div>
 
-            <div class="shop-info">
+            <div class="seller-details">
 
-                <h2
-                    class="shop-name"
-                    id="shop-name"
-                >
-                    Boutique
-                </h2>
+                <div class="seller-name-row">
+
+                    <h2
+                        class="seller-name"
+                        id="seller-name"
+                    >
+                        Boutique du vendeur
+                    </h2>
+
+                    <span
+                        class="verified-badge"
+                        id="verified-badge"
+                    >
+                        <i class="fas fa-circle-check"></i>
+                        Certifié
+                    </span>
+
+                </div>
 
                 <p
-                    class="shop-location"
-                    id="shop-location"
+                    class="seller-location"
+                    id="seller-location"
                 >
+                    <i class="fas fa-location-dot"></i>
                     Localisation non renseignée
                 </p>
 
-                <div
-                    class="shop-badge"
-                    id="shop-badge"
-                >
-                    <i class="fas fa-shield-halved"></i>
-                    Boutique certifiée
-                </div>
-
             </div>
-
-            <button
-                type="button"
-                class="shop-contact-button"
-                onclick="contactShopOnWhatsApp()"
-            >
-                <i class="fab fa-whatsapp"></i>
-                Contacter
-            </button>
 
         </section>
 
-        <section class="section">
-
-            <h2 class="section-title">
-                Produits de la boutique
-                <span
-                    class="products-count"
-                    id="products-count"
-                >
-                    (0)
-                </span>
-            </h2>
+        <main class="products-section">
 
             <div
                 class="products-grid"
@@ -584,20 +583,18 @@
             >
 
                 <div class="loading-message">
+
                     <i class="fas fa-spinner fa-spin"></i>
-                    Chargement des produits...
+
+                    Chargement de la boutique...
+
                 </div>
 
             </div>
 
-        </section>
+        </main>
 
     </div>
-
-    <div
-        class="toast"
-        id="toast"
-    ></div>
 
     <script>
         const API_URL =
@@ -612,17 +609,17 @@
         const PRODUCT_PAGE_URL =
             "produit.html";
 
-        const CART_STORAGE_KEY =
-            "djassaci_cart";
+        const SELECTED_SHOP_STORAGE_KEY =
+            "djassaci_selected_shop";
 
         const SELECTED_PRODUCT_STORAGE_KEY =
             "djassaci_selected_product";
 
-        const SELECTED_SHOP_STORAGE_KEY =
-            "djassaci_selected_shop";
+        let selectedShop =
+            null;
 
-        let selectedShop = null;
-        let shopProducts = [];
+        let allProducts =
+            [];
 
         const DEFAULT_IMAGE =
             "data:image/svg+xml;charset=UTF-8," +
@@ -630,18 +627,18 @@
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="600"
-                    height="400"
-                    viewBox="0 0 600 400"
+                    height="500"
+                    viewBox="0 0 600 500"
                 >
                     <rect
                         width="600"
-                        height="400"
-                        fill="#edf2f7"
+                        height="500"
+                        fill="#ebe8ff"
                     />
 
                     <text
                         x="300"
-                        y="175"
+                        y="235"
                         text-anchor="middle"
                         font-family="Arial"
                         font-size="42"
@@ -653,11 +650,11 @@
 
                     <text
                         x="300"
-                        y="225"
+                        y="280"
                         text-anchor="middle"
                         font-family="Arial"
-                        font-size="22"
-                        fill="#718096"
+                        font-size="20"
+                        fill="#777783"
                     >
                         Image indisponible
                     </text>
@@ -665,116 +662,104 @@
             `);
 
         /**
-         * Charge les informations de la boutique choisie.
+         * Démarrage de la boutique.
          */
-        function loadSelectedShop() {
+        async function initializeShop() {
+            selectedShop =
+                getStoredShop();
+
+            if (!selectedShop) {
+                showError(
+                    "Les informations de cette boutique sont introuvables."
+                );
+
+                return;
+            }
+
+            displayShopInformation(
+                selectedShop
+            );
+
+            await fetchProducts();
+        }
+
+        /**
+         * Lit le vendeur choisi depuis produit.html.
+         */
+        function getStoredShop() {
             try {
-                const storedShop =
+                const value =
                     localStorage.getItem(
                         SELECTED_SHOP_STORAGE_KEY
                     );
 
-                if (!storedShop) {
-                    showError(
-                        "Aucune boutique n’a été sélectionnée."
-                    );
-
-                    return false;
+                if (!value) {
+                    return null;
                 }
 
-                selectedShop =
-                    JSON.parse(storedShop);
+                const parsedValue =
+                    JSON.parse(value);
 
-                displayShopInformation();
-
-                return true;
+                return (
+                    parsedValue &&
+                    typeof parsedValue ===
+                        "object"
+                )
+                    ? parsedValue
+                    : null;
 
             } catch (error) {
                 console.error(
-                    "Boutique invalide :",
+                    "Impossible de lire la boutique :",
                     error
                 );
 
-                showError(
-                    "Impossible de lire les informations de la boutique."
-                );
-
-                return false;
+                return null;
             }
         }
 
         /**
-         * Affiche les informations générales de la boutique.
+         * Affiche le nom, la localisation et le badge.
          */
-        function displayShopInformation() {
+        function displayShopInformation(shop) {
             const sellerName =
-                getFirstValue(
-                    selectedShop.sellerName,
-                    selectedShop.shopName,
-                    selectedShop.name,
-                    selectedShop.vendeur,
-                    "Boutique"
-                );
+                getShopSellerName(shop);
 
             const location =
-                getFirstValue(
-                    selectedShop.location,
-                    selectedShop.localisation,
-                    selectedShop.city,
-                    selectedShop.ville,
-                    selectedShop.commune,
-                    "Localisation non renseignée"
-                );
+                getShopLocation(shop);
 
             const verified =
-                isVerifiedValue(
-                    getFirstValue(
-                        selectedShop.verified,
-                        selectedShop.isVerified,
-                        selectedShop.certified,
-                        selectedShop.isCertified,
-                        false
-                    )
-                );
+                isShopVerified(shop);
 
             document.title =
                 `${sellerName} - DJASSACI`;
 
             document
                 .getElementById(
-                    "topbar-title"
+                    "shop-title"
                 )
                 .textContent =
                 sellerName;
 
             document
                 .getElementById(
-                    "shop-name"
+                    "seller-name"
                 )
                 .textContent =
                 sellerName;
 
             document
                 .getElementById(
-                    "shop-location"
+                    "seller-location"
                 )
-                .textContent =
-                location;
-
-            document
-                .getElementById(
-                    "shop-avatar"
-                )
-                .textContent =
-                String(sellerName)
-                    .trim()
-                    .charAt(0)
-                    .toUpperCase() || "B";
+                .innerHTML =
+                `<i class="fas fa-location-dot"></i>` +
+                escapeHtml(location);
 
             if (verified) {
                 document
                     .getElementById(
-                        "shop-badge"
+                        "verified-badge"
                     )
                     .classList
                     .add("active");
@@ -783,9 +768,9 @@
 
         /**
          * Charge tous les produits puis garde uniquement
-         * ceux qui appartiennent au vendeur choisi.
+         * ceux du vendeur sélectionné.
          */
-        async function fetchShopProducts() {
+        async function fetchProducts() {
             const grid =
                 document.getElementById(
                     "products-grid"
@@ -814,19 +799,24 @@
                 const data =
                     await response.json();
 
-                const allProducts =
+                allProducts =
                     extractProducts(data);
 
-                shopProducts =
-                    allProducts.filter(
-                        productBelongsToSelectedShop
+                const sellerProducts =
+                    filterSellerProducts(
+                        allProducts,
+                        selectedShop
                     );
 
-                renderShopProducts();
+                renderProducts(
+                    sortProductsNewestFirst(
+                        sellerProducts
+                    )
+                );
 
             } catch (error) {
                 console.error(
-                    "Erreur produits boutique :",
+                    "Erreur boutique :",
                     error
                 );
 
@@ -836,118 +826,147 @@
             }
         }
 
-        /**
-         * Vérifie si un produit appartient au vendeur choisi.
-         */
-        function productBelongsToSelectedShop(product) {
-            const selectedShopId =
-                getFirstValue(
-                    selectedShop.shopId,
-                    selectedShop.shop_id,
-                    selectedShop.boutiqueId,
-                    selectedShop.boutique_id,
-                    selectedShop.sellerId,
-                    selectedShop.seller_id,
-                    selectedShop.userId,
-                    selectedShop.user_id,
-                    selectedShop.id,
-                    selectedShop._id
-                );
-
-            const productShopId =
-                getFirstValue(
-                    product.shopId,
-                    product.shop_id,
-                    product.boutiqueId,
-                    product.boutique_id,
-                    product.sellerId,
-                    product.seller_id,
-                    product.userId,
-                    product.user_id,
-                    product.ownerId,
-                    product.owner_id
-                );
-
-            /*
-             * La comparaison par identifiant est prioritaire.
-             */
-            if (
-                selectedShopId &&
-                productShopId
-            ) {
-                return (
-                    String(selectedShopId) ===
-                    String(productShopId)
-                );
+        function extractProducts(data) {
+            if (Array.isArray(data)) {
+                return data;
             }
 
-            /*
-             * Si aucun identifiant n’est disponible,
-             * on compare le nom du vendeur.
-             */
-            const selectedSellerName =
-                normalizeText(
-                    getFirstValue(
-                        selectedShop.sellerName,
-                        selectedShop.shopName,
-                        selectedShop.name,
-                        selectedShop.vendeur,
-                        ""
-                    )
+            if (!data) {
+                return [];
+            }
+
+            if (Array.isArray(data.products)) {
+                return data.products;
+            }
+
+            if (Array.isArray(data.articles)) {
+                return data.articles;
+            }
+
+            if (Array.isArray(data.data)) {
+                return data.data;
+            }
+
+            if (Array.isArray(data.items)) {
+                return data.items;
+            }
+
+            if (
+                data.data &&
+                Array.isArray(
+                    data.data.products
+                )
+            ) {
+                return data.data.products;
+            }
+
+            return [];
+        }
+
+        /**
+         * Filtre avec l'identifiant du vendeur.
+         * Si aucun identifiant n'existe, utilise le nom
+         * et le téléphone du vendeur.
+         */
+        function filterSellerProducts(
+            products,
+            shop
+        ) {
+            const selectedId =
+                normalizeValue(
+                    getShopSellerId(shop)
                 );
 
-            const productSellerName =
+            const selectedName =
                 normalizeText(
-                    getFirstValue(
-                        product.sellerName,
-                        product.seller_name,
-                        product.shopName,
-                        product.shop_name,
-                        product.vendeur,
-                        product.vendorName,
-                        product.ownerName,
-                        product.userName,
-                        ""
-                    )
+                    getShopSellerName(shop)
                 );
 
-            return (
-                selectedSellerName &&
-                productSellerName &&
-                selectedSellerName ===
-                    productSellerName
+            const selectedPhone =
+                normalizePhone(
+                    getShopPhone(shop)
+                );
+
+            return products.filter(
+                function (product) {
+                    const productSellerId =
+                        normalizeValue(
+                            getProductSellerId(
+                                product
+                            )
+                        );
+
+                    const productSellerName =
+                        normalizeText(
+                            getProductSellerName(
+                                product
+                            )
+                        );
+
+                    const productPhone =
+                        normalizePhone(
+                            getProductSellerPhone(
+                                product
+                            )
+                        );
+
+                    if (
+                        selectedId &&
+                        productSellerId
+                    ) {
+                        return (
+                            selectedId ===
+                            productSellerId
+                        );
+                    }
+
+                    if (
+                        selectedPhone &&
+                        productPhone
+                    ) {
+                        return (
+                            selectedPhone ===
+                            productPhone
+                        );
+                    }
+
+                    return (
+                        selectedName &&
+                        productSellerName &&
+                        selectedName ===
+                            productSellerName
+                    );
+                }
             );
         }
 
         /**
-         * Affiche les produits de la boutique.
+         * Affichage des cartes.
          */
-        function renderShopProducts() {
+        function renderProducts(products) {
             const grid =
                 document.getElementById(
                     "products-grid"
                 );
 
-            const count =
-                document.getElementById(
-                    "products-count"
-                );
-
-            grid.innerHTML = "";
-
-            count.textContent =
-                `(${shopProducts.length})`;
+            grid.innerHTML =
+                "";
 
             if (
-                shopProducts.length === 0
+                !Array.isArray(products) ||
+                products.length === 0
             ) {
                 grid.innerHTML = `
                     <div class="empty-message">
 
-                        <i class="fas fa-box-open"></i>
+                        <i class="fas fa-store-slash"></i>
+
+                        <h3>
+                            Aucun produit dans cette boutique
+                        </h3>
 
                         <p>
-                            Cette boutique ne possède aucun produit publié.
+                            Ce vendeur n’a encore publié aucun produit.
                         </p>
 
                     </div>
@@ -956,7 +975,7 @@
                 return;
             }
 
-            shopProducts.forEach(
+            products.forEach(
                 function (product) {
                     grid.appendChild(
                         createProductCard(
@@ -967,9 +986,6 @@
             );
         }
 
-        /**
-         * Crée une carte produit.
-         */
         function createProductCard(product) {
             const card =
                 document.createElement(
@@ -980,20 +996,8 @@
                 "product-card";
 
             const name =
-                getFirstValue(
-                    product.name,
-                    product.nom,
-                    product.title,
-                    product.titre,
-                    "Produit DJASSACI"
-                );
-
-            const description =
-                getFirstValue(
-                    product.description,
-                    product.details,
-                    product.detail,
-                    "Aucune description disponible."
+                getProductName(
+                    product
                 );
 
             const price =
@@ -1011,17 +1015,13 @@
                 getFirstValue(
                     product.category,
                     product.categorie,
+                    product.type,
                     "Autre"
                 );
 
             const location =
-                getFirstValue(
-                    product.location,
-                    product.localisation,
-                    product.city,
-                    product.ville,
-                    product.commune,
-                    ""
+                getProductLocation(
+                    product
                 );
 
             const image =
@@ -1053,49 +1053,18 @@
                         ${escapeHtml(name)}
                     </h3>
 
-                    <p class="product-description">
-                        ${escapeHtml(description)}
-                    </p>
-
-                    <p class="product-meta">
-                        <i class="fas fa-tag"></i>
-                        ${escapeHtml(category)}
-                    </p>
-
-                    ${
-                        location
-                            ? `
-                                <p class="product-meta">
-                                    <i class="fas fa-location-dot"></i>
-                                    ${escapeHtml(location)}
-                                </p>
-                            `
-                            : ""
-                    }
-
                     <p class="product-price">
                         ${escapeHtml(price)} FCFA
                     </p>
 
-                    <div class="product-buttons">
-
-                        <button
-                            type="button"
-                            class="product-button details-button"
-                        >
-                            <i class="fas fa-eye"></i>
-                            Voir détails
-                        </button>
-
-                        <button
-                            type="button"
-                            class="product-button cart-button"
-                        >
-                            <i class="fas fa-cart-plus"></i>
-                            Panier
-                        </button>
-
-                    </div>
+                    <p class="product-meta">
+                        ${escapeHtml(category)}
+                        ${
+                            location
+                                ? ` • ${escapeHtml(location)}`
+                                : ""
+                        }
+                    </p>
 
                 </div>
             `;
@@ -1137,42 +1106,15 @@
                 }
             );
 
-            const detailsButton =
-                card.querySelector(
-                    ".details-button"
-                );
-
-            detailsButton.addEventListener(
-                "click",
-                function (event) {
-                    event.stopPropagation();
-
-                    openProductDetails(
-                        product
-                    );
-                }
-            );
-
-            const cartButton =
-                card.querySelector(
-                    ".cart-button"
-                );
-
-            cartButton.addEventListener(
-                "click",
-                function (event) {
-                    event.stopPropagation();
-
-                    addToCart(
-                        product
-                    );
-                }
-            );
+            if (imageElement.complete) {
+                loadingElement.style.display =
+                    "none";
+            }
 
             card.addEventListener(
                 "click",
                 function () {
-                    openProductDetails(
+                    openProduct(
                         product
                     );
                 }
@@ -1181,183 +1123,205 @@
             return card;
         }
 
-        /**
-         * Ouvre la page détail du produit.
-         */
-        function openProductDetails(product) {
-            localStorage.setItem(
-                SELECTED_PRODUCT_STORAGE_KEY,
-                JSON.stringify(product)
-            );
-
-            window.location.href =
-                PRODUCT_PAGE_URL;
-        }
-
-        /**
-         * Ajout au panier.
-         */
-        function addToCart(product) {
-            let cart =
-                getStoredCart();
-
-            const productId =
-                getProductId(product);
-
-            const existingProduct =
-                cart.find(
-                    function (item) {
-                        return (
-                            String(
-                                getProductId(item)
-                            ) ===
-                            String(productId)
-                        );
-                    }
+        function openProduct(product) {
+            try {
+                localStorage.setItem(
+                    SELECTED_PRODUCT_STORAGE_KEY,
+                    JSON.stringify(product)
                 );
 
-            if (existingProduct) {
-                existingProduct.quantity =
-                    Math.max(
-                        1,
-                        Number(
-                            existingProduct.quantity ||
-                            1
-                        )
-                    ) + 1;
-
-            } else {
-                cart.push({
-                    ...product,
-                    quantity: 1
-                });
-            }
-
-            localStorage.setItem(
-                CART_STORAGE_KEY,
-                JSON.stringify(cart)
-            );
-
-            showToast(
-                "Le produit a été ajouté au panier."
-            );
-        }
-
-        function getStoredCart() {
-            try {
-                const storedCart =
-                    localStorage.getItem(
-                        CART_STORAGE_KEY
-                    );
-
-                const parsedCart =
-                    storedCart
-                        ? JSON.parse(storedCart)
-                        : [];
-
-                return Array.isArray(parsedCart)
-                    ? parsedCart
-                    : [];
+                window.location.href =
+                    PRODUCT_PAGE_URL;
 
             } catch (error) {
-                return [];
+                console.error(
+                    "Impossible d'ouvrir le produit :",
+                    error
+                );
             }
         }
 
         /**
-         * Contact de la boutique.
+         * Informations de la boutique.
          */
-        function contactShopOnWhatsApp() {
-            const phone =
-                getFirstValue(
-                    selectedShop.phone,
-                    selectedShop.telephone,
-                    selectedShop.numero,
-                    selectedShop.whatsapp,
-                    selectedShop.sellerPhone,
-                    ""
-                );
-
-            if (!phone) {
-                showToast(
-                    "Le numéro de cette boutique est indisponible.",
-                    "error"
-                );
-
-                return;
-            }
-
-            const sellerName =
-                getFirstValue(
-                    selectedShop.sellerName,
-                    selectedShop.shopName,
-                    selectedShop.name,
-                    "votre boutique"
-                );
-
-            const message =
-                `Bonjour ! Je viens de consulter votre boutique ${sellerName} sur DJASSACI. ` +
-                `Je souhaite avoir plus d’informations sur vos produits.`;
-
-            const number =
-                normalizeWhatsAppNumber(
-                    phone
-                );
-
-            const url =
-                `https://wa.me/${number}` +
-                `?text=${encodeURIComponent(message)}`;
-
-            const newWindow =
-                window.open(
-                    url,
-                    "_blank",
-                    "noopener,noreferrer"
-                );
-
-            if (!newWindow) {
-                window.location.href =
-                    url;
-            }
+        function getShopSellerId(shop) {
+            return getFirstValue(
+                shop.shopId,
+                shop.shop_id,
+                shop.sellerId,
+                shop.seller_id,
+                shop.userId,
+                shop.user_id,
+                shop.ownerId,
+                shop.owner_id,
+                shop.id,
+                shop._id,
+                ""
+            );
         }
 
-        function extractProducts(data) {
-            if (Array.isArray(data)) {
-                return data;
-            }
-
-            if (!data) {
-                return [];
-            }
-
-            if (Array.isArray(data.products)) {
-                return data.products;
-            }
-
-            if (Array.isArray(data.articles)) {
-                return data.articles;
-            }
-
-            if (Array.isArray(data.data)) {
-                return data.data;
-            }
-
-            if (Array.isArray(data.items)) {
-                return data.items;
-            }
-
-            if (
-                data.data &&
-                Array.isArray(
-                    data.data.products
-                )
-            ) {
-                return data.data.products;
-            }
-
-            return [];
+        function getShopSellerName(shop) {
+            return getFirstValue(
+                shop.shopName,
+                shop.shop_name,
+                shop.sellerName,
+                shop.seller_name,
+                shop.name,
+                shop.vendeur,
+                "Boutique du vendeur"
+            );
         }
 
+        function getShopPhone(shop) {
+            return getFirstValue(
+                shop.whatsapp,
+                shop.phone,
+                shop.telephone,
+                shop.numero,
+                ""
+            );
+        }
+
+        function getShopLocation(shop) {
+            return getFirstValue(
+                shop.location,
+                shop.localisation,
+                shop.ville,
+                shop.commune,
+                shop.adresse,
+                "Localisation non renseignée"
+            );
+        }
+
+        function isShopVerified(shop) {
+            const value =
+                getFirstValue(
+                    shop.verified,
+                    shop.isVerified,
+                    shop.certified,
+                    shop.isCertified,
+                    false
+                );
+
+            return normalizeBoolean(
+                value
+            );
+        }
+
+        /**
+         * Informations du vendeur d'un produit.
+         */
+        function getProductSellerId(product) {
+            return getFirstValue(
+                product.shopId,
+                product.shop_id,
+                product.boutiqueId,
+                product.boutique_id,
+                product.sellerId,
+                product.seller_id,
+                product.userId,
+                product.user_id,
+                product.ownerId,
+                product.owner_id,
+                product.createdBy,
+                product.created_by,
+                product.vendeur?.id,
+                product.vendeur?._id,
+                product.user?.id,
+                product.user?._id,
+                product.seller?.id,
+                product.seller?._id,
+                ""
+            );
+        }
+
+        function getProductSellerName(product) {
+            const directSeller =
+                typeof product.vendeur ===
+                    "string"
+                    ? product.vendeur
+                    : "";
+
+            return getFirstValue(
+                product.sellerName,
+                product.seller_name,
+                product.shopName,
+                product.shop_name,
+                product.boutiqueName,
+                product.boutique_name,
+                directSeller,
+                product.vendeur?.nom,
+                product.vendeur?.name,
+                product.user?.nom,
+                product.user?.name,
+                product.seller?.nom,
+                product.seller?.name,
+                ""
+            );
+        }
+
+        function getProductSellerPhone(product) {
+            return getFirstValue(
+                product.whatsapp,
+                product.whatsappNumber,
+                product.whatsapp_number,
+                product.telephone,
+                product.numero,
+                product.phone,
+                product.sellerPhone,
+                product.seller_phone,
+                product.vendeur?.whatsapp,
+                product.vendeur?.telephone,
+                product.vendeur?.numero,
+                product.user?.whatsapp,
+                product.user?.telephone,
+                product.user?.numero,
+                product.seller?.whatsapp,
+                product.seller?.telephone,
+                product.seller?.numero,
+                ""
+            );
+        }
+
+        function getProductLocation(product) {
+            return getFirstValue(
+                product.vendeurLocalisation,
+                product.sellerLocation,
+                product.seller_location,
+                product.location,
+                product.localisation,
+                product.city,
+                product.ville,
+                product.commune,
+                product.adresse,
+                product.address,
+                product.vendeur?.localisation,
+                product.vendeur?.location,
+                product.vendeur?.ville,
+                product.vendeur?.commune,
+                product.user?.localisation,
+                product.user?.location,
+                product.seller?.localisation,
+                product.seller?.location,
+                ""
+            );
+        }
+
+        function getProductName(product) {
+            return getFirstValue(
+                product.name,
+                product.nom,
+                product.title,
+                product.titre,
+                product.productName,
+                product.product_name,
+                "Produit DJASSACI"
+            );
+        }
+
+        /**
+         * Images.
+         */
         function extractImageValue(product) {
             const directImage =
                 getFirstValue(
@@ -1444,6 +1408,10 @@
                         "/"
                     );
 
+            if (!path) {
+                return DEFAULT_IMAGE;
+            }
+
             if (
                 path.startsWith("https://") ||
                 path.startsWith("http://") ||
@@ -1485,39 +1453,109 @@
             return `${API_URL}/${path}`;
         }
 
-        function getProductId(product) {
-            return getFirstValue(
-                product.id,
-                product._id,
-                product.productId,
-                product.product_id,
-                product.uuid,
-                `${getFirstValue(
-                    product.name,
-                    product.nom,
-                    product.title,
-                    "produit"
-                )}-${getFirstValue(
-                    product.price,
-                    product.prix,
-                    0
-                )}`
+        /**
+         * Tri des produits.
+         */
+        function sortProductsNewestFirst(products) {
+            return [...products].sort(
+                function (a, b) {
+                    return (
+                        getProductTimestamp(b) -
+                        getProductTimestamp(a)
+                    );
+                }
             );
         }
 
-        function isVerifiedValue(value) {
-            return (
-                value === true ||
-                value === 1 ||
-                String(value).toLowerCase() ===
-                    "true" ||
-                String(value).toLowerCase() ===
-                    "certifié" ||
-                String(value).toLowerCase() ===
-                    "certified"
-            );
+        function getProductTimestamp(product) {
+            const value =
+                getFirstValue(
+                    product.createdAt,
+                    product.created_at,
+                    product.dateCreation,
+                    product.date_creation,
+                    product.datePublication,
+                    product.publishedAt,
+                    product.timestamp,
+                    product.date,
+                    ""
+                );
+
+            if (!value) {
+                return 0;
+            }
+
+            if (
+                typeof value === "number" ||
+                /^\d+$/.test(String(value))
+            ) {
+                const numericValue =
+                    Number(value);
+
+                return numericValue <
+                    100000000000
+                    ? numericValue * 1000
+                    : numericValue;
+            }
+
+            const parsedDate =
+                Date.parse(value);
+
+            return Number.isNaN(
+                parsedDate
+            )
+                ? 0
+                : parsedDate;
         }
 
+        /**
+         * Navigation.
+         */
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                goToHome();
+            }
+        }
+
+        function goToHome() {
+            window.location.href =
+                HOME_PAGE_URL;
+        }
+
+        /**
+         * Erreurs.
+         */
+        function showError(message) {
+            document
+                .getElementById(
+                    "products-grid"
+                )
+                .innerHTML = `
+                    <div class="error-message">
+
+                        <i class="fas fa-triangle-exclamation"></i>
+
+                        <p>
+                            ${escapeHtml(message)}
+                        </p>
+
+                        <button
+                            type="button"
+                            class="retry-button"
+                            onclick="initializeShop()"
+                        >
+                            Réessayer
+                        </button>
+
+                    </div>
+                `;
+        }
+
+        /**
+         * Fonctions générales.
+         */
         function normalizeText(value) {
             return String(value || "")
                 .trim()
@@ -1529,30 +1567,34 @@
                 );
         }
 
-        function normalizeWhatsAppNumber(phone) {
-            let number =
-                String(phone || "")
-                    .replace(/\D/g, "");
+        function normalizeValue(value) {
+            return String(value || "")
+                .trim()
+                .toLowerCase();
+        }
 
-            if (number.startsWith("00")) {
-                number =
-                    number.substring(2);
-            }
+        function normalizePhone(value) {
+            return String(value || "")
+                .replace(/\D/g, "")
+                .replace(/^225/, "")
+                .replace(/^0/, "");
+        }
 
-            if (
-                number.startsWith("0") &&
-                number.length === 10
-            ) {
-                number =
-                    number.substring(1);
-            }
+        function normalizeBoolean(value) {
+            const normalized =
+                String(value)
+                    .trim()
+                    .toLowerCase();
 
-            if (!number.startsWith("225")) {
-                number =
-                    `225${number}`;
-            }
-
-            return number;
+            return (
+                value === true ||
+                value === 1 ||
+                normalized === "true" ||
+                normalized === "1" ||
+                normalized === "oui" ||
+                normalized === "certifié" ||
+                normalized === "certified"
+            );
         }
 
         function formatPrice(price) {
@@ -1599,77 +1641,9 @@
                 .replaceAll("'", "&#039;");
         }
 
-        function showError(message) {
-            document
-                .getElementById(
-                    "products-grid"
-                )
-                .innerHTML = `
-                    <div class="error-message">
-
-                        <i class="fas fa-triangle-exclamation"></i>
-
-                        <p>
-                            ${escapeHtml(message)}
-                        </p>
-
-                    </div>
-                `;
-        }
-
-        let toastTimer = null;
-
-        function showToast(
-            message,
-            type = ""
-        ) {
-            const toast =
-                document.getElementById(
-                    "toast"
-                );
-
-            toast.textContent =
-                message;
-
-            toast.className =
-                `toast active ${type}`;
-
-            clearTimeout(
-                toastTimer
-            );
-
-            toastTimer =
-                setTimeout(
-                    function () {
-                        toast.className =
-                            "toast";
-                    },
-                    3200
-                );
-        }
-
-        function goBack() {
-            if (window.history.length > 1) {
-                window.history.back();
-            } else {
-                goToHome();
-            }
-        }
-
-        function goToHome() {
-            window.location.href =
-                HOME_PAGE_URL;
-        }
-
         document.addEventListener(
             "DOMContentLoaded",
-            function () {
-                if (!loadSelectedShop()) {
-                    return;
-                }
-
-                fetchShopProducts();
-            }
+            initializeShop
         );
     </script>
 

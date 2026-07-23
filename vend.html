@@ -26,7 +26,7 @@
         "
     >
 
-    <title>Détails du produit - DJASSACI</title>
+    <title>Vendre un produit - DJASSACI</title>
 
     <link
         rel="stylesheet"
@@ -43,6 +43,10 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             margin: 0;
             min-height: 100vh;
@@ -52,43 +56,52 @@
             background: #f7f7fb;
         }
 
-        button {
+        button,
+        input,
+        textarea,
+        select {
             font-family: inherit;
+        }
+
+        button {
             cursor: pointer;
         }
 
         .page {
             width: 100%;
-            max-width: 800px;
+            max-width: 760px;
             min-height: 100vh;
 
             margin: 0 auto;
             padding-bottom: 35px;
 
-            background: #f7f7fb;
+            background: #f8f8fc;
 
             box-shadow:
                 0 0 25px
-                rgba(0, 0, 0, 0.07);
+                rgba(0, 0, 0, 0.06);
         }
+
+        /* Barre du haut */
 
         .topbar {
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
 
-            min-height: 65px;
-            padding: 0 20px;
+            min-height: 72px;
+            padding: 0 18px;
 
             display: grid;
-            grid-template-columns: 50px 1fr 50px;
+            grid-template-columns: 48px 1fr auto;
             align-items: center;
+            gap: 8px;
 
-            background: rgba(248, 248, 252, 0.97);
+            background: rgba(248, 248, 252, 0.98);
 
             box-shadow:
                 0 2px 10px
-                rgba(0, 0, 0, 0.06);
+                rgba(0, 0, 0, 0.05);
         }
 
         .topbar-title {
@@ -100,273 +113,290 @@
             white-space: nowrap;
 
             color: #6957df;
-            font-size: 27px;
-            font-weight: 400;
+
+            font-size: 28px;
+            font-weight: 500;
         }
 
-        .topbar-button {
-            width: 42px;
-            height: 42px;
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .icon-button {
+            width: 44px;
+            height: 44px;
 
             display: flex;
             align-items: center;
             justify-content: center;
-
-            border: none;
-            border-radius: 50%;
 
             color: #6957df;
             background: transparent;
 
-            font-size: 23px;
-        }
-
-        .back-button {
-            color: #333;
-        }
-
-        .topbar-button:hover {
-            background: #ece9ff;
-        }
-
-        .product-image-container {
-            position: relative;
-
-            width: 100%;
-            height: 410px;
-
-            overflow: hidden;
-            background: #e8e8ef;
-        }
-
-        .product-image {
-            width: 100%;
-            height: 100%;
-
-            display: block;
-
-            object-fit: cover;
-            object-position: center;
-
-            cursor: zoom-in;
-            transition: transform 0.25s ease;
-        }
-
-        .product-image:hover {
-            transform: scale(1.015);
-        }
-
-        .image-modal {
-            position: fixed;
-            inset: 0;
-            z-index: 10000;
-
-            display: none;
-            align-items: center;
-            justify-content: center;
-
-            padding: 25px;
-
-            background: rgba(0, 0, 0, 0.94);
-        }
-
-        .image-modal.active {
-            display: flex;
-        }
-
-        .modal-image {
-            width: auto;
-            height: auto;
-            max-width: 96vw;
-            max-height: 92vh;
-
-            object-fit: contain;
-            border-radius: 10px;
-
-            cursor: zoom-out;
-        }
-
-        .close-image-button {
-            position: absolute;
-            top: 18px;
-            right: 20px;
-            z-index: 10001;
-
-            width: 48px;
-            height: 48px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            color: white;
-            background: rgba(255, 255, 255, 0.14);
-
             border: none;
             border-radius: 50%;
 
-            font-size: 27px;
+            font-size: 22px;
+
+            transition:
+                background 0.2s,
+                transform 0.2s;
         }
 
-        .close-image-button:hover {
-            background: rgba(255, 255, 255, 0.25);
+        .icon-button.back {
+            color: #222;
         }
 
-        body.image-modal-open {
-            overflow: hidden;
+        .icon-button:hover {
+            background: #ece9ff;
+            transform: scale(1.04);
         }
 
-        .image-loading {
-            position: absolute;
-            inset: 0;
+        /* Formulaire */
+
+        .sell-form {
+            padding: 28px 24px 10px;
+        }
+
+        .image-picker {
+            position: relative;
+
+            width: 100%;
+            min-height: 310px;
 
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
 
-            color: #6957df;
-            background: #ececf3;
+            overflow: hidden;
 
-            font-size: 35px;
+            color: #30303a;
+            background: #fafafd;
+
+            border: 1.5px solid #85858f;
+            border-radius: 18px;
+
+            cursor: pointer;
+
+            transition:
+                border-color 0.2s,
+                box-shadow 0.2s;
         }
 
-        .product-content {
-            padding: 27px 30px;
+        .image-picker:hover {
+            border-color: #6957df;
+
+            box-shadow:
+                0 0 0 4px
+                rgba(105, 87, 223, 0.1);
         }
 
-        .product-name {
-            margin: 0 0 10px;
-
-            color: #1c1c1c;
-            font-size: 28px;
-            font-weight: 600;
+        .image-picker.dragging {
+            border-color: #6957df;
+            background: #f2efff;
         }
 
-        .product-price {
-            margin: 0 0 28px;
+        .image-placeholder {
+            padding: 25px;
 
-            color: #6957df;
-            font-size: 38px;
-            font-weight: 700;
+            text-align: center;
         }
 
-        .product-information {
-            margin-bottom: 30px;
+        .camera-icon {
+            margin-bottom: 15px;
+
+            color: #9b9ba3;
+            font-size: 68px;
         }
 
-        .info-line {
-            margin: 5px 0;
+        .image-title {
+            margin: 0 0 8px;
 
-            color: #62626c;
-            font-size: 18px;
-            line-height: 1.6;
+            color: #222;
+            font-size: 23px;
+            font-weight: 500;
         }
 
-        .verified-badge {
+        .image-help {
+            margin: 0;
+
+            color: #777783;
+            font-size: 15px;
+        }
+
+        .image-preview {
+            position: absolute;
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+
             display: none;
 
-            margin: 13px 0;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .image-preview.active {
+            display: block;
+        }
+
+        .change-image {
+            position: absolute;
+            right: 14px;
+            bottom: 14px;
+            z-index: 3;
+
+            display: none;
+
+            min-height: 43px;
+            padding: 9px 14px;
 
             align-items: center;
             gap: 8px;
 
-            color: #222;
-            font-size: 17px;
-            font-weight: 700;
-        }
-
-        .verified-badge.active {
-            display: flex;
-        }
-
-        .verified-badge i {
-            color: #6957df;
-        }
-
-        .description-title {
-            margin: 0 0 20px;
-
-            color: #1b1b1b;
-            font-size: 25px;
-        }
-
-        .product-description {
-            margin: 0 0 35px;
-
-            color: #333;
-            font-size: 18px;
-            line-height: 1.8;
-
-            white-space: pre-line;
-            word-break: break-word;
-        }
-
-        .contact-card {
-            margin-bottom: 30px;
-            padding: 25px;
-
-            background: white;
-            border-radius: 17px;
-
-            box-shadow:
-                0 5px 15px
-                rgba(0, 0, 0, 0.2);
-        }
-
-        .contact-title {
-            margin: 0 0 25px;
-            font-size: 23px;
-        }
-
-        .contact-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .contact-button {
-            min-height: 62px;
-            padding: 12px 18px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-
             color: white;
-            background: #48b653;
+            background: rgba(31, 31, 37, 0.82);
 
             border: none;
-            border-radius: 15px;
+            border-radius: 12px;
 
-            font-size: 17px;
+            font-size: 14px;
             font-weight: 600;
-
-            box-shadow:
-                0 4px 10px
-                rgba(72, 182, 83, 0.25);
         }
 
-        .contact-button:hover {
-            background: #3da849;
+        .change-image.active {
+            display: flex;
         }
 
-        .seller-summary {
-            margin: 22px 0 12px;
-
-            color: #777;
-            font-size: 15px;
+        .hidden-input {
+            display: none;
         }
 
-        .shop-button {
+        .field {
+            position: relative;
+
             width: 100%;
-            min-height: 62px;
-            padding: 13px;
+            margin-top: 23px;
+        }
+
+        .field-icon {
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            z-index: 2;
+
+            width: 26px;
 
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+
+            transform: translateY(-50%);
+
+            color: #4a4a54;
+            font-size: 23px;
+
+            pointer-events: none;
+        }
+
+        .textarea-field .field-icon {
+            top: 36px;
+            transform: none;
+        }
+
+        .form-control {
+            width: 100%;
+            min-height: 88px;
+
+            padding: 18px 52px 18px 73px;
+
+            color: #31313a;
+            background: #fafafd;
+
+            border: 1.5px solid #85858f;
+            border-radius: 7px;
+
+            font-size: 21px;
+            outline: none;
+
+            transition:
+                border-color 0.2s,
+                box-shadow 0.2s,
+                background 0.2s;
+        }
+
+        .form-control::placeholder {
+            color: #555560;
+            opacity: 1;
+        }
+
+        .form-control:focus {
+            border-color: #6957df;
+            background: white;
+
+            box-shadow:
+                0 0 0 4px
+                rgba(105, 87, 223, 0.11);
+        }
+
+        textarea.form-control {
+            min-height: 220px;
+            padding-top: 32px;
+
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        select.form-control {
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .select-arrow {
+            position: absolute;
+            top: 50%;
+            right: 22px;
+
+            transform: translateY(-50%);
+
+            color: #555560;
+
+            pointer-events: none;
+        }
+
+        .field-error {
+            display: none;
+
+            margin: 7px 4px 0;
+
+            color: #c53030;
+            font-size: 13px;
+        }
+
+        .field.invalid .form-control {
+            border-color: #c53030;
+            background: #fff8f8;
+        }
+
+        .field.invalid .field-error {
+            display: block;
+        }
+
+        .publish-button {
+            width: 100%;
+            min-height: 68px;
+
+            margin-top: 28px;
+            padding: 14px 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
 
             color: white;
 
@@ -374,122 +404,65 @@
                 linear-gradient(
                     135deg,
                     #6957df,
-                    #7359e9
+                    #7659ea
                 );
-
-            border: none;
-            border-radius: 14px;
-
-            font-size: 17px;
-            font-weight: 600;
-
-            box-shadow:
-                0 4px 10px
-                rgba(105, 87, 223, 0.22);
-        }
-
-        .shop-button:hover {
-            background:
-                linear-gradient(
-                    135deg,
-                    #5e4bd6,
-                    #674bdc
-                );
-        }
-
-        .add-cart-button,
-        .view-cart-button {
-            width: 100%;
-            min-height: 65px;
-            padding: 13px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
 
             border: none;
             border-radius: 15px;
 
-            font-size: 17px;
-            font-weight: 600;
-        }
-
-        .add-cart-button {
-            margin-bottom: 18px;
-
-            color: white;
-            background: #2998e9;
+            font-size: 20px;
+            font-weight: 700;
 
             box-shadow:
-                0 4px 10px
-                rgba(41, 152, 233, 0.25);
+                0 5px 13px
+                rgba(105, 87, 223, 0.28);
+
+            transition:
+                transform 0.2s,
+                opacity 0.2s;
         }
 
-        .add-cart-button:hover {
-            background: #188bd8;
+        .publish-button:hover {
+            transform: translateY(-2px);
         }
 
-        .view-cart-button {
-            color: #222;
-            background: #ededed;
-
-            box-shadow:
-                0 4px 10px
-                rgba(0, 0, 0, 0.12);
+        .publish-button:disabled {
+            cursor: not-allowed;
+            opacity: 0.65;
+            transform: none;
         }
 
-        .view-cart-button:hover {
-            background: #e3e3e3;
-        }
+        .form-note {
+            margin: 16px 2px 0;
 
-        .error-box {
-            margin: 40px 20px;
-            padding: 30px;
-
+            color: #777783;
+            font-size: 13px;
+            line-height: 1.6;
             text-align: center;
-
-            color: #c53030;
-            background: #fff5f5;
-
-            border: 1px solid #feb2b2;
-            border-radius: 15px;
         }
 
-        .error-button {
-            width: 100%;
-            margin-top: 15px;
-            padding: 13px;
-
-            color: white;
-            background: #6957df;
-
-            border: none;
-            border-radius: 10px;
-
-            font-weight: 600;
-        }
+        /* Toast */
 
         .toast {
             position: fixed;
             left: 50%;
             bottom: 25px;
-            z-index: 1000;
+            z-index: 4000;
 
             width: calc(100% - 40px);
-            max-width: 450px;
-            padding: 14px 18px;
+            max-width: 480px;
+            padding: 15px 18px;
 
             color: white;
             background: #2f855a;
 
-            border-radius: 10px;
+            border-radius: 11px;
             text-align: center;
 
             opacity: 0;
             pointer-events: none;
 
-            transform: translate(-50%, 80px);
+            transform: translate(-50%, 90px);
 
             transition:
                 opacity 0.3s,
@@ -506,49 +479,80 @@
         }
 
         @media screen and (max-width: 600px) {
-            .product-image-container {
-                height: 300px;
+            .topbar {
+                min-height: 64px;
+                padding: 0 10px;
+                grid-template-columns: 42px 1fr auto;
             }
 
-            .product-content {
-                padding: 24px 20px;
+            .topbar-title {
+                font-size: 23px;
             }
 
-            .product-name {
-                font-size: 24px;
+            .icon-button {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
             }
 
-            .product-price {
-                font-size: 32px;
+            .sell-form {
+                padding: 22px 15px 10px;
             }
 
-            .info-line,
-            .product-description {
-                font-size: 16px;
+            .image-picker {
+                min-height: 255px;
+                border-radius: 15px;
             }
 
-            .contact-card {
-                padding: 22px 17px;
+            .camera-icon {
+                font-size: 58px;
             }
 
-            .contact-buttons {
-                gap: 10px;
+            .image-title {
+                font-size: 20px;
             }
 
-            .contact-button {
-                min-height: 58px;
-                padding: 10px;
-                font-size: 15px;
+            .field {
+                margin-top: 20px;
+            }
+
+            .form-control {
+                min-height: 82px;
+                padding-left: 66px;
+                padding-right: 45px;
+                font-size: 18px;
+            }
+
+            textarea.form-control {
+                min-height: 190px;
+            }
+
+            .field-icon {
+                left: 18px;
+                font-size: 21px;
+            }
+
+            .publish-button {
+                min-height: 64px;
+                font-size: 18px;
             }
         }
 
-        @media screen and (max-width: 390px) {
-            .product-image-container {
-                height: 250px;
+        @media screen and (max-width: 380px) {
+            .topbar-title {
+                font-size: 20px;
             }
 
-            .contact-buttons {
-                grid-template-columns: 1fr;
+            .topbar-actions {
+                gap: 0;
+            }
+
+            .image-picker {
+                min-height: 230px;
+            }
+
+            .form-control {
+                font-size: 16px;
             }
         }
     </style>
@@ -562,190 +566,302 @@
 
             <button
                 type="button"
-                class="topbar-button back-button"
+                class="icon-button back"
                 onclick="goBack()"
                 aria-label="Retour"
+                title="Retour"
             >
                 <i class="fas fa-arrow-left"></i>
             </button>
 
-            <h1
-                class="topbar-title"
-                id="topbar-title"
-            >
-                Produit
+            <h1 class="topbar-title">
+                Vendre un produit
             </h1>
 
-            <button
-                type="button"
-                class="topbar-button"
-                onclick="goToHome()"
-                aria-label="Accueil"
-            >
-                <i class="fas fa-house"></i>
-            </button>
+            <div class="topbar-actions">
 
-        </header>
-
-        <main id="product-page">
-
-            <div class="product-image-container">
-
-                <div
-                    class="image-loading"
-                    id="image-loading"
+                <button
+                    type="button"
+                    class="icon-button"
+                    onclick="goToHome()"
+                    aria-label="Accueil"
+                    title="Accueil"
                 >
-                    <i class="fas fa-spinner fa-spin"></i>
-                </div>
+                    <i class="fas fa-house"></i>
+                </button>
 
-                <img
-                    class="product-image"
-                    id="product-image"
-                    alt="Image du produit"
+                <button
+                    type="button"
+                    class="icon-button"
+                    onclick="goToMyProducts()"
+                    aria-label="Mes produits"
+                    title="Mes produits"
                 >
+                    <i class="fas fa-box-archive"></i>
+                </button>
 
             </div>
 
-            <section class="product-content">
+        </header>
 
-                <h2
-                    class="product-name"
-                    id="product-name"
+        <form
+            class="sell-form"
+            id="sell-form"
+            novalidate
+        >
+
+            <label
+                class="image-picker"
+                id="image-picker"
+                for="product-image-input"
+            >
+
+                <div
+                    class="image-placeholder"
+                    id="image-placeholder"
                 >
-                    Produit
-                </h2>
-
-                <p
-                    class="product-price"
-                    id="product-price"
-                >
-                    0 FCFA
-                </p>
-
-                <div class="product-information">
-
-                    <p class="info-line">
-                        Catégorie :
-                        <span id="product-category">
-                            Autre
-                        </span>
-                    </p>
-
-                    <p class="info-line">
-                        Vendeur :
-                        <span id="seller-name">
-                            Vendeur
-                        </span>
-                    </p>
-
-                    <div
-                        class="verified-badge"
-                        id="verified-badge"
-                    >
-                        <i class="fas fa-shield-halved"></i>
-                        Vendeur certifié
+                    <div class="camera-icon">
+                        <i class="fas fa-camera"></i>
                     </div>
 
-                    <p class="info-line">
-                        Localisation :
-                        <span id="product-location">
-                            Non renseignée
-                        </span>
+                    <p class="image-title">
+                        Aucune image sélectionnée
                     </p>
 
-                    <p
-                        class="info-line"
-                        id="product-condition-line"
-                    >
-                        État :
-                        <span id="product-condition">
-                            Non renseigné
-                        </span>
+                    <p class="image-help">
+                        Cliquez pour ajouter une image
                     </p>
-
                 </div>
 
-                <h3 class="description-title">
-                    Description
-                </h3>
-
-                <p
-                    class="product-description"
-                    id="product-description"
+                <img
+                    class="image-preview"
+                    id="image-preview"
+                    alt="Aperçu du produit"
                 >
-                    Aucune description disponible.
+
+                <button
+                    type="button"
+                    class="change-image"
+                    id="change-image-button"
+                    onclick="openImagePicker(event)"
+                >
+                    <i class="fas fa-camera-rotate"></i>
+                    Changer
+                </button>
+
+            </label>
+
+            <input
+                type="file"
+                class="hidden-input"
+                id="product-image-input"
+                accept="image/png,image/jpeg,image/jpg,image/webp"
+            >
+
+            <div
+                class="field"
+                id="image-field"
+            >
+                <p class="field-error">
+                    Sélectionne une image du produit.
+                </p>
+            </div>
+
+            <div class="field">
+
+                <span class="field-icon">
+                    <i class="fas fa-box"></i>
+                </span>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="product-name"
+                    name="name"
+                    placeholder="Nom produit *"
+                    maxlength="120"
+                    autocomplete="off"
+                    required
+                >
+
+                <p class="field-error">
+                    Entre le nom du produit.
                 </p>
 
-                <section class="contact-card">
+            </div>
 
-                    <h3 class="contact-title">
-                        Contacter le vendeur
-                    </h3>
+            <div class="field">
 
-                    <div class="contact-buttons">
+                <span class="field-icon">
+                    <i class="fas fa-dollar-sign"></i>
+                </span>
 
-                        <button
-                            type="button"
-                            class="contact-button"
-                            onclick="callSeller()"
-                        >
-                            <i class="fas fa-phone"></i>
-                            Appel
-                        </button>
-
-                        <button
-                            type="button"
-                            class="contact-button"
-                            onclick="contactSellerOnWhatsApp()"
-                        >
-                            <i class="fab fa-whatsapp"></i>
-                            WhatsApp
-                        </button>
-
-                    </div>
-
-                    <p
-                        class="seller-summary"
-                        id="seller-summary"
-                    >
-                        Vendeur
-                    </p>
-
-                    <button
-                        type="button"
-                        class="shop-button"
-                        onclick="openSellerShop()"
-                    >
-                        <i class="fas fa-store"></i>
-
-                        <span id="shop-button-text">
-                            Voir la boutique du vendeur
-                        </span>
-                    </button>
-
-                </section>
-
-                <button
-                    type="button"
-                    class="add-cart-button"
-                    onclick="addCurrentProductToCart()"
+                <input
+                    type="number"
+                    class="form-control"
+                    id="product-price"
+                    name="price"
+                    placeholder="Prix FCFA *"
+                    min="1"
+                    step="1"
+                    inputmode="numeric"
+                    required
                 >
-                    <i class="fas fa-cart-plus"></i>
-                    Ajouter au panier
-                </button>
 
-                <button
-                    type="button"
-                    class="view-cart-button"
-                    onclick="goToCart()"
+                <p class="field-error">
+                    Entre un prix valide.
+                </p>
+
+            </div>
+
+            <div class="field">
+
+                <span class="field-icon">
+                    <i class="fas fa-shapes"></i>
+                </span>
+
+                <select
+                    class="form-control"
+                    id="product-category"
+                    name="category"
+                    required
                 >
-                    <i class="fas fa-bag-shopping"></i>
-                    Voir panier
-                </button>
+                    <option value="">
+                        Catégorie *
+                    </option>
 
-            </section>
+                    <option value="Téléphones">
+                        Téléphones
+                    </option>
 
-        </main>
+                    <option value="Ordinateurs">
+                        Ordinateurs
+                    </option>
+
+                    <option value="Audio">
+                        Audio
+                    </option>
+
+                    <option value="Accessoires">
+                        Accessoires
+                    </option>
+
+                    <option value="Tablettes">
+                        Tablettes
+                    </option>
+
+                    <option value="Télévisions">
+                        Télévisions
+                    </option>
+
+                    <option value="Électroménager">
+                        Électroménager
+                    </option>
+
+                    <option value="Jeux vidéo">
+                        Jeux vidéo
+                    </option>
+
+                    <option value="Autre">
+                        Autre
+                    </option>
+                </select>
+
+                <span class="select-arrow">
+                    <i class="fas fa-chevron-down"></i>
+                </span>
+
+                <p class="field-error">
+                    Choisis une catégorie.
+                </p>
+
+            </div>
+
+            <div class="field textarea-field">
+
+                <span class="field-icon">
+                    <i class="fas fa-file-lines"></i>
+                </span>
+
+                <textarea
+                    class="form-control"
+                    id="product-description"
+                    name="description"
+                    placeholder="Description *"
+                    maxlength="2000"
+                    required
+                ></textarea>
+
+                <p class="field-error">
+                    Ajoute une description du produit.
+                </p>
+
+            </div>
+
+            <div class="field">
+
+                <span class="field-icon">
+                    <i class="fas fa-phone"></i>
+                </span>
+
+                <input
+                    type="tel"
+                    class="form-control"
+                    id="seller-phone"
+                    name="telephone"
+                    placeholder="Numéro téléphone/WhatsApp du vendeur *"
+                    maxlength="25"
+                    inputmode="tel"
+                    autocomplete="tel"
+                    required
+                >
+
+                <p class="field-error">
+                    Entre le numéro téléphone ou WhatsApp du vendeur.
+                </p>
+
+            </div>
+
+            <div class="field">
+
+                <span class="field-icon">
+                    <i class="fas fa-wallet"></i>
+                </span>
+
+                <input
+                    type="tel"
+                    class="form-control"
+                    id="payment-number"
+                    name="paymentNumber"
+                    placeholder="Numéro compte paiement vendeur (Orange Money, MTN MoMo, Wave...) *"
+                    maxlength="25"
+                    inputmode="tel"
+                    required
+                >
+
+                <p class="field-error">
+                    Entre le numéro de paiement du vendeur.
+                </p>
+
+            </div>
+
+            <button
+                type="submit"
+                class="publish-button"
+                id="publish-button"
+            >
+                <i class="fas fa-paper-plane"></i>
+
+                <span id="publish-button-text">
+                    Publier le produit
+                </span>
+            </button>
+
+            <p class="form-note">
+                Les champs marqués d’un astérisque sont obligatoires.
+            </p>
+
+        </form>
 
     </div>
 
@@ -754,1226 +870,908 @@
         id="toast"
     ></div>
 
-    <div
-        class="image-modal"
-        id="image-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-label="Image agrandie du produit"
-        onclick="closeProductImage(event)"
-    >
-        <button
-            type="button"
-            class="close-image-button"
-            onclick="closeProductImage(event)"
-            aria-label="Fermer l’image"
-        >
-            <i class="fas fa-xmark"></i>
-        </button>
-
-        <img
-            class="modal-image"
-            id="modal-image"
-            alt="Image agrandie du produit"
-            onclick="event.stopPropagation()"
-        >
-    </div>
-
     <script>
         const API_URL =
             "https://djassa-backend-imxo.onrender.com";
 
+        const CREATE_PRODUCT_ROUTE =
+            "/api/products";
+
         const HOME_PAGE_URL =
             "index.html";
 
-        const CART_PAGE_URL =
-            "panier.html";
+        const LOGIN_PAGE_URL =
+            "connexion.html";
 
-        const SHOP_PAGE_URL =
-            "boutiques.html";
+        const MY_PRODUCTS_PAGE_URL =
+            "mes-produits.html";
 
-        const CART_STORAGE_KEY =
-            "djassaci_cart";
+        const PRODUCT_PAGE_URL =
+            "produit.html";
 
         const TOKEN_STORAGE_KEY =
             "djassaci_token";
 
+        const USER_STORAGE_KEYS = [
+            "djassaci_user",
+            "user",
+            "currentUser",
+            "current_user"
+        ];
+
         const SELECTED_PRODUCT_STORAGE_KEY =
             "djassaci_selected_product";
 
-        const SELECTED_SHOP_STORAGE_KEY =
-            "djassaci_selected_shop";
-
-        let currentProduct =
+        let selectedImageFile =
             null;
 
-        const DEFAULT_IMAGE =
-            "data:image/svg+xml;charset=UTF-8," +
-            encodeURIComponent(`
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="700"
-                    height="450"
-                    viewBox="0 0 700 450"
-                >
-                    <rect
-                        width="700"
-                        height="450"
-                        fill="#ebe8ff"
-                    />
-
-                    <text
-                        x="350"
-                        y="205"
-                        text-anchor="middle"
-                        font-family="Arial"
-                        font-size="45"
-                        font-weight="bold"
-                        fill="#6957df"
-                    >
-                        DJASSACI
-                    </text>
-
-                    <text
-                        x="350"
-                        y="255"
-                        text-anchor="middle"
-                        font-family="Arial"
-                        font-size="22"
-                        fill="#777783"
-                    >
-                        Image indisponible
-                    </text>
-                </svg>
-            `);
+        let toastTimer =
+            null;
 
         /**
-         * Charge le produit choisi depuis index.html.
+         * Vérifie la connexion avant d'afficher la page.
          */
-        function loadSelectedProduct() {
-            try {
-                const storedProduct =
-                    localStorage.getItem(
-                        SELECTED_PRODUCT_STORAGE_KEY
-                    );
-
-                if (!storedProduct) {
-                    showProductError(
-                        "Le produit sélectionné est introuvable."
-                    );
-
-                    return;
-                }
-
-                currentProduct =
-                    JSON.parse(storedProduct);
-
-                displayProductDetails(
-                    currentProduct
+        function protectPage() {
+            const token =
+                localStorage.getItem(
+                    TOKEN_STORAGE_KEY
                 );
 
-            } catch (error) {
-                console.error(
-                    "Erreur de lecture du produit :",
-                    error
-                );
-
-                showProductError(
-                    "Impossible d’afficher les informations du produit."
-                );
+            if (token) {
+                fillSellerInformation();
+                return;
             }
+
+            localStorage.setItem(
+                "redirect_after_login",
+                "vend.html"
+            );
+
+            window.location.href =
+                LOGIN_PAGE_URL;
         }
 
         /**
-         * Affiche les détails du produit.
+         * Préremplit les informations disponibles
+         * dans le compte connecté.
          */
-        function displayProductDetails(product) {
-            const name =
-                getProductName(product);
+        function fillSellerInformation() {
+            const user =
+                getStoredUser();
 
-            const price =
-                formatPrice(
-                    getFirstValue(
-                        product.price,
-                        product.prix,
-                        product.amount,
-                        product.montant,
-                        0
-                    )
-                );
+            if (!user) {
+                return;
+            }
 
-            const category =
+            const phone =
                 getFirstValue(
-                    product.category,
-                    product.categorie,
-                    product.type,
-                    "Autre"
-                );
-
-            const description =
-                getFirstValue(
-                    product.description,
-                    product.details,
-                    product.detail,
-                    product.content,
-                    "Aucune description disponible."
-                );
-
-            const location =
-                getProductLocation(
-                    product
-                );
-
-            const condition =
-                getFirstValue(
-                    product.condition,
-                    product.etat,
-                    product.state,
+                    user.whatsapp,
+                    user.numeroWhatsApp,
+                    user.numero_whatsapp,
+                    user.telephone,
+                    user.numero,
+                    user.phone,
                     ""
                 );
 
-            const sellerName =
-                getSellerName(
-                    product
-                );
-
-            const verified =
-                isSellerVerified(
-                    product
-                );
-
-            const image =
-                getFullImageUrl(
-                    extractImageValue(
-                        product
-                    )
-                );
-
-            document.title =
-                `${name} - DJASSACI`;
-
-            document
-                .getElementById(
-                    "topbar-title"
-                )
-                .textContent =
-                name;
-
-            document
-                .getElementById(
-                    "product-name"
-                )
-                .textContent =
-                name;
-
-            document
-                .getElementById(
-                    "product-price"
-                )
-                .textContent =
-                `${price} FCFA`;
-
-            document
-                .getElementById(
-                    "product-category"
-                )
-                .textContent =
-                category;
-
-            document
-                .getElementById(
-                    "seller-name"
-                )
-                .textContent =
-                sellerName;
-
-            document
-                .getElementById(
-                    "product-location"
-                )
-                .textContent =
-                location;
-
-            document
-                .getElementById(
-                    "product-description"
-                )
-                .textContent =
-                description;
-
-            document
-                .getElementById(
-                    "seller-summary"
-                )
-                .textContent =
-                `Vendeur : ${sellerName} (${location})`;
-
-            document
-                .getElementById(
-                    "shop-button-text"
-                )
-                .textContent =
-                `Voir boutique ${sellerName}`;
-
-            if (condition) {
+            if (phone) {
                 document
                     .getElementById(
-                        "product-condition"
+                        "seller-phone"
                     )
-                    .textContent =
-                    condition;
+                    .value =
+                    phone;
+            }
+        }
 
-            } else {
-                document
-                    .getElementById(
-                        "product-condition-line"
-                    )
-                    .style
-                    .display =
-                    "none";
+        function getStoredUser() {
+            for (
+                const key of USER_STORAGE_KEYS
+            ) {
+                try {
+                    const storedValue =
+                        localStorage.getItem(key);
+
+                    if (!storedValue) {
+                        continue;
+                    }
+
+                    const parsedValue =
+                        JSON.parse(storedValue);
+
+                    if (
+                        parsedValue &&
+                        typeof parsedValue ===
+                            "object"
+                    ) {
+                        return parsedValue;
+                    }
+
+                } catch (error) {
+                    console.warn(
+                        `Impossible de lire ${key}`,
+                        error
+                    );
+                }
             }
 
+            return null;
+        }
+
+        /**
+         * Sélection d'image.
+         */
+        function openImagePicker(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
             document
                 .getElementById(
-                    "verified-badge"
+                    "product-image-input"
                 )
-                .classList
-                .toggle(
-                    "active",
-                    verified
+                .click();
+        }
+
+        function handleImageSelection(event) {
+            const file =
+                event.target.files &&
+                event.target.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            if (
+                !file.type.startsWith(
+                    "image/"
+                )
+            ) {
+                showToast(
+                    "Sélectionne uniquement une image.",
+                    "error"
                 );
 
-            configureProductImage(
-                image,
-                name
+                event.target.value =
+                    "";
+
+                return;
+            }
+
+            const maxSize =
+                8 * 1024 * 1024;
+
+            if (file.size > maxSize) {
+                showToast(
+                    "L’image ne doit pas dépasser 8 Mo.",
+                    "error"
+                );
+
+                event.target.value =
+                    "";
+
+                return;
+            }
+
+            selectedImageFile =
+                file;
+
+            const preview =
+                document.getElementById(
+                    "image-preview"
+                );
+
+            const placeholder =
+                document.getElementById(
+                    "image-placeholder"
+                );
+
+            const changeButton =
+                document.getElementById(
+                    "change-image-button"
+                );
+
+            preview.src =
+                URL.createObjectURL(file);
+
+            preview.classList.add(
+                "active"
+            );
+
+            placeholder.style.display =
+                "none";
+
+            changeButton.classList.add(
+                "active"
+            );
+
+            setFieldValidity(
+                document.getElementById(
+                    "image-field"
+                ),
+                true
             );
         }
 
         /**
-         * Ouvre boutiques.html avec les informations du vendeur.
+         * Glisser-déposer.
          */
-        function openSellerShop() {
-            if (!currentProduct) {
+        function configureDragAndDrop() {
+            const picker =
+                document.getElementById(
+                    "image-picker"
+                );
+
+            picker.addEventListener(
+                "dragover",
+                function (event) {
+                    event.preventDefault();
+
+                    picker.classList.add(
+                        "dragging"
+                    );
+                }
+            );
+
+            picker.addEventListener(
+                "dragleave",
+                function () {
+                    picker.classList.remove(
+                        "dragging"
+                    );
+                }
+            );
+
+            picker.addEventListener(
+                "drop",
+                function (event) {
+                    event.preventDefault();
+
+                    picker.classList.remove(
+                        "dragging"
+                    );
+
+                    const file =
+                        event.dataTransfer.files &&
+                        event.dataTransfer.files[0];
+
+                    if (!file) {
+                        return;
+                    }
+
+                    const input =
+                        document.getElementById(
+                            "product-image-input"
+                        );
+
+                    const transfer =
+                        new DataTransfer();
+
+                    transfer.items.add(file);
+
+                    input.files =
+                        transfer.files;
+
+                    handleImageSelection({
+                        target: input
+                    });
+                }
+            );
+        }
+
+        /**
+         * Validation.
+         */
+        function validateForm() {
+            let isValid =
+                true;
+
+            const requiredFields = [
+                document.getElementById(
+                    "product-name"
+                ),
+                document.getElementById(
+                    "product-price"
+                ),
+                document.getElementById(
+                    "product-category"
+                ),
+                document.getElementById(
+                    "product-description"
+                ),
+                document.getElementById(
+                    "seller-phone"
+                ),
+                document.getElementById(
+                    "payment-number"
+                )
+            ];
+
+            requiredFields.forEach(
+                function (input) {
+                    const field =
+                        input.closest(
+                            ".field"
+                        );
+
+                    let valid =
+                        String(input.value)
+                            .trim() !== "";
+
+                    if (
+                        input.id ===
+                        "product-price"
+                    ) {
+                        valid =
+                            Number(
+                                input.value
+                            ) > 0;
+                    }
+
+                    setFieldValidity(
+                        field,
+                        valid
+                    );
+
+                    if (!valid) {
+                        isValid =
+                            false;
+                    }
+                }
+            );
+
+            const imageValid =
+                Boolean(selectedImageFile);
+
+            setFieldValidity(
+                document.getElementById(
+                    "image-field"
+                ),
+                imageValid
+            );
+
+            if (!imageValid) {
+                isValid =
+                    false;
+            }
+
+            if (!isValid) {
+                const firstInvalid =
+                    document.querySelector(
+                        ".field.invalid"
+                    );
+
+                if (firstInvalid) {
+                    firstInvalid.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+                }
+            }
+
+            return isValid;
+        }
+
+        function setFieldValidity(
+            field,
+            valid
+        ) {
+            if (!field) {
+                return;
+            }
+
+            field.classList.toggle(
+                "invalid",
+                !valid
+            );
+        }
+
+        function clearErrorOnInput(event) {
+            const field =
+                event.target.closest(
+                    ".field"
+                );
+
+            if (
+                String(event.target.value)
+                    .trim() !== ""
+            ) {
+                setFieldValidity(
+                    field,
+                    true
+                );
+            }
+        }
+
+        /**
+         * Publication du produit.
+         */
+        async function publishProduct(event) {
+            event.preventDefault();
+
+            if (!validateForm()) {
                 showToast(
-                    "Les informations du vendeur sont introuvables.",
+                    "Remplis correctement tous les champs obligatoires.",
                     "error"
                 );
 
                 return;
             }
 
-            const sellerId =
-                getSellerId(
-                    currentProduct
-                );
-
-            const sellerName =
-                getSellerName(
-                    currentProduct
-                );
-
-            const sellerPhone =
-                getSellerPhone(
-                    currentProduct
-                );
-
-            const sellerLocation =
-                getProductLocation(
-                    currentProduct
-                );
-
-            const verified =
-                isSellerVerified(
-                    currentProduct
-                );
-
-            /*
-             * On enregistre plusieurs noms de champs pour
-             * faciliter l’affichage dans boutiques.html.
-             */
-            const selectedShop = {
-                shopId: sellerId,
-                shop_id: sellerId,
-
-                sellerId: sellerId,
-                seller_id: sellerId,
-
-                userId: sellerId,
-                user_id: sellerId,
-
-                ownerId: sellerId,
-                owner_id: sellerId,
-
-                sellerName: sellerName,
-                seller_name: sellerName,
-
-                shopName: sellerName,
-                shop_name: sellerName,
-
-                name: sellerName,
-                vendeur: sellerName,
-
-                phone: sellerPhone,
-                telephone: sellerPhone,
-                numero: sellerPhone,
-                whatsapp: sellerPhone,
-
-                location: sellerLocation,
-                localisation: sellerLocation,
-
-                verified: verified,
-                isVerified: verified,
-                certified: verified,
-                isCertified: verified
-            };
-
-            try {
-                localStorage.setItem(
-                    SELECTED_SHOP_STORAGE_KEY,
-                    JSON.stringify(
-                        selectedShop
-                    )
-                );
-
-                window.location.href =
-                    SHOP_PAGE_URL;
-
-            } catch (error) {
-                console.error(
-                    "Impossible d’ouvrir la boutique :",
-                    error
-                );
-
-                showToast(
-                    "Impossible d’ouvrir la boutique du vendeur.",
-                    "error"
-                );
-            }
-        }
-
-        /**
-         * Contact WhatsApp.
-         */
-        function contactSellerOnWhatsApp() {
-            requireAuthentication(
-                function () {
-                    if (!currentProduct) {
-                        return;
-                    }
-
-                    const phone =
-                        getSellerPhone(
-                            currentProduct
-                        );
-
-                    if (!phone) {
-                        showToast(
-                            "Le numéro WhatsApp du vendeur est indisponible.",
-                            "error"
-                        );
-
-                        return;
-                    }
-
-                    const name =
-                        getProductName(
-                            currentProduct
-                        );
-
-                    const price =
-                        formatPrice(
-                            getFirstValue(
-                                currentProduct.price,
-                                currentProduct.prix,
-                                currentProduct.amount,
-                                0
-                            )
-                        );
-
-                    const location =
-                        getProductLocation(
-                            currentProduct
-                        );
-
-                    const message =
-                        `Bonjour ! Je viens de voir votre annonce sur DJASSACI.\n\n` +
-                        `Produit : ${name}\n` +
-                        `Prix : ${price} FCFA\n` +
-                        `Localisation : ${location}\n\n` +
-                        `Le produit est-il toujours disponible ?`;
-
-                    const whatsappNumber =
-                        normalizeWhatsAppNumber(
-                            phone
-                        );
-
-                    const whatsappUrl =
-                        `https://wa.me/${whatsappNumber}` +
-                        `?text=${encodeURIComponent(message)}`;
-
-                    const newWindow =
-                        window.open(
-                            whatsappUrl,
-                            "_blank",
-                            "noopener,noreferrer"
-                        );
-
-                    if (!newWindow) {
-                        window.location.href =
-                            whatsappUrl;
-                    }
-                }
-            );
-        }
-
-        /**
-         * Appel du vendeur.
-         */
-        function callSeller() {
-            requireAuthentication(
-                function () {
-                    const phone =
-                        getSellerPhone(
-                            currentProduct
-                        );
-
-                    if (!phone) {
-                        showToast(
-                            "Le numéro du vendeur est indisponible.",
-                            "error"
-                        );
-
-                        return;
-                    }
-
-                    window.location.href =
-                        `tel:${normalizeCallNumber(phone)}`;
-                }
-            );
-        }
-
-        /**
-         * Oblige la connexion avant contact.
-         */
-        function requireAuthentication(action) {
             const token =
                 localStorage.getItem(
                     TOKEN_STORAGE_KEY
                 );
 
             if (!token) {
-                alert(
-                    "Vous devez vous connecter avant de contacter le vendeur."
-                );
-
                 localStorage.setItem(
-                    "djassaci_pending_page",
-                    "produit.html"
+                    "redirect_after_login",
+                    "vend.html"
                 );
 
                 window.location.href =
-                    HOME_PAGE_URL;
+                    LOGIN_PAGE_URL;
 
                 return;
             }
 
-            action();
-        }
+            setPublishingState(
+                true
+            );
 
-        /**
-         * Ajout au panier.
-         */
-        function addCurrentProductToCart() {
-            if (!currentProduct) {
+            try {
+                const user =
+                    getStoredUser() ||
+                    {};
+
+                const formData =
+                    new FormData();
+
+                const name =
+                    document
+                        .getElementById(
+                            "product-name"
+                        )
+                        .value
+                        .trim();
+
+                const price =
+                    document
+                        .getElementById(
+                            "product-price"
+                        )
+                        .value
+                        .trim();
+
+                const category =
+                    document
+                        .getElementById(
+                            "product-category"
+                        )
+                        .value;
+
+                const description =
+                    document
+                        .getElementById(
+                            "product-description"
+                        )
+                        .value
+                        .trim();
+
+                const sellerPhone =
+                    document
+                        .getElementById(
+                            "seller-phone"
+                        )
+                        .value
+                        .trim();
+
+                const paymentNumber =
+                    document
+                        .getElementById(
+                            "payment-number"
+                        )
+                        .value
+                        .trim();
+
+                const sellerName =
+                    getFirstValue(
+                        user.nom,
+                        user.name,
+                        user.fullName,
+                        user.full_name,
+                        user.username,
+                        "Vendeur"
+                    );
+
+                const sellerLocation =
+                    getFirstValue(
+                        user.localisation,
+                        user.location,
+                        user.ville,
+                        user.commune,
+                        user.adresse,
+                        user.address,
+                        ""
+                    );
+
+                const sellerId =
+                    getFirstValue(
+                        user.id,
+                        user._id,
+                        user.userId,
+                        user.user_id,
+                        ""
+                    );
+
+                const verified =
+                    isVerifiedUser(
+                        user
+                    );
+
+                /*
+                 * Plusieurs noms de champs sont envoyés
+                 * pour rester compatibles avec ton backend.
+                 */
+                formData.append(
+                    "name",
+                    name
+                );
+
+                formData.append(
+                    "nom",
+                    name
+                );
+
+                formData.append(
+                    "price",
+                    price
+                );
+
+                formData.append(
+                    "prix",
+                    price
+                );
+
+                formData.append(
+                    "category",
+                    category
+                );
+
+                formData.append(
+                    "categorie",
+                    category
+                );
+
+                formData.append(
+                    "description",
+                    description
+                );
+
+                formData.append(
+                    "telephone",
+                    sellerPhone
+                );
+
+                formData.append(
+                    "phone",
+                    sellerPhone
+                );
+
+                formData.append(
+                    "whatsapp",
+                    sellerPhone
+                );
+
+                formData.append(
+                    "sellerPhone",
+                    sellerPhone
+                );
+
+                formData.append(
+                    "paymentNumber",
+                    paymentNumber
+                );
+
+                formData.append(
+                    "numeroPaiement",
+                    paymentNumber
+                );
+
+                formData.append(
+                    "sellerName",
+                    sellerName
+                );
+
+                formData.append(
+                    "vendeur",
+                    sellerName
+                );
+
+                formData.append(
+                    "sellerLocation",
+                    sellerLocation
+                );
+
+                formData.append(
+                    "localisation",
+                    sellerLocation
+                );
+
+                formData.append(
+                    "sellerId",
+                    sellerId
+                );
+
+                formData.append(
+                    "userId",
+                    sellerId
+                );
+
+                formData.append(
+                    "verified",
+                    String(verified)
+                );
+
+                formData.append(
+                    "sellerVerified",
+                    String(verified)
+                );
+
+                formData.append(
+                    "image",
+                    selectedImageFile
+                );
+
+                formData.append(
+                    "photo",
+                    selectedImageFile
+                );
+
+                const response =
+                    await fetch(
+                        `${API_URL}${CREATE_PRODUCT_ROUTE}`,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Authorization":
+                                    `Bearer ${token}`
+                            },
+
+                            body: formData
+                        }
+                    );
+
+                let data =
+                    null;
+
+                try {
+                    data =
+                        await response.json();
+
+                } catch (error) {
+                    data =
+                        null;
+                }
+
+                if (!response.ok) {
+                    throw new Error(
+                        getFirstValue(
+                            data?.message,
+                            data?.error,
+                            `Erreur ${response.status}`
+                        )
+                    );
+                }
+
+                const createdProduct =
+                    getFirstValue(
+                        data?.product,
+                        data?.article,
+                        data?.data,
+                        data
+                    );
+
+                if (
+                    createdProduct &&
+                    typeof createdProduct ===
+                        "object"
+                ) {
+                    localStorage.setItem(
+                        SELECTED_PRODUCT_STORAGE_KEY,
+                        JSON.stringify(
+                            createdProduct
+                        )
+                    );
+                }
+
                 showToast(
-                    "Produit introuvable.",
+                    "Produit publié avec succès."
+                );
+
+                document
+                    .getElementById(
+                        "sell-form"
+                    )
+                    .reset();
+
+                resetImage();
+
+                setTimeout(
+                    function () {
+                        if (
+                            createdProduct &&
+                            typeof createdProduct ===
+                                "object"
+                        ) {
+                            window.location.href =
+                                PRODUCT_PAGE_URL;
+                        } else {
+                            window.location.href =
+                                HOME_PAGE_URL;
+                        }
+                    },
+                    1000
+                );
+
+            } catch (error) {
+                console.error(
+                    "Erreur de publication :",
+                    error
+                );
+
+                showToast(
+                    error.message ||
+                    "Impossible de publier le produit.",
                     "error"
                 );
 
-                return;
-            }
-
-            let cart =
-                getStoredCart();
-
-            const productId =
-                getProductId(
-                    currentProduct
+            } finally {
+                setPublishingState(
+                    false
                 );
-
-            const existingProduct =
-                cart.find(
-                    function (item) {
-                        return (
-                            String(
-                                getProductId(
-                                    item
-                                )
-                            ) ===
-                            String(productId)
-                        );
-                    }
-                );
-
-            if (existingProduct) {
-                existingProduct.quantity =
-                    Math.max(
-                        1,
-                        Number(
-                            existingProduct.quantity ||
-                            1
-                        )
-                    ) + 1;
-
-            } else {
-                cart.push({
-                    ...currentProduct,
-                    quantity: 1
-                });
-            }
-
-            localStorage.setItem(
-                CART_STORAGE_KEY,
-                JSON.stringify(cart)
-            );
-
-            showToast(
-                "Le produit a été ajouté au panier."
-            );
-        }
-
-        function getStoredCart() {
-            try {
-                const storedCart =
-                    localStorage.getItem(
-                        CART_STORAGE_KEY
-                    );
-
-                const parsedCart =
-                    storedCart
-                        ? JSON.parse(storedCart)
-                        : [];
-
-                return Array.isArray(parsedCart)
-                    ? parsedCart
-                    : [];
-
-            } catch (error) {
-                return [];
             }
         }
 
-        /**
-         * Informations du vendeur.
-         */
-        function getSellerId(product) {
-            if (!product) {
-                return "";
-            }
-
-            return getFirstValue(
-                product.shopId,
-                product.shop_id,
-
-                product.boutiqueId,
-                product.boutique_id,
-
-                product.sellerId,
-                product.seller_id,
-
-                product.userId,
-                product.user_id,
-
-                product.ownerId,
-                product.owner_id,
-
-                product.vendorId,
-                product.vendor_id,
-
-                product.createdBy,
-                product.created_by,
-
-                product.user?.id,
-                product.user?._id,
-
-                product.seller?.id,
-                product.seller?._id,
-
-                product.owner?.id,
-                product.owner?._id,
-
-                ""
-            );
-        }
-
-        function getSellerName(product) {
-            if (!product) {
-                return "Vendeur";
-            }
-
-            return getFirstValue(
-                product.sellerName,
-                product.seller_name,
-
-                product.shopName,
-                product.shop_name,
-
-                product.boutiqueName,
-                product.boutique_name,
-
-                product.nomVendeur,
-                product.nom_vendeur,
-
-                product.vendeur,
-                product.vendorName,
-                product.vendor_name,
-
-                product.ownerName,
-                product.owner_name,
-
-                product.userName,
-                product.user_name,
-
-                product.user?.nomComplet,
-                product.user?.fullName,
-                product.user?.displayName,
-                product.user?.nom,
-                product.user?.name,
-                product.user?.username,
-
-                product.seller?.nomComplet,
-                product.seller?.fullName,
-                product.seller?.displayName,
-                product.seller?.nom,
-                product.seller?.name,
-                product.seller?.username,
-
-                product.owner?.nomComplet,
-                product.owner?.fullName,
-                product.owner?.displayName,
-                product.owner?.nom,
-                product.owner?.name,
-
-                "Vendeur"
-            );
-        }
-
-        function getSellerPhone(product) {
-            if (!product) {
-                return "";
-            }
-
-            return getFirstValue(
-                product.telephone,
-                product.numero,
-                product.phone,
-                product.phoneNumber,
-                product.phone_number,
-
-                product.whatsapp,
-                product.whatsappNumber,
-                product.whatsapp_number,
-
-                product.sellerPhone,
-                product.seller_phone,
-
-                product.userPhone,
-                product.user_phone,
-
-                product.vendorPhone,
-                product.vendor_phone,
-
-                product.user?.numero,
-                product.user?.telephone,
-                product.user?.phone,
-
-                product.seller?.numero,
-                product.seller?.telephone,
-                product.seller?.phone,
-
-                ""
-            );
-        }
-
-        function getProductLocation(product) {
-            if (!product) {
-                return "Non renseignée";
-            }
-
-            return getFirstValue(
-                product.sellerLocation,
-                product.seller_location,
-
-                product.vendorLocation,
-                product.vendor_location,
-
-                product.location,
-                product.localisation,
-                product.city,
-                product.ville,
-                product.commune,
-                product.adresse,
-                product.address,
-
-                product.user?.localisation,
-                product.user?.location,
-                product.user?.city,
-                product.user?.ville,
-                product.user?.commune,
-                product.user?.adresse,
-                product.user?.address,
-
-                product.seller?.localisation,
-                product.seller?.location,
-                product.seller?.city,
-                product.seller?.ville,
-                product.seller?.commune,
-                product.seller?.adresse,
-                product.seller?.address,
-
-                product.owner?.localisation,
-                product.owner?.location,
-                product.owner?.ville,
-                product.owner?.commune,
-                product.owner?.adresse,
-                product.owner?.address,
-
-                "Non renseignée"
-            );
-        }
-
-        function getProductName(product) {
-            return getFirstValue(
-                product.name,
-                product.nom,
-                product.title,
-                product.titre,
-                product.productName,
-                product.product_name,
-                "Produit DJASSACI"
-            );
-        }
-
-        /**
-         * Certification.
-         */
-        function isSellerVerified(product) {
-            if (!product) {
-                return false;
-            }
-
-            const possibleValues = [
-                product.isVerified,
-                product.is_verified,
-                product.verified,
-
-                product.certified,
-                product.isCertified,
-                product.is_certified,
-
-                product.sellerVerified,
-                product.seller_verified,
-
-                product.user?.verified,
-                product.user?.isVerified,
-                product.user?.is_verified,
-                product.user?.certified,
-                product.user?.isCertified,
-                product.user?.is_certified,
-
-                product.seller?.verified,
-                product.seller?.isVerified,
-                product.seller?.is_verified,
-                product.seller?.certified,
-                product.seller?.isCertified,
-                product.seller?.is_certified,
-
-                product.owner?.verified,
-                product.owner?.isVerified,
-                product.owner?.is_verified,
-                product.owner?.certified,
-                product.owner?.isCertified,
-                product.owner?.is_certified
-            ];
-
-            return possibleValues.some(
-                function (value) {
-                    const normalizedValue =
-                        String(value ?? "")
-                            .trim()
-                            .toLowerCase();
-
-                    return (
-                        value === true ||
-                        value === 1 ||
-                        normalizedValue === "true" ||
-                        normalizedValue === "1" ||
-                        normalizedValue === "oui" ||
-                        normalizedValue === "yes" ||
-                        normalizedValue === "certifié" ||
-                        normalizedValue === "certifie" ||
-                        normalizedValue === "certified"
-                    );
-                }
-            );
-        }
-
-        /**
-         * Numéros.
-         */
-        function normalizeWhatsAppNumber(phone) {
-            let number =
-                String(phone || "")
-                    .replace(/\D/g, "");
-
-            if (!number) {
-                return "";
-            }
-
-            if (number.startsWith("00")) {
-                number =
-                    number.substring(2);
-            }
-
-            if (
-                number.startsWith("0") &&
-                number.length === 10
-            ) {
-                number =
-                    number.substring(1);
-            }
-
-            if (!number.startsWith("225")) {
-                number =
-                    `225${number}`;
-            }
-
-            return number;
-        }
-
-        function normalizeCallNumber(phone) {
-            let number =
-                String(phone || "")
-                    .replace(/\D/g, "");
-
-            if (number.startsWith("00")) {
-                number =
-                    number.substring(2);
-            }
-
-            if (number.startsWith("225")) {
-                return `+${number}`;
-            }
-
-            if (number.startsWith("0")) {
-                return `+225${number}`;
-            }
-
-            return `+225${number}`;
-        }
-
-        /**
-         * Image.
-         */
-        function configureProductImage(
-            image,
-            name
+        function setPublishingState(
+            publishing
         ) {
-            const imageElement =
+            const button =
                 document.getElementById(
-                    "product-image"
+                    "publish-button"
                 );
 
-            const loadingElement =
+            const text =
                 document.getElementById(
-                    "image-loading"
+                    "publish-button-text"
                 );
 
-            imageElement.addEventListener(
-                "load",
-                function () {
-                    loadingElement.style.display =
-                        "none";
-                }
-            );
+            button.disabled =
+                publishing;
 
-            imageElement.addEventListener(
-                "error",
-                function () {
-                    loadingElement.style.display =
-                        "none";
+            text.textContent =
+                publishing
+                    ? "Publication en cours..."
+                    : "Publier le produit";
 
-                    if (
-                        imageElement.dataset.fallback !==
-                        "true"
-                    ) {
-                        imageElement.dataset.fallback =
-                            "true";
+            const icon =
+                button.querySelector("i");
 
-                        imageElement.src =
-                            DEFAULT_IMAGE;
-                    }
-                }
-            );
-
-            imageElement.src =
-                image;
-
-            imageElement.alt =
-                name;
-
-            imageElement.onclick =
-                function () {
-                    openProductImage(
-                        imageElement.src,
-                        name
-                    );
-                };
-
-            if (imageElement.complete) {
-                loadingElement.style.display =
-                    "none";
-            }
+            icon.className =
+                publishing
+                    ? "fas fa-spinner fa-spin"
+                    : "fas fa-paper-plane";
         }
 
-        function openProductImage(
-            imageUrl,
-            imageName
-        ) {
-            const modal =
+        function resetImage() {
+            selectedImageFile =
+                null;
+
+            const input =
                 document.getElementById(
-                    "image-modal"
+                    "product-image-input"
                 );
 
-            const modalImage =
+            const preview =
                 document.getElementById(
-                    "modal-image"
+                    "image-preview"
                 );
 
-            modalImage.src =
-                imageUrl;
-
-            modalImage.alt =
-                imageName ||
-                "Image agrandie du produit";
-
-            modal.classList.add(
-                "active"
-            );
-
-            document.body.classList.add(
-                "image-modal-open"
-            );
-        }
-
-        function closeProductImage(event) {
-            if (event) {
-                event.stopPropagation();
-            }
-
-            const modal =
+            const placeholder =
                 document.getElementById(
-                    "image-modal"
+                    "image-placeholder"
                 );
 
-            const modalImage =
+            const changeButton =
                 document.getElementById(
-                    "modal-image"
+                    "change-image-button"
                 );
 
-            modal.classList.remove(
-                "active"
-            );
-
-            document.body.classList.remove(
-                "image-modal-open"
-            );
-
-            modalImage.src =
+            input.value =
                 "";
+
+            preview.removeAttribute(
+                "src"
+            );
+
+            preview.classList.remove(
+                "active"
+            );
+
+            placeholder.style.display =
+                "";
+
+            changeButton.classList.remove(
+                "active"
+            );
         }
 
-        function extractImageValue(product) {
-            const directImage =
+        /**
+         * Certification du vendeur.
+         */
+        function isVerifiedUser(user) {
+            const value =
                 getFirstValue(
-                    product.imageUrl,
-                    product.imageURL,
-                    product.image_url,
-                    product.image,
-
-                    product.photoUrl,
-                    product.photo_url,
-                    product.photo,
-
-                    product.picture,
-                    product.thumbnail,
-
-                    product.firebaseUrl,
-                    product.downloadUrl,
-
-                    ""
+                    user.verified,
+                    user.isVerified,
+                    user.is_verified,
+                    user.certified,
+                    user.isCertified,
+                    user.is_certified,
+                    false
                 );
 
-            if (directImage) {
-                return extractUrlFromValue(
-                    directImage
-                );
-            }
-
-            const arrays = [
-                product.images,
-                product.photos,
-                product.pictures,
-                product.media
-            ];
-
-            for (const array of arrays) {
-                if (
-                    Array.isArray(array) &&
-                    array.length > 0
-                ) {
-                    return extractUrlFromValue(
-                        array[0]
-                    );
-                }
-            }
-
-            return "";
-        }
-
-        function extractUrlFromValue(value) {
-            if (!value) {
-                return "";
-            }
-
-            if (typeof value === "string") {
-                return value;
-            }
-
-            if (typeof value === "object") {
-                return getFirstValue(
-                    value.url,
-                    value.imageUrl,
-                    value.image_url,
-                    value.downloadUrl,
-                    value.secure_url,
-                    value.path,
-                    value.src,
-                    ""
-                );
-            }
-
-            return String(value);
-        }
-
-        function getFullImageUrl(imagePath) {
-            if (!imagePath) {
-                return DEFAULT_IMAGE;
-            }
-
-            let path =
-                String(imagePath)
+            const normalized =
+                String(value)
                     .trim()
-                    .replace(
-                        /^["']|["']$/g,
-                        ""
-                    )
-                    .replaceAll(
-                        "\\",
-                        "/"
-                    );
+                    .toLowerCase();
 
-            if (!path) {
-                return DEFAULT_IMAGE;
+            return (
+                value === true ||
+                value === 1 ||
+                normalized === "true" ||
+                normalized === "1" ||
+                normalized === "oui" ||
+                normalized === "certifié" ||
+                normalized === "certified"
+            );
+        }
+
+        /**
+         * Navigation.
+         */
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                goToHome();
             }
+        }
 
-            if (
-                path.startsWith("https://") ||
-                path.startsWith("http://") ||
-                path.startsWith("data:") ||
-                path.startsWith("blob:")
-            ) {
-                return path;
-            }
+        function goToHome() {
+            window.location.href =
+                HOME_PAGE_URL;
+        }
 
-            if (path.startsWith("//")) {
-                return `https:${path}`;
-            }
-
-            if (
-                path.startsWith(
-                    "firebasestorage.googleapis.com"
-                ) ||
-                path.startsWith(
-                    "storage.googleapis.com"
-                ) ||
-                path.startsWith(
-                    "res.cloudinary.com"
-                )
-            ) {
-                return `https://${path}`;
-            }
-
-            if (path.startsWith("/")) {
-                return `${API_URL}${path}`;
-            }
-
-            if (!path.includes("/")) {
-                return (
-                    `${API_URL}/uploads/` +
-                    encodeURIComponent(path)
-                );
-            }
-
-            return `${API_URL}/${path}`;
+        function goToMyProducts() {
+            window.location.href =
+                MY_PRODUCTS_PAGE_URL;
         }
 
         /**
          * Fonctions générales.
          */
-        function getProductId(product) {
-            return getFirstValue(
-                product.id,
-                product._id,
-                product.productId,
-                product.product_id,
-                product.uuid,
-
-                `${getProductName(product)}-${getFirstValue(
-                    product.price,
-                    product.prix,
-                    0
-                )}`
-            );
-        }
-
-        function formatPrice(price) {
-            const numericPrice =
-                Number(
-                    String(price ?? 0)
-                        .replace(/\s/g, "")
-                        .replace(/[^\d,.-]/g, "")
-                        .replace(",", ".")
-                );
-
-            if (Number.isNaN(numericPrice)) {
-                return String(price || 0);
-            }
-
-            return new Intl.NumberFormat(
-                "fr-FR",
-                {
-                    maximumFractionDigits: 0
-                }
-            ).format(numericPrice);
-        }
-
-        function getFirstValue(...values) {
-            for (const value of values) {
+        function getFirstValue(
+            ...values
+        ) {
+            for (
+                const value of values
+            ) {
                 if (
                     value !== undefined &&
                     value !== null &&
-                    String(value).trim() !== ""
+                    String(value).trim() !==
+                    ""
                 ) {
                     return value;
                 }
@@ -1981,48 +1779,6 @@
 
             return "";
         }
-
-        function escapeHtml(value) {
-            return String(value ?? "")
-                .replaceAll("&", "&amp;")
-                .replaceAll("<", "&lt;")
-                .replaceAll(">", "&gt;")
-                .replaceAll('"', "&quot;")
-                .replaceAll("'", "&#039;");
-        }
-
-        function showProductError(message) {
-            document
-                .getElementById(
-                    "product-page"
-                )
-                .innerHTML = `
-                    <div class="error-box">
-
-                        <i class="fas fa-triangle-exclamation"></i>
-
-                        <h2>
-                            Produit introuvable
-                        </h2>
-
-                        <p>
-                            ${escapeHtml(message)}
-                        </p>
-
-                        <button
-                            type="button"
-                            class="error-button"
-                            onclick="goToHome()"
-                        >
-                            Retour à l’accueil
-                        </button>
-
-                    </div>
-                `;
-        }
-
-        let toastTimer =
-            null;
 
         function showToast(
             message,
@@ -2049,43 +1805,56 @@
                         toast.className =
                             "toast";
                     },
-                    3200
+                    3300
                 );
         }
 
         /**
-         * Navigation.
+         * Démarrage.
          */
-        function goBack() {
-            if (window.history.length > 1) {
-                window.history.back();
-            } else {
-                goToHome();
-            }
-        }
-
-        function goToHome() {
-            window.location.href =
-                HOME_PAGE_URL;
-        }
-
-        function goToCart() {
-            window.location.href =
-                CART_PAGE_URL;
-        }
-
-        document.addEventListener(
-            "keydown",
-            function (event) {
-                if (event.key === "Escape") {
-                    closeProductImage();
-                }
-            }
-        );
-
         document.addEventListener(
             "DOMContentLoaded",
-            loadSelectedProduct
+            function () {
+                protectPage();
+
+                document
+                    .getElementById(
+                        "product-image-input"
+                    )
+                    .addEventListener(
+                        "change",
+                        handleImageSelection
+                    );
+
+                document
+                    .getElementById(
+                        "sell-form"
+                    )
+                    .addEventListener(
+                        "submit",
+                        publishProduct
+                    );
+
+                document
+                    .querySelectorAll(
+                        ".form-control"
+                    )
+                    .forEach(
+                        function (input) {
+                            input.addEventListener(
+                                "input",
+                                clearErrorOnInput
+                            );
+
+                            input.addEventListener(
+                                "change",
+                                clearErrorOnInput
+                            );
+                        }
+                    );
+
+                configureDragAndDrop();
+            }
         );
     </script>
 

@@ -59,45 +59,61 @@
 
         .page {
             width: 100%;
-            max-width: 1100px;
+            max-width: 820px;
             min-height: 100vh;
 
             margin: 0 auto;
-            padding-bottom: 40px;
+            padding-bottom: 35px;
+
+            background: #f7f7fb;
+
+            box-shadow:
+                0 0 24px
+                rgba(0, 0, 0, 0.06);
         }
 
         .topbar {
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
 
-            min-height: 66px;
+            min-height: 72px;
             padding: 0 18px;
 
             display: grid;
-            grid-template-columns: 50px 1fr 50px;
+            grid-template-columns: 48px 1fr auto;
             align-items: center;
+            gap: 8px;
 
-            background: rgba(255, 255, 255, 0.97);
+            background: rgba(255, 255, 255, 0.98);
 
             box-shadow:
                 0 2px 10px
-                rgba(0, 0, 0, 0.08);
+                rgba(0, 0, 0, 0.05);
         }
 
         .topbar-title {
             margin: 0;
 
+            overflow: hidden;
             text-align: center;
-            color: #6957df;
+            text-overflow: ellipsis;
+            white-space: nowrap;
 
-            font-size: 27px;
-            font-weight: 400;
+            color: #6957df;
+            font-size: 28px;
+            font-weight: 500;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 3px;
         }
 
         .topbar-button {
-            width: 42px;
-            height: 42px;
+            width: 43px;
+            height: 43px;
 
             display: flex;
             align-items: center;
@@ -109,127 +125,73 @@
             color: #6957df;
             background: transparent;
 
-            font-size: 22px;
+            font-size: 21px;
+
+            transition:
+                background 0.2s,
+                transform 0.2s;
+        }
+
+        .topbar-button.back {
+            color: #222;
         }
 
         .topbar-button:hover {
             background: #ece9ff;
-        }
-
-        .header-card {
-            margin: 25px 20px;
-            padding: 28px;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-
-            background: white;
-            border-radius: 18px;
-
-            box-shadow:
-                0 5px 15px
-                rgba(0, 0, 0, 0.13);
-        }
-
-        .header-card h2 {
-            margin: 0 0 7px;
-
-            color: #25252d;
-            font-size: 27px;
-        }
-
-        .header-card p {
-            margin: 0;
-            color: #72727b;
-        }
-
-        .publish-button {
-            flex-shrink: 0;
-
-            padding: 13px 18px;
-
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-
-            color: white;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #6957df,
-                    #7359e9
-                );
-
-            border: none;
-            border-radius: 10px;
-
-            font-weight: 600;
+            transform: scale(1.04);
         }
 
         .products-section {
-            margin: 0 20px;
-            padding: 25px;
-
-            background: white;
-            border-radius: 18px;
-
-            box-shadow:
-                0 5px 15px
-                rgba(0, 0, 0, 0.12);
+            padding: 24px;
         }
 
-        .section-title {
-            margin: 0 0 22px;
-            padding-bottom: 14px;
-
-            color: #2d3748;
-            border-bottom: 3px solid #6957df;
-
-            font-size: 23px;
-        }
-
-        .products-count {
-            color: #6957df;
-        }
-
-        .products-grid {
-            display: grid;
-
-            grid-template-columns:
-                repeat(
-                    auto-fit,
-                    minmax(260px, 1fr)
-                );
-
-            gap: 22px;
+        .products-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
         }
 
         .product-card {
-            overflow: hidden;
+            min-height: 120px;
+            padding: 18px 20px;
 
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: 72px 1fr auto;
+            align-items: center;
+            gap: 18px;
 
             background: white;
-            border-radius: 14px;
+            border-radius: 17px;
 
             box-shadow:
-                0 4px 14px
-                rgba(0, 0, 0, 0.14);
+                0 5px 14px
+                rgba(0, 0, 0, 0.18);
+
+            cursor: pointer;
+
+            transition:
+                transform 0.22s,
+                box-shadow 0.22s;
         }
 
-        .image-container {
+        .product-card:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 8px 20px
+                rgba(0, 0, 0, 0.2);
+        }
+
+        .product-image-container {
             position: relative;
 
-            width: 100%;
-            height: 220px;
+            width: 72px;
+            height: 72px;
 
             overflow: hidden;
-            background: #edf2f7;
+
+            background: #ececf3;
+            border-radius: 50%;
         }
 
         .product-image {
@@ -237,7 +199,9 @@
             height: 100%;
 
             display: block;
+
             object-fit: cover;
+            object-position: center;
         }
 
         .image-loading {
@@ -249,93 +213,86 @@
             justify-content: center;
 
             color: #6957df;
-            background: #edf2f7;
-
-            font-size: 28px;
+            background: #ececf3;
         }
 
-        .product-content {
-            flex: 1;
-            padding: 17px;
-
-            display: flex;
-            flex-direction: column;
+        .product-info {
+            min-width: 0;
         }
 
         .product-name {
-            margin: 0 0 8px;
+            margin: 0 0 4px;
 
-            color: #222;
-            font-size: 19px;
-        }
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
 
-        .product-description {
-            flex: 1;
-
-            margin: 0 0 12px;
-
-            color: #666;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .product-meta {
-            margin: 0 0 7px;
-
-            color: #777;
-            font-size: 13px;
-        }
-
-        .product-price {
-            margin: 7px 0 15px;
-
-            color: #6957df;
-            font-size: 20px;
+            color: #1c1c1f;
+            font-size: 18px;
             font-weight: 700;
         }
 
-        .product-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 9px;
+        .product-price {
+            margin: 0 0 3px;
+
+            color: #4a4a52;
+            font-size: 17px;
+            font-weight: 500;
         }
 
-        .product-button {
-            min-height: 44px;
-            padding: 9px;
+        .product-meta {
+            margin: 0;
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            color: #666671;
+            font-size: 15px;
+        }
+
+        .product-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-button {
+            width: 44px;
+            height: 44px;
 
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 7px;
 
             border: none;
-            border-radius: 8px;
+            border-radius: 50%;
 
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 20px;
+
+            transition:
+                background 0.2s,
+                transform 0.2s;
         }
 
-        .details-button {
-            color: white;
-            background: #6957df;
+        .edit-button {
+            color: #6957df;
+            background: #f0edff;
         }
 
         .delete-button {
-            color: white;
-            background: #ef4444;
+            color: #ef3f3f;
+            background: #fff0f0;
         }
 
-        .delete-button:hover {
-            background: #dc2626;
+        .action-button:hover {
+            transform: scale(1.06);
         }
 
         .loading-message,
         .empty-message,
         .error-message {
-            grid-column: 1 / -1;
-
-            padding: 45px 20px;
+            padding: 55px 20px;
 
             text-align: center;
         }
@@ -344,16 +301,31 @@
             color: #6957df;
         }
 
+        .loading-message i,
+        .empty-message i,
+        .error-message i {
+            display: block;
+            margin-bottom: 16px;
+
+            font-size: 42px;
+        }
+
         .empty-message {
             color: #666;
         }
 
-        .empty-message i,
-        .loading-message i {
-            display: block;
-            margin-bottom: 14px;
+        .empty-message button,
+        .retry-button {
+            margin-top: 15px;
+            padding: 12px 20px;
 
-            font-size: 38px;
+            color: white;
+            background: #6957df;
+
+            border: none;
+            border-radius: 10px;
+
+            font-weight: 600;
         }
 
         .error-message {
@@ -361,123 +333,18 @@
             background: #fff5f5;
 
             border: 1px solid #feb2b2;
-            border-radius: 12px;
-        }
-
-        .retry-button {
-            margin-top: 12px;
-            padding: 10px 18px;
-
-            color: white;
-            background: #c53030;
-
-            border: none;
-            border-radius: 8px;
-        }
-
-        .modal {
-            position: fixed;
-            inset: 0;
-            z-index: 1000;
-
-            display: none;
-            align-items: center;
-            justify-content: center;
-
-            padding: 20px;
-
-            background: rgba(0, 0, 0, 0.65);
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-box {
-            width: 100%;
-            max-width: 430px;
-
-            padding: 28px 22px;
-
-            text-align: center;
-
-            background: white;
-            border-radius: 18px;
-
-            box-shadow:
-                0 18px 45px
-                rgba(0, 0, 0, 0.32);
-        }
-
-        .modal-icon {
-            width: 70px;
-            height: 70px;
-
-            margin: 0 auto 17px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            color: white;
-            background: #ef4444;
-
-            border-radius: 50%;
-            font-size: 30px;
-        }
-
-        .modal-box h2 {
-            margin: 0 0 10px;
-        }
-
-        .modal-box p {
-            margin: 0 0 22px;
-
-            color: #666;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .modal-button {
-            flex: 1;
-            padding: 13px 10px;
-
-            border: none;
-            border-radius: 9px;
-
-            font-weight: 600;
-        }
-
-        .cancel-button {
-            color: #4a5568;
-            background: #edf2f7;
-        }
-
-        .confirm-delete-button {
-            color: white;
-            background: #ef4444;
-        }
-
-        .confirm-delete-button:disabled {
-            cursor: not-allowed;
-            opacity: 0.6;
+            border-radius: 15px;
         }
 
         .toast {
             position: fixed;
             left: 50%;
             bottom: 25px;
-            z-index: 2000;
+            z-index: 4000;
 
             width: calc(100% - 40px);
-            max-width: 450px;
-
-            padding: 14px 18px;
+            max-width: 460px;
+            padding: 15px 18px;
 
             color: white;
             background: #2f855a;
@@ -488,7 +355,7 @@
             opacity: 0;
             pointer-events: none;
 
-            transform: translate(-50%, 80px);
+            transform: translate(-50%, 90px);
 
             transition:
                 opacity 0.3s,
@@ -505,29 +372,104 @@
         }
 
         @media screen and (max-width: 650px) {
-            .header-card {
-                align-items: flex-start;
-                flex-direction: column;
+            .topbar {
+                min-height: 64px;
+                padding: 0 10px;
 
-                margin: 18px 12px;
-                padding: 22px 18px;
+                grid-template-columns: 42px 1fr auto;
             }
 
-            .publish-button {
-                width: 100%;
+            .topbar-title {
+                font-size: 23px;
+            }
+
+            .topbar-button {
+                width: 39px;
+                height: 39px;
+
+                font-size: 19px;
             }
 
             .products-section {
-                margin: 0 12px;
                 padding: 20px 14px;
             }
 
-            .products-grid {
-                grid-template-columns: 1fr;
+            .products-list {
+                gap: 15px;
             }
 
-            .image-container {
-                height: 250px;
+            .product-card {
+                min-height: 112px;
+                padding: 15px 14px;
+
+                grid-template-columns: 60px 1fr auto;
+                gap: 14px;
+
+                border-radius: 15px;
+            }
+
+            .product-image-container {
+                width: 60px;
+                height: 60px;
+            }
+
+            .product-name {
+                font-size: 16px;
+            }
+
+            .product-price {
+                font-size: 15px;
+            }
+
+            .product-meta {
+                font-size: 13px;
+            }
+
+            .action-button {
+                width: 40px;
+                height: 40px;
+
+                font-size: 18px;
+            }
+        }
+
+        @media screen and (max-width: 430px) {
+            .topbar-title {
+                font-size: 20px;
+            }
+
+            .product-card {
+                grid-template-columns: 54px 1fr auto;
+                gap: 11px;
+                padding: 14px 11px;
+            }
+
+            .product-image-container {
+                width: 54px;
+                height: 54px;
+            }
+
+            .product-name {
+                font-size: 14px;
+            }
+
+            .product-price {
+                font-size: 14px;
+            }
+
+            .product-meta {
+                font-size: 12px;
+            }
+
+            .product-actions {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .action-button {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
             }
         }
     </style>
@@ -541,9 +483,10 @@
 
             <button
                 type="button"
-                class="topbar-button"
+                class="topbar-button back"
                 onclick="goBack()"
                 aria-label="Retour"
+                title="Retour"
             >
                 <i class="fas fa-arrow-left"></i>
             </button>
@@ -552,106 +495,61 @@
                 Mes produits
             </h1>
 
-            <button
-                type="button"
-                class="topbar-button"
-                onclick="goToHome()"
-                aria-label="Accueil"
-            >
-                <i class="fas fa-house"></i>
-            </button>
+            <div class="topbar-actions">
+
+                <button
+                    type="button"
+                    class="topbar-button"
+                    onclick="goToSellPage()"
+                    aria-label="Vendre"
+                    title="Vendre un produit"
+                >
+                    <i class="fas fa-tag"></i>
+                </button>
+
+                <button
+                    type="button"
+                    class="topbar-button"
+                    onclick="copyMyShopLink()"
+                    aria-label="Copier le lien de ma boutique"
+                    title="Copier le lien de ma boutique"
+                >
+                    <i class="fas fa-link"></i>
+                </button>
+
+                <button
+                    type="button"
+                    class="topbar-button"
+                    onclick="goToHome()"
+                    aria-label="Accueil"
+                    title="Accueil"
+                >
+                    <i class="fas fa-house"></i>
+                </button>
+
+            </div>
 
         </header>
 
-        <section class="header-card">
-
-            <div>
-                <h2>
-                    Mes annonces
-                </h2>
-
-                <p id="seller-message">
-                    Consultez et gérez les produits que vous avez publiés.
-                </p>
-            </div>
-
-            <button
-                type="button"
-                class="publish-button"
-                onclick="goToSellPage()"
-            >
-                <i class="fas fa-circle-plus"></i>
-                Publier un produit
-            </button>
-
-        </section>
-
-        <section class="products-section">
-
-            <h2 class="section-title">
-                Produits publiés
-                <span
-                    class="products-count"
-                    id="products-count"
-                >
-                    (0)
-                </span>
-            </h2>
+        <main class="products-section">
 
             <div
-                class="products-grid"
-                id="products-grid"
+                class="products-list"
+                id="products-list"
             >
+
                 <div class="loading-message">
+
                     <i class="fas fa-spinner fa-spin"></i>
+
                     Chargement de vos produits...
+
                 </div>
-            </div>
-
-        </section>
-
-    </div>
-
-    <div
-        class="modal"
-        id="delete-modal"
-    >
-        <div class="modal-box">
-
-            <div class="modal-icon">
-                <i class="fas fa-trash-can"></i>
-            </div>
-
-            <h2>
-                Supprimer ce produit ?
-            </h2>
-
-            <p id="delete-modal-message">
-                Le produit sera supprimé définitivement.
-            </p>
-
-            <div class="modal-actions">
-
-                <button
-                    type="button"
-                    class="modal-button cancel-button"
-                    onclick="closeDeleteModal()"
-                >
-                    Annuler
-                </button>
-
-                <button
-                    type="button"
-                    class="modal-button confirm-delete-button"
-                    id="confirm-delete-button"
-                    onclick="confirmDeleteProduct()"
-                >
-                    Supprimer
-                </button>
 
             </div>
 
-        </div>
+        </main>
+
     </div>
 
     <div
@@ -663,59 +561,82 @@
         const API_URL =
             "https://djassa-backend-imxo.onrender.com";
 
-        const PRODUCTS_ROUTE =
-            "/api/products";
-
         /*
-         * La suppression utilisera :
-         * DELETE /api/products/IDENTIFIANT
+         * Route sécurisée recommandée.
+         * Si elle n'existe pas encore sur ton backend,
+         * le code utilisera automatiquement /api/products
+         * puis filtrera les produits du compte connecté.
          */
-        const DELETE_PRODUCT_ROUTE =
+        const MY_PRODUCTS_ROUTE =
+            "/api/my-products";
+
+        const PRODUCTS_ROUTE =
             "/api/products";
 
         const HOME_PAGE_URL =
             "index.html";
 
+        const LOGIN_PAGE_URL =
+            "connexion.html";
+
         const SELL_PAGE_URL =
-            "vendre.html";
+            "vend.html";
 
         const PRODUCT_PAGE_URL =
             "produit.html";
 
+        const EDIT_PRODUCT_PAGE_URL =
+            "modifier-produit.html";
+
+        const SHOP_PAGE_URL =
+            "boutiques.html";
+
         const TOKEN_STORAGE_KEY =
             "djassaci_token";
-
-        const USER_STORAGE_KEY =
-            "djassaci_user";
 
         const SELECTED_PRODUCT_STORAGE_KEY =
             "djassaci_selected_product";
 
-        let currentUser = null;
-        let myProducts = [];
-        let productToDelete = null;
+        const SELECTED_SHOP_STORAGE_KEY =
+            "djassaci_selected_shop";
+
+        const USER_STORAGE_KEYS = [
+            "djassaci_user",
+            "user",
+            "currentUser",
+            "current_user"
+        ];
+
+        let currentUser =
+            null;
+
+        let myProducts =
+            [];
+
+        let toastTimer =
+            null;
 
         const DEFAULT_IMAGE =
             "data:image/svg+xml;charset=UTF-8," +
             encodeURIComponent(`
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="600"
-                    height="400"
-                    viewBox="0 0 600 400"
+                    width="300"
+                    height="300"
+                    viewBox="0 0 300 300"
                 >
                     <rect
-                        width="600"
-                        height="400"
-                        fill="#edf2f7"
+                        width="300"
+                        height="300"
+                        fill="#ebe8ff"
                     />
 
                     <text
-                        x="300"
-                        y="175"
+                        x="150"
+                        y="145"
                         text-anchor="middle"
                         font-family="Arial"
-                        font-size="42"
+                        font-size="28"
                         font-weight="bold"
                         fill="#6957df"
                     >
@@ -723,77 +644,68 @@
                     </text>
 
                     <text
-                        x="300"
-                        y="225"
+                        x="150"
+                        y="178"
                         text-anchor="middle"
                         font-family="Arial"
-                        font-size="22"
-                        fill="#718096"
+                        font-size="14"
+                        fill="#777783"
                     >
                         Image indisponible
                     </text>
                 </svg>
             `);
 
-        function checkAuthentication() {
+        /**
+         * Démarrage.
+         */
+        async function initializePage() {
             const token =
                 localStorage.getItem(
                     TOKEN_STORAGE_KEY
                 );
 
             if (!token) {
-                alert(
-                    "Vous devez vous connecter pour voir vos produits."
+                localStorage.setItem(
+                    "redirect_after_login",
+                    "mes-produits.html"
                 );
 
                 window.location.href =
-                    HOME_PAGE_URL;
+                    LOGIN_PAGE_URL;
 
-                return false;
+                return;
             }
 
             currentUser =
                 getStoredUser();
 
-            return true;
-        }
-
-        function getStoredUser() {
-            try {
-                const storedUser =
-                    localStorage.getItem(
-                        USER_STORAGE_KEY
-                    );
-
-                return storedUser
-                    ? JSON.parse(storedUser)
-                    : null;
-
-            } catch (error) {
-                console.error(
-                    "Utilisateur invalide :",
-                    error
+            if (!currentUser) {
+                showError(
+                    "Impossible de retrouver les informations du compte connecté."
                 );
 
-                return null;
+                return;
             }
+
+            await loadMyProducts();
         }
 
-        async function fetchMyProducts() {
-            const grid =
-                document.getElementById(
-                    "products-grid"
+        /**
+         * Charge d'abord la route sécurisée /api/my-products.
+         * Si elle n'existe pas encore, utilise /api/products
+         * et filtre avec l'identifiant du vendeur.
+         */
+        async function loadMyProducts() {
+            const token =
+                localStorage.getItem(
+                    TOKEN_STORAGE_KEY
                 );
 
             try {
-                const token =
-                    localStorage.getItem(
-                        TOKEN_STORAGE_KEY
-                    );
-
-                const response =
+                const secureResponse =
                     await fetch(
-                        `${API_URL}${PRODUCTS_ROUTE}`,
+                        `${API_URL}${MY_PRODUCTS_ROUTE}`,
                         {
                             method: "GET",
 
@@ -803,6 +715,78 @@
 
                                 "Authorization":
                                     `Bearer ${token}`
+                            }
+                        }
+                    );
+
+                if (secureResponse.ok) {
+                    const secureData =
+                        await secureResponse.json();
+
+                    myProducts =
+                        sortProductsNewestFirst(
+                            extractProducts(
+                                secureData
+                            )
+                        );
+
+                    renderProducts(
+                        myProducts
+                    );
+
+                    return;
+                }
+
+                /*
+                 * Une erreur 401 signifie que le token
+                 * n'est plus valide.
+                 */
+                if (
+                    secureResponse.status === 401 ||
+                    secureResponse.status === 403
+                ) {
+                    localStorage.removeItem(
+                        TOKEN_STORAGE_KEY
+                    );
+
+                    localStorage.setItem(
+                        "redirect_after_login",
+                        "mes-produits.html"
+                    );
+
+                    window.location.href =
+                        LOGIN_PAGE_URL;
+
+                    return;
+                }
+
+                /*
+                 * Si la route n'existe pas encore,
+                 * on passe au mode de secours.
+                 */
+                await loadMyProductsFallback();
+
+            } catch (error) {
+                console.warn(
+                    "Route /api/my-products indisponible, utilisation du filtrage local.",
+                    error
+                );
+
+                await loadMyProductsFallback();
+            }
+        }
+
+        async function loadMyProductsFallback() {
+            try {
+                const response =
+                    await fetch(
+                        `${API_URL}${PRODUCTS_ROUTE}`,
+                        {
+                            method: "GET",
+
+                            headers: {
+                                "Accept":
+                                    "application/json"
                             }
                         }
                     );
@@ -820,155 +804,170 @@
                     extractProducts(data);
 
                 myProducts =
-                    allProducts.filter(
-                        productBelongsToCurrentUser
+                    sortProductsNewestFirst(
+                        filterCurrentUserProducts(
+                            allProducts,
+                            currentUser
+                        )
                     );
 
-                renderMyProducts();
+                renderProducts(
+                    myProducts
+                );
 
             } catch (error) {
                 console.error(
-                    "Erreur de chargement :",
+                    "Impossible de charger vos produits :",
                     error
                 );
 
-                grid.innerHTML = `
-                    <div class="error-message">
-                        <i class="fas fa-triangle-exclamation"></i>
-
-                        <p>
-                            Impossible de charger vos produits.
-                        </p>
-
-                        <button
-                            type="button"
-                            class="retry-button"
-                            onclick="fetchMyProducts()"
-                        >
-                            Réessayer
-                        </button>
-                    </div>
-                `;
+                showError(
+                    "Impossible de charger vos produits pour le moment."
+                );
             }
         }
 
-        function productBelongsToCurrentUser(product) {
-            const currentUserId =
-                getFirstValue(
-                    currentUser?.id,
-                    currentUser?._id,
-                    currentUser?.userId,
-                    currentUser?.user_id
-                );
-
-            const productSellerId =
-                getFirstValue(
-                    product.sellerId,
-                    product.seller_id,
-                    product.userId,
-                    product.user_id,
-                    product.ownerId,
-                    product.owner_id,
-                    product.createdBy,
-                    product.created_by,
-                    product.user?.id,
-                    product.user?._id,
-                    product.seller?.id,
-                    product.seller?._id
-                );
-
-            if (
-                currentUserId &&
-                productSellerId
-            ) {
-                return (
-                    String(currentUserId) ===
-                    String(productSellerId)
-                );
+        function extractProducts(data) {
+            if (Array.isArray(data)) {
+                return data;
             }
 
-            const currentPhone =
-                normalizePhoneForComparison(
-                    getFirstValue(
-                        currentUser?.numero,
-                        currentUser?.telephone,
-                        currentUser?.phone,
-                        currentUser?.phoneNumber
-                    )
-                );
-
-            const productPhone =
-                normalizePhoneForComparison(
-                    getFirstValue(
-                        product.numero,
-                        product.telephone,
-                        product.phone,
-                        product.phoneNumber,
-                        product.sellerPhone,
-                        product.seller_phone,
-                        product.user?.numero,
-                        product.seller?.numero
-                    )
-                );
-
-            if (
-                currentPhone &&
-                productPhone
-            ) {
-                return (
-                    currentPhone ===
-                    productPhone
-                );
+            if (!data) {
+                return [];
             }
 
-            const currentName =
-                normalizeText(
-                    getFirstValue(
-                        currentUser?.nom,
-                        currentUser?.name,
-                        currentUser?.fullName
-                    )
+            if (Array.isArray(data.products)) {
+                return data.products;
+            }
+
+            if (Array.isArray(data.articles)) {
+                return data.articles;
+            }
+
+            if (Array.isArray(data.data)) {
+                return data.data;
+            }
+
+            if (Array.isArray(data.items)) {
+                return data.items;
+            }
+
+            if (
+                data.data &&
+                Array.isArray(
+                    data.data.products
+                )
+            ) {
+                return data.data.products;
+            }
+
+            return [];
+        }
+
+        /**
+         * Garde uniquement les produits du compte connecté.
+         */
+        function filterCurrentUserProducts(
+            products,
+            user
+        ) {
+            const userId =
+                normalizeValue(
+                    getUserId(user)
                 );
 
-            const sellerName =
-                normalizeText(
-                    getFirstValue(
-                        product.sellerName,
-                        product.seller_name,
-                        product.vendeur,
-                        product.userName,
-                        product.ownerName,
-                        product.user?.nom,
-                        product.seller?.nom
-                    )
+            const userPhone =
+                normalizePhone(
+                    getUserPhone(user)
                 );
 
-            return (
-                currentName &&
-                sellerName &&
-                currentName === sellerName
+            const userName =
+                normalizeText(
+                    getUserName(user)
+                );
+
+            return products.filter(
+                function (product) {
+                    const productSellerId =
+                        normalizeValue(
+                            getProductSellerId(
+                                product
+                            )
+                        );
+
+                    const productSellerPhone =
+                        normalizePhone(
+                            getProductSellerPhone(
+                                product
+                            )
+                        );
+
+                    const productSellerName =
+                        normalizeText(
+                            getProductSellerName(
+                                product
+                            )
+                        );
+
+                    /*
+                     * L'identifiant reste prioritaire.
+                     */
+                    if (
+                        userId &&
+                        productSellerId
+                    ) {
+                        return (
+                            userId ===
+                            productSellerId
+                        );
+                    }
+
+                    /*
+                     * Le téléphone sert de secours.
+                     */
+                    if (
+                        userPhone &&
+                        productSellerPhone
+                    ) {
+                        return (
+                            userPhone ===
+                            productSellerPhone
+                        );
+                    }
+
+                    /*
+                     * Le nom est utilisé uniquement si
+                     * aucun identifiant ni téléphone n'existe.
+                     */
+                    return (
+                        userName &&
+                        productSellerName &&
+                        userName ===
+                            productSellerName
+                    );
+                }
             );
         }
 
-        function renderMyProducts() {
-            const grid =
+        /**
+         * Affichage.
+         */
+        function renderProducts(products) {
+            const list =
                 document.getElementById(
-                    "products-grid"
+                    "products-list"
                 );
 
-            const count =
-                document.getElementById(
-                    "products-count"
-                );
+            list.innerHTML =
+                "";
 
-            grid.innerHTML = "";
-
-            count.textContent =
-                `(${myProducts.length})`;
-
-            if (myProducts.length === 0) {
-                grid.innerHTML = `
+            if (
+                !Array.isArray(products) ||
+                products.length === 0
+            ) {
+                list.innerHTML = `
                     <div class="empty-message">
+
                         <i class="fas fa-box-open"></i>
 
                         <h3>
@@ -976,26 +975,25 @@
                         </h3>
 
                         <p>
-                            Vous n’avez pas encore publié de produit.
+                            Vous n’avez encore publié aucun produit.
                         </p>
 
                         <button
                             type="button"
-                            class="publish-button"
                             onclick="goToSellPage()"
                         >
-                            <i class="fas fa-circle-plus"></i>
-                            Publier maintenant
+                            Publier un produit
                         </button>
+
                     </div>
                 `;
 
                 return;
             }
 
-            myProducts.forEach(
+            products.forEach(
                 function (product) {
-                    grid.appendChild(
+                    list.appendChild(
                         createProductCard(
                             product
                         )
@@ -1014,20 +1012,8 @@
                 "product-card";
 
             const name =
-                getFirstValue(
-                    product.name,
-                    product.nom,
-                    product.title,
-                    product.titre,
-                    "Produit DJASSACI"
-                );
-
-            const description =
-                getFirstValue(
-                    product.description,
-                    product.details,
-                    product.detail,
-                    "Aucune description disponible."
+                getProductName(
+                    product
                 );
 
             const price =
@@ -1045,17 +1031,13 @@
                 getFirstValue(
                     product.category,
                     product.categorie,
+                    product.type,
                     "Autre"
                 );
 
             const location =
-                getFirstValue(
-                    product.location,
-                    product.localisation,
-                    product.city,
-                    product.ville,
-                    product.commune,
-                    ""
+                getProductLocation(
+                    product
                 );
 
             const image =
@@ -1066,7 +1048,7 @@
                 );
 
             card.innerHTML = `
-                <div class="image-container">
+                <div class="product-image-container">
 
                     <div class="image-loading">
                         <i class="fas fa-spinner fa-spin"></i>
@@ -1081,55 +1063,46 @@
 
                 </div>
 
-                <div class="product-content">
+                <div class="product-info">
 
-                    <h3 class="product-name">
+                    <h2 class="product-name">
                         ${escapeHtml(name)}
-                    </h3>
-
-                    <p class="product-description">
-                        ${escapeHtml(description)}
-                    </p>
-
-                    <p class="product-meta">
-                        <i class="fas fa-tag"></i>
-                        ${escapeHtml(category)}
-                    </p>
-
-                    ${
-                        location
-                            ? `
-                                <p class="product-meta">
-                                    <i class="fas fa-location-dot"></i>
-                                    ${escapeHtml(location)}
-                                </p>
-                            `
-                            : ""
-                    }
+                    </h2>
 
                     <p class="product-price">
                         ${escapeHtml(price)} FCFA
                     </p>
 
-                    <div class="product-actions">
+                    <p class="product-meta">
+                        ${escapeHtml(category)}
+                        ${
+                            location
+                                ? ` • ${escapeHtml(location)}`
+                                : ""
+                        }
+                    </p>
 
-                        <button
-                            type="button"
-                            class="product-button details-button"
-                        >
-                            <i class="fas fa-eye"></i>
-                            Voir
-                        </button>
+                </div>
 
-                        <button
-                            type="button"
-                            class="product-button delete-button"
-                        >
-                            <i class="fas fa-trash-can"></i>
-                            Supprimer
-                        </button>
+                <div class="product-actions">
 
-                    </div>
+                    <button
+                        type="button"
+                        class="action-button edit-button"
+                        title="Modifier"
+                        aria-label="Modifier le produit"
+                    >
+                        <i class="fas fa-pen"></i>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="action-button delete-button"
+                        title="Supprimer"
+                        aria-label="Supprimer le produit"
+                    >
+                        <i class="fas fa-trash-can"></i>
+                    </button>
 
                 </div>
             `;
@@ -1171,117 +1144,122 @@
                 }
             );
 
-            const detailsButton =
-                card.querySelector(
-                    ".details-button"
-                );
+            if (imageElement.complete) {
+                loadingElement.style.display =
+                    "none";
+            }
 
-            detailsButton.addEventListener(
+            card.addEventListener(
                 "click",
-                function () {
-                    openProductDetails(
+                function (event) {
+                    if (
+                        event.target.closest(
+                            ".action-button"
+                        )
+                    ) {
+                        return;
+                    }
+
+                    openProduct(
                         product
                     );
                 }
             );
 
-            const deleteButton =
-                card.querySelector(
+            card
+                .querySelector(
+                    ".edit-button"
+                )
+                .addEventListener(
+                    "click",
+                    function (event) {
+                        event.stopPropagation();
+
+                        editProduct(
+                            product
+                        );
+                    }
+                );
+
+            card
+                .querySelector(
                     ".delete-button"
-                );
+                )
+                .addEventListener(
+                    "click",
+                    function (event) {
+                        event.stopPropagation();
 
-            deleteButton.addEventListener(
-                "click",
-                function () {
-                    openDeleteModal(
-                        product
-                    );
-                }
-            );
+                        deleteProduct(
+                            product
+                        );
+                    }
+                );
 
             return card;
         }
 
-        function openDeleteModal(product) {
-            productToDelete =
-                product;
+        function openProduct(product) {
+            localStorage.setItem(
+                SELECTED_PRODUCT_STORAGE_KEY,
+                JSON.stringify(product)
+            );
 
+            window.location.href =
+                PRODUCT_PAGE_URL;
+        }
+
+        function editProduct(product) {
+            localStorage.setItem(
+                SELECTED_PRODUCT_STORAGE_KEY,
+                JSON.stringify(product)
+            );
+
+            window.location.href =
+                EDIT_PRODUCT_PAGE_URL;
+        }
+
+        /**
+         * Suppression sécurisée.
+         */
+        async function deleteProduct(product) {
             const name =
-                getFirstValue(
-                    product.name,
-                    product.nom,
-                    product.title,
-                    "ce produit"
+                getProductName(
+                    product
                 );
 
-            document
-                .getElementById(
-                    "delete-modal-message"
-                )
-                .textContent =
-                `Voulez-vous vraiment supprimer « ${name} » ? Cette action est définitive.`;
+            const confirmed =
+                window.confirm(
+                    `Voulez-vous vraiment supprimer « ${name} » ?`
+                );
 
-            document
-                .getElementById(
-                    "delete-modal"
-                )
-                .classList
-                .add("active");
-        }
-
-        function closeDeleteModal() {
-            productToDelete =
-                null;
-
-            document
-                .getElementById(
-                    "delete-modal"
-                )
-                .classList
-                .remove("active");
-        }
-
-        async function confirmDeleteProduct() {
-            if (!productToDelete) {
+            if (!confirmed) {
                 return;
             }
 
             const productId =
                 getProductId(
-                    productToDelete
+                    product
                 );
 
             if (!productId) {
                 showToast(
-                    "L’identifiant du produit est introuvable.",
+                    "Identifiant du produit introuvable.",
                     "error"
                 );
 
                 return;
             }
 
-            const button =
-                document.getElementById(
-                    "confirm-delete-button"
+            const token =
+                localStorage.getItem(
+                    TOKEN_STORAGE_KEY
                 );
 
-            button.disabled =
-                true;
-
-            button.innerHTML = `
-                <i class="fas fa-spinner fa-spin"></i>
-                Suppression...
-            `;
-
             try {
-                const token =
-                    localStorage.getItem(
-                        TOKEN_STORAGE_KEY
-                    );
-
                 const response =
                     await fetch(
-                        `${API_URL}${DELETE_PRODUCT_ROUTE}/${encodeURIComponent(productId)}`,
+                        `${API_URL}${PRODUCTS_ROUTE}/${encodeURIComponent(productId)}`,
                         {
                             method: "DELETE",
 
@@ -1295,36 +1273,45 @@
                         }
                     );
 
-                const data =
-                    await readResponse(
-                        response
-                    );
+                let data =
+                    null;
+
+                try {
+                    data =
+                        await response.json();
+                } catch (error) {
+                    data =
+                        null;
+                }
 
                 if (!response.ok) {
                     throw new Error(
-                        data.message ||
-                        data.error ||
-                        `Erreur ${response.status}`
+                        getFirstValue(
+                            data?.message,
+                            data?.error,
+                            `Erreur ${response.status}`
+                        )
                     );
                 }
 
                 myProducts =
                     myProducts.filter(
-                        function (product) {
+                        function (item) {
                             return (
                                 String(
-                                    getProductId(product)
+                                    getProductId(item)
                                 ) !==
                                 String(productId)
                             );
                         }
                     );
 
-                closeDeleteModal();
-                renderMyProducts();
+                renderProducts(
+                    myProducts
+                );
 
                 showToast(
-                    "Le produit a été supprimé."
+                    "Produit supprimé avec succès."
                 );
 
             } catch (error) {
@@ -1338,24 +1325,269 @@
                     "Impossible de supprimer le produit.",
                     "error"
                 );
-
-            } finally {
-                button.disabled =
-                    false;
-
-                button.innerHTML =
-                    "Supprimer";
             }
         }
 
-        function openProductDetails(product) {
+        /**
+         * Copie le lien de la boutique.
+         */
+        async function copyMyShopLink() {
+            const selectedShop = {
+                sellerId:
+                    getUserId(currentUser),
+
+                sellerName:
+                    getUserName(currentUser),
+
+                phone:
+                    getUserPhone(currentUser),
+
+                location:
+                    getUserLocation(currentUser),
+
+                verified:
+                    isVerifiedUser(currentUser)
+            };
+
             localStorage.setItem(
-                SELECTED_PRODUCT_STORAGE_KEY,
-                JSON.stringify(product)
+                SELECTED_SHOP_STORAGE_KEY,
+                JSON.stringify(
+                    selectedShop
+                )
             );
 
-            window.location.href =
-                PRODUCT_PAGE_URL;
+            const shopUrl =
+                new URL(
+                    SHOP_PAGE_URL,
+                    window.location.href
+                );
+
+            const sellerId =
+                getUserId(
+                    currentUser
+                );
+
+            if (sellerId) {
+                shopUrl.searchParams.set(
+                    "sellerId",
+                    sellerId
+                );
+            }
+
+            try {
+                await navigator.clipboard.writeText(
+                    shopUrl.href
+                );
+
+                showToast(
+                    "Lien de votre boutique copié."
+                );
+
+            } catch (error) {
+                window.prompt(
+                    "Copiez le lien de votre boutique :",
+                    shopUrl.href
+                );
+            }
+        }
+
+        /**
+         * Utilisateur connecté.
+         */
+        function getStoredUser() {
+            for (
+                const key of USER_STORAGE_KEYS
+            ) {
+                try {
+                    const value =
+                        localStorage.getItem(
+                            key
+                        );
+
+                    if (!value) {
+                        continue;
+                    }
+
+                    const parsedValue =
+                        JSON.parse(value);
+
+                    if (
+                        parsedValue &&
+                        typeof parsedValue ===
+                            "object"
+                    ) {
+                        return parsedValue;
+                    }
+
+                } catch (error) {
+                    console.warn(
+                        `Impossible de lire ${key}`,
+                        error
+                    );
+                }
+            }
+
+            return null;
+        }
+
+        function getUserId(user) {
+            return getFirstValue(
+                user.id,
+                user._id,
+                user.userId,
+                user.user_id,
+                user.sellerId,
+                user.seller_id,
+                ""
+            );
+        }
+
+        function getUserName(user) {
+            return getFirstValue(
+                user.nom,
+                user.name,
+                user.fullName,
+                user.full_name,
+                user.username,
+                "Vendeur"
+            );
+        }
+
+        function getUserPhone(user) {
+            return getFirstValue(
+                user.whatsapp,
+                user.numeroWhatsApp,
+                user.numero_whatsapp,
+                user.telephone,
+                user.numero,
+                user.phone,
+                ""
+            );
+        }
+
+        function getUserLocation(user) {
+            return getFirstValue(
+                user.localisation,
+                user.location,
+                user.ville,
+                user.commune,
+                user.adresse,
+                user.address,
+                ""
+            );
+        }
+
+        function isVerifiedUser(user) {
+            return normalizeBoolean(
+                getFirstValue(
+                    user.verified,
+                    user.isVerified,
+                    user.is_verified,
+                    user.certified,
+                    user.isCertified,
+                    false
+                )
+            );
+        }
+
+        /**
+         * Informations vendeur sur les produits.
+         */
+        function getProductSellerId(product) {
+            return getFirstValue(
+                product.sellerId,
+                product.seller_id,
+                product.userId,
+                product.user_id,
+                product.ownerId,
+                product.owner_id,
+                product.createdBy,
+                product.created_by,
+                product.vendeur?.id,
+                product.vendeur?._id,
+                product.user?.id,
+                product.user?._id,
+                product.seller?.id,
+                product.seller?._id,
+                ""
+            );
+        }
+
+        function getProductSellerPhone(product) {
+            return getFirstValue(
+                product.whatsapp,
+                product.whatsappNumber,
+                product.whatsapp_number,
+                product.telephone,
+                product.numero,
+                product.phone,
+                product.sellerPhone,
+                product.seller_phone,
+                product.vendeur?.whatsapp,
+                product.vendeur?.telephone,
+                product.vendeur?.numero,
+                product.user?.whatsapp,
+                product.user?.telephone,
+                product.user?.numero,
+                product.seller?.whatsapp,
+                product.seller?.telephone,
+                product.seller?.numero,
+                ""
+            );
+        }
+
+        function getProductSellerName(product) {
+            const directSeller =
+                typeof product.vendeur ===
+                    "string"
+                    ? product.vendeur
+                    : "";
+
+            return getFirstValue(
+                product.sellerName,
+                product.seller_name,
+                directSeller,
+                product.vendeur?.nom,
+                product.vendeur?.name,
+                product.user?.nom,
+                product.user?.name,
+                product.seller?.nom,
+                product.seller?.name,
+                ""
+            );
+        }
+
+        function getProductLocation(product) {
+            return getFirstValue(
+                product.vendeurLocalisation,
+                product.sellerLocation,
+                product.seller_location,
+                product.location,
+                product.localisation,
+                product.ville,
+                product.commune,
+                product.adresse,
+                product.address,
+                product.vendeur?.localisation,
+                product.vendeur?.location,
+                product.user?.localisation,
+                product.user?.location,
+                product.seller?.localisation,
+                product.seller?.location,
+                ""
+            );
+        }
+
+        function getProductName(product) {
+            return getFirstValue(
+                product.name,
+                product.nom,
+                product.title,
+                product.titre,
+                product.productName,
+                product.product_name,
+                "Produit DJASSACI"
+            );
         }
 
         function getProductId(product) {
@@ -1366,47 +1598,14 @@
                 product.product_id,
                 product.uuid,
                 product.articleId,
-                product.article_id
+                product.article_id,
+                ""
             );
         }
 
-        function extractProducts(data) {
-            if (Array.isArray(data)) {
-                return data;
-            }
-
-            if (!data) {
-                return [];
-            }
-
-            if (Array.isArray(data.products)) {
-                return data.products;
-            }
-
-            if (Array.isArray(data.articles)) {
-                return data.articles;
-            }
-
-            if (Array.isArray(data.data)) {
-                return data.data;
-            }
-
-            if (Array.isArray(data.items)) {
-                return data.items;
-            }
-
-            if (
-                data.data &&
-                Array.isArray(
-                    data.data.products
-                )
-            ) {
-                return data.data.products;
-            }
-
-            return [];
-        }
-
+        /**
+         * Images.
+         */
         function extractImageValue(product) {
             const directImage =
                 getFirstValue(
@@ -1493,6 +1692,10 @@
                         "/"
                     );
 
+            if (!path) {
+                return DEFAULT_IMAGE;
+            }
+
             if (
                 path.startsWith("https://") ||
                 path.startsWith("http://") ||
@@ -1534,24 +1737,143 @@
             return `${API_URL}/${path}`;
         }
 
-        function normalizePhoneForComparison(phone) {
-            let number =
-                String(phone || "")
-                    .replace(/\D/g, "");
-
-            if (number.startsWith("00225")) {
-                number =
-                    number.substring(5);
-            }
-
-            if (number.startsWith("225")) {
-                number =
-                    number.substring(3);
-            }
-
-            return number;
+        /**
+         * Tri.
+         */
+        function sortProductsNewestFirst(products) {
+            return [...products].sort(
+                function (a, b) {
+                    return (
+                        getProductTimestamp(b) -
+                        getProductTimestamp(a)
+                    );
+                }
+            );
         }
 
+        function getProductTimestamp(product) {
+            const value =
+                getFirstValue(
+                    product.createdAt,
+                    product.created_at,
+                    product.dateCreation,
+                    product.date_creation,
+                    product.datePublication,
+                    product.publishedAt,
+                    product.timestamp,
+                    product.date,
+                    ""
+                );
+
+            if (!value) {
+                return 0;
+            }
+
+            if (
+                typeof value === "number" ||
+                /^\d+$/.test(String(value))
+            ) {
+                const numericValue =
+                    Number(value);
+
+                return numericValue <
+                    100000000000
+                    ? numericValue * 1000
+                    : numericValue;
+            }
+
+            const parsedDate =
+                Date.parse(value);
+
+            return Number.isNaN(
+                parsedDate
+            )
+                ? 0
+                : parsedDate;
+        }
+
+        /**
+         * Navigation.
+         */
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                goToHome();
+            }
+        }
+
+        function goToHome() {
+            window.location.href =
+                HOME_PAGE_URL;
+        }
+
+        function goToSellPage() {
+            window.location.href =
+                SELL_PAGE_URL;
+        }
+
+        /**
+         * Messages.
+         */
+        function showError(message) {
+            document
+                .getElementById(
+                    "products-list"
+                )
+                .innerHTML = `
+                    <div class="error-message">
+
+                        <i class="fas fa-triangle-exclamation"></i>
+
+                        <p>
+                            ${escapeHtml(message)}
+                        </p>
+
+                        <button
+                            type="button"
+                            class="retry-button"
+                            onclick="initializePage()"
+                        >
+                            Réessayer
+                        </button>
+
+                    </div>
+                `;
+        }
+
+        function showToast(
+            message,
+            type = ""
+        ) {
+            const toast =
+                document.getElementById(
+                    "toast"
+                );
+
+            toast.textContent =
+                message;
+
+            toast.className =
+                `toast active ${type}`;
+
+            clearTimeout(
+                toastTimer
+            );
+
+            toastTimer =
+                setTimeout(
+                    function () {
+                        toast.className =
+                            "toast";
+                    },
+                    3200
+                );
+        }
+
+        /**
+         * Fonctions générales.
+         */
         function normalizeText(value) {
             return String(value || "")
                 .trim()
@@ -1561,6 +1883,36 @@
                     /[\u0300-\u036f]/g,
                     ""
                 );
+        }
+
+        function normalizeValue(value) {
+            return String(value || "")
+                .trim()
+                .toLowerCase();
+        }
+
+        function normalizePhone(value) {
+            return String(value || "")
+                .replace(/\D/g, "")
+                .replace(/^225/, "")
+                .replace(/^0/, "");
+        }
+
+        function normalizeBoolean(value) {
+            const normalized =
+                String(value)
+                    .trim()
+                    .toLowerCase();
+
+            return (
+                value === true ||
+                value === 1 ||
+                normalized === "true" ||
+                normalized === "1" ||
+                normalized === "oui" ||
+                normalized === "certifié" ||
+                normalized === "certified"
+            );
         }
 
         function formatPrice(price) {
@@ -1607,94 +1959,9 @@
                 .replaceAll("'", "&#039;");
         }
 
-        async function readResponse(response) {
-            try {
-                return await response.json();
-            } catch (error) {
-                return {};
-            }
-        }
-
-        let toastTimer = null;
-
-        function showToast(
-            message,
-            type = ""
-        ) {
-            const toast =
-                document.getElementById(
-                    "toast"
-                );
-
-            toast.textContent =
-                message;
-
-            toast.className =
-                `toast active ${type}`;
-
-            clearTimeout(
-                toastTimer
-            );
-
-            toastTimer =
-                setTimeout(
-                    function () {
-                        toast.className =
-                            "toast";
-                    },
-                    3200
-                );
-        }
-
-        function goBack() {
-            if (window.history.length > 1) {
-                window.history.back();
-            } else {
-                goToHome();
-            }
-        }
-
-        function goToHome() {
-            window.location.href =
-                HOME_PAGE_URL;
-        }
-
-        function goToSellPage() {
-            window.location.href =
-                SELL_PAGE_URL;
-        }
-
-        document.addEventListener(
-            "click",
-            function (event) {
-                if (
-                    event.target.classList.contains(
-                        "modal"
-                    )
-                ) {
-                    closeDeleteModal();
-                }
-            }
-        );
-
-        document.addEventListener(
-            "keydown",
-            function (event) {
-                if (event.key === "Escape") {
-                    closeDeleteModal();
-                }
-            }
-        );
-
         document.addEventListener(
             "DOMContentLoaded",
-            function () {
-                if (!checkAuthentication()) {
-                    return;
-                }
-
-                fetchMyProducts();
-            }
+            initializePage
         );
     </script>
 
