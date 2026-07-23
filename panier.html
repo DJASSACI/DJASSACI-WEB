@@ -1476,13 +1476,25 @@
                 function (item) {
                     const rawPhone =
                         getFirstValue(
+                            item.vendeurCompte,
+                            item.vendeur_compte,
+
                             item.telephone,
                             item.numero,
                             item.phone,
                             item.phoneNumber,
+
                             item.whatsapp,
+                            item.whatsappNumber,
+                            item.whatsapp_number,
+
                             item.sellerPhone,
                             item.seller_phone,
+
+                            item.user?.phone,
+                            item.user?.telephone,
+                            item.user?.whatsapp,
+
                             SUPPORT_WHATSAPP_NUMBER
                         );
 
@@ -1802,25 +1814,28 @@
             }
 
             if (
-                number.startsWith("00")
+                number.startsWith("00225")
             ) {
                 number =
                     number.substring(2);
             }
 
             if (
-                number.startsWith("0") &&
-                number.length === 10
+                /^225\d{10}$/.test(number)
             ) {
-                number =
-                    number.substring(1);
+                return number;
+            }
+
+            if (
+                /^0\d{9}$/.test(number)
+            ) {
+                return `225${number}`;
             }
 
             if (
                 !number.startsWith("225")
             ) {
-                number =
-                    `225${number}`;
+                return `225${number}`;
             }
 
             return number;

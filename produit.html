@@ -1544,50 +1544,72 @@
          * Certification.
          */
         function isSellerVerified(product) {
-            const value =
-                getFirstValue(
-                    product.isVerified,
-                    product.is_verified,
+            if (!product) {
+                return false;
+            }
 
-                    product.verified,
+            const possibleValues = [
+                product.isVerified,
+                product.is_verified,
+                product.verified,
 
-                    product.certified,
-                    product.isCertified,
-                    product.is_certified,
+                product.certified,
+                product.isCertified,
+                product.is_certified,
 
-                    product.sellerVerified,
-                    product.seller_verified,
+                product.sellerVerified,
+                product.seller_verified,
 
-                    product.user?.verified,
-                    product.user?.isVerified,
+                product.user?.sellerVerified,
+                product.user?.seller_verified,
+                product.user?.verified,
+                product.user?.isVerified,
+                product.user?.is_verified,
+                product.user?.certified,
+                product.user?.isCertified,
 
-                    product.seller?.verified,
-                    product.seller?.isVerified,
-                    product.seller?.certified,
-                    product.seller?.isCertified,
+                product.seller?.sellerVerified,
+                product.seller?.seller_verified,
+                product.seller?.verified,
+                product.seller?.isVerified,
+                product.seller?.is_verified,
+                product.seller?.certified,
+                product.seller?.isCertified,
 
-                    product.vendeur?.verified,
-                    product.vendeur?.isVerified,
-                    product.vendeur?.certified,
-                    product.vendeur?.isCertified,
+                product.vendeur?.sellerVerified,
+                product.vendeur?.seller_verified,
+                product.vendeur?.verified,
+                product.vendeur?.isVerified,
+                product.vendeur?.is_verified,
+                product.vendeur?.certified,
+                product.vendeur?.isCertified,
 
-                    false
+                product.owner?.sellerVerified,
+                product.owner?.seller_verified,
+                product.owner?.verified,
+                product.owner?.isVerified,
+                product.owner?.certified
+            ];
+
+            return possibleValues.some(function (value) {
+                const normalizedValue =
+                    String(value ?? "")
+                        .trim()
+                        .toLowerCase();
+
+                return (
+                    value === true ||
+                    value === 1 ||
+                    normalizedValue === "true" ||
+                    normalizedValue === "1" ||
+                    normalizedValue === "oui" ||
+                    normalizedValue === "yes" ||
+                    normalizedValue === "certifié" ||
+                    normalizedValue === "certifie" ||
+                    normalizedValue === "certified" ||
+                    normalizedValue === "verified"
                 );
-
-            const normalizedValue =
-                String(value)
-                    .trim()
-                    .toLowerCase();
-
-            return (
-                value === true ||
-                value === 1 ||
-                normalizedValue === "true" ||
-                normalizedValue === "1" ||
-                normalizedValue === "oui" ||
-                normalizedValue === "certifié" ||
-                normalizedValue === "certified"
-            );
+            });
         }
 
         /**
