@@ -1062,11 +1062,14 @@
          * Contact WhatsApp.
          */
         function contactSellerOnWhatsApp() {
-            requireAuthentication(
-                function () {
-                    if (!currentProduct) {
-                        return;
-                    }
+            if (!currentProduct) {
+                showToast(
+                    "Les informations du produit sont introuvables.",
+                    "error"
+                );
+
+                return;
+            }
 
                     const phone =
                         getSellerPhone(
@@ -1125,66 +1128,41 @@
                             "noopener,noreferrer"
                         );
 
-                    if (!newWindow) {
-                        window.location.href =
-                            whatsappUrl;
-                    }
-                }
-            );
+            if (!newWindow) {
+                window.location.href =
+                    whatsappUrl;
+            }
         }
 
         /**
          * Appel du vendeur.
          */
         function callSeller() {
-            requireAuthentication(
-                function () {
-                    const phone =
-                        getSellerPhone(
-                            currentProduct
-                        );
-
-                    if (!phone) {
-                        showToast(
-                            "Le numéro du vendeur est indisponible.",
-                            "error"
-                        );
-
-                        return;
-                    }
-
-                    window.location.href =
-                        `tel:${normalizeCallNumber(phone)}`;
-                }
-            );
-        }
-
-        /**
-         * Oblige la connexion avant contact.
-         */
-        function requireAuthentication(action) {
-            const token =
-                localStorage.getItem(
-                    TOKEN_STORAGE_KEY
+            if (!currentProduct) {
+                showToast(
+                    "Les informations du produit sont introuvables.",
+                    "error"
                 );
-
-            if (!token) {
-                alert(
-                    "Vous devez vous connecter avant de contacter le vendeur."
-                );
-
-                localStorage.setItem(
-                    "djassaci_pending_page",
-                    "produit.html"
-                );
-
-                window.location.href =
-                    HOME_PAGE_URL;
 
                 return;
             }
 
-            action();
+            const phone =
+                getSellerPhone(
+                    currentProduct
+                );
+
+            if (!phone) {
+                showToast(
+                    "Le numéro du vendeur est indisponible.",
+                    "error"
+                );
+
+                return;
+            }
+
+            window.location.href =
+                `tel:${normalizeCallNumber(phone)}`;
         }
 
         /**
