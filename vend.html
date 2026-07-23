@@ -22,7 +22,8 @@
                 https://cdnjs.cloudflare.com;
             img-src 'self' data: blob: http: https:;
             connect-src 'self'
-                https://djassa-backend-imxo.onrender.com;
+                https://djassa-backend-imxo.onrender.com
+                https://api.cloudinary.com;
         "
     >
 
@@ -723,7 +724,7 @@
                 <select
                     class="form-control"
                     id="product-category"
-                    name="category"
+                    name="categorie"
                     required
                 >
                     <option value="">
@@ -809,15 +810,64 @@
                     class="form-control"
                     id="seller-phone"
                     name="telephone"
-                    placeholder="Numéro téléphone/WhatsApp du vendeur *"
-                    maxlength="25"
-                    inputmode="tel"
+                    placeholder="2250707070707 *"
+                    maxlength="13"
+                    minlength="13"
+                    inputmode="numeric"
+                    pattern="^225[0-9]{10}$"
                     autocomplete="tel"
                     required
                 >
 
                 <p class="field-error">
-                    Entre le numéro téléphone ou WhatsApp du vendeur.
+                    Le numéro doit être au format 225XXXXXXXXXX.
+                </p>
+
+            </div>
+
+            <div class="field">
+
+                <span class="field-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </span>
+
+                <select
+                    class="form-control"
+                    id="payment-method"
+                    name="paymentMethod"
+                    required
+                >
+                    <option value="">
+                        Moyen de paiement *
+                    </option>
+
+                    <option value="Wave">
+                        Wave
+                    </option>
+
+                    <option value="Orange Money">
+                        Orange Money
+                    </option>
+
+                    <option value="MTN MoMo">
+                        MTN MoMo
+                    </option>
+
+                    <option value="Moov Money">
+                        Moov Money
+                    </option>
+
+                    <option value="Espèces">
+                        Espèces
+                    </option>
+                </select>
+
+                <span class="select-arrow">
+                    <i class="fas fa-chevron-down"></i>
+                </span>
+
+                <p class="field-error">
+                    Choisis un moyen de paiement.
                 </p>
 
             </div>
@@ -831,16 +881,16 @@
                 <input
                     type="tel"
                     class="form-control"
-                    id="payment-number"
-                    name="paymentNumber"
-                    placeholder="Numéro compte paiement vendeur (Orange Money, MTN MoMo, Wave...) *"
+                    id="payment-account"
+                    name="paymentAccount"
+                    placeholder="Numéro du compte de paiement *"
                     maxlength="25"
                     inputmode="tel"
                     required
                 >
 
                 <p class="field-error">
-                    Entre le numéro de paiement du vendeur.
+                    Entre le numéro du compte de paiement.
                 </p>
 
             </div>
@@ -873,6 +923,15 @@
     <script>
         const API_URL =
             "https://djassa-backend-imxo.onrender.com";
+
+        const CLOUDINARY_CLOUD_NAME =
+            "drnoh6zfx";
+
+        const CLOUDINARY_UPLOAD_PRESET =
+            "djassa_preset";
+
+        const CLOUDINARY_UPLOAD_URL =
+            `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
         const CREATE_PRODUCT_ROUTE =
             "/api/products";
@@ -955,12 +1014,15 @@
                 );
 
             if (phone) {
-                document
-                    .getElementById(
+                const phoneInput =
+                    document.getElementById(
                         "seller-phone"
-                    )
-                    .value =
-                    phone;
+                    );
+
+                phoneInput.value =
+                    normalizeSellerPhone(
+                        phone
+                    );
             }
         }
 
@@ -1182,7 +1244,10 @@
                     "seller-phone"
                 ),
                 document.getElementById(
-                    "payment-number"
+                    "payment-method"
+                ),
+                document.getElementById(
+                    "payment-account"
                 )
             ];
 
@@ -1218,6 +1283,28 @@
                     }
                 }
             );
+
+            const sellerPhoneInput =
+                document.getElementById(
+                    "seller-phone"
+                );
+
+            const sellerPhoneValid =
+                /^225[0-9]{10}$/.test(
+                    sellerPhoneInput.value.trim()
+                );
+
+            setFieldValidity(
+                sellerPhoneInput.closest(
+                    ".field"
+                ),
+                sellerPhoneValid
+            );
+
+            if (!sellerPhoneValid) {
+                isValid =
+                    false;
+            }
 
             const imageValid =
                 Boolean(selectedImageFile);
@@ -1272,6 +1359,23 @@
                 );
 
             if (
+                event.target.id ===
+                "seller-phone"
+            ) {
+                const valid =
+                    /^225[0-9]{10}$/.test(
+                        event.target.value.trim()
+                    );
+
+                setFieldValidity(
+                    field,
+                    valid
+                );
+
+                return;
+            }
+
+            if (
                 String(event.target.value)
                     .trim() !== ""
             ) {
@@ -1314,17 +1418,11 @@
                 return;
             }
 
-            setPublishingState(
-                true
-            );
+            setPublishingState(true);
 
             try {
                 const user =
-                    getStoredUser() ||
-                    {};
-
-                const formData =
-                    new FormData();
+                    getStoredUser() || {};
 
                 const name =
                     document
@@ -1342,7 +1440,7 @@
                         .value
                         .trim();
 
-                const category =
+                const categorie =
                     document
                         .getElementById(
                             "product-category"
@@ -1365,26 +1463,24 @@
                         .value
                         .trim();
 
-                const paymentNumber =
+                const paymentMethod =
                     document
                         .getElementById(
-                            "payment-number"
+                            "payment-method"
+                        )
+                        .value;
+
+                const paymentAccount =
+                    document
+                        .getElementById(
+                            "payment-account"
                         )
                         .value
                         .trim();
 
-                const sellerName =
-                    getFirstValue(
-                        user.nom,
-                        user.name,
-                        user.fullName,
-                        user.full_name,
-                        user.username,
-                        "Vendeur"
-                    );
-
                 const sellerLocation =
                     getFirstValue(
+                        user.sellerLocalisation,
                         user.localisation,
                         user.location,
                         user.ville,
@@ -1394,138 +1490,51 @@
                         ""
                     );
 
-                const sellerId =
-                    getFirstValue(
-                        user.id,
-                        user._id,
-                        user.userId,
-                        user.user_id,
-                        ""
+                /*
+                 * Envoie d'abord le vrai fichier image à Cloudinary.
+                 * Cloudinary renvoie ensuite une URL sécurisée.
+                 */
+                setPublishButtonText(
+                    "Envoi de l’image..."
+                );
+
+                const image =
+                    await uploadImageToCloudinary(
+                        selectedImageFile,
+                        name
                     );
 
-                const verified =
-                    isVerifiedUser(
-                        user
-                    );
+                setPublishButtonText(
+                    "Publication du produit..."
+                );
 
                 /*
-                 * Plusieurs noms de champs sont envoyés
-                 * pour rester compatibles avec ton backend.
+                 * Noms EXACTS attendus par la route :
+                 * POST /api/products
                  */
-                formData.append(
-                    "name",
-                    name
-                );
+                const productData = {
+                    name: name,
+                    price: Number(price),
+                    description: description,
+                    categorie: categorie,
 
-                formData.append(
-                    "nom",
-                    name
-                );
+                    /*
+                     * vendeurCompte est utilisé pour le numéro
+                     * téléphone/WhatsApp du vendeur.
+                     */
+                    vendeurCompte: sellerPhone,
 
-                formData.append(
-                    "price",
-                    price
-                );
+                    vendeurLocalisation:
+                        sellerLocation,
 
-                formData.append(
-                    "prix",
-                    price
-                );
+                    paymentMethod:
+                        paymentMethod,
 
-                formData.append(
-                    "category",
-                    category
-                );
+                    paymentAccount:
+                        paymentAccount,
 
-                formData.append(
-                    "categorie",
-                    category
-                );
-
-                formData.append(
-                    "description",
-                    description
-                );
-
-                formData.append(
-                    "telephone",
-                    sellerPhone
-                );
-
-                formData.append(
-                    "phone",
-                    sellerPhone
-                );
-
-                formData.append(
-                    "whatsapp",
-                    sellerPhone
-                );
-
-                formData.append(
-                    "sellerPhone",
-                    sellerPhone
-                );
-
-                formData.append(
-                    "paymentNumber",
-                    paymentNumber
-                );
-
-                formData.append(
-                    "numeroPaiement",
-                    paymentNumber
-                );
-
-                formData.append(
-                    "sellerName",
-                    sellerName
-                );
-
-                formData.append(
-                    "vendeur",
-                    sellerName
-                );
-
-                formData.append(
-                    "sellerLocation",
-                    sellerLocation
-                );
-
-                formData.append(
-                    "localisation",
-                    sellerLocation
-                );
-
-                formData.append(
-                    "sellerId",
-                    sellerId
-                );
-
-                formData.append(
-                    "userId",
-                    sellerId
-                );
-
-                formData.append(
-                    "verified",
-                    String(verified)
-                );
-
-                formData.append(
-                    "sellerVerified",
-                    String(verified)
-                );
-
-                formData.append(
-                    "image",
-                    selectedImageFile
-                );
-
-                formData.append(
-                    "photo",
-                    selectedImageFile
-                );
+                    image: image
+                };
 
                 const response =
                     await fetch(
@@ -1535,23 +1544,48 @@
 
                             headers: {
                                 "Authorization":
-                                    `Bearer ${token}`
+                                    `Bearer ${token}`,
+
+                                "Content-Type":
+                                    "application/json",
+
+                                "Accept":
+                                    "application/json"
                             },
 
-                            body: formData
+                            body:
+                                JSON.stringify(
+                                    productData
+                                )
                         }
                     );
 
-                let data =
-                    null;
+                let data = null;
 
                 try {
                     data =
                         await response.json();
-
                 } catch (error) {
-                    data =
-                        null;
+                    data = null;
+                }
+
+                if (
+                    response.status === 401 ||
+                    response.status === 403
+                ) {
+                    localStorage.removeItem(
+                        TOKEN_STORAGE_KEY
+                    );
+
+                    localStorage.setItem(
+                        "redirect_after_login",
+                        "vend.html"
+                    );
+
+                    window.location.href =
+                        LOGIN_PAGE_URL;
+
+                    return;
                 }
 
                 if (!response.ok) {
@@ -1599,17 +1633,8 @@
 
                 setTimeout(
                     function () {
-                        if (
-                            createdProduct &&
-                            typeof createdProduct ===
-                                "object"
-                        ) {
-                            window.location.href =
-                                PRODUCT_PAGE_URL;
-                        } else {
-                            window.location.href =
-                                HOME_PAGE_URL;
-                        }
+                        window.location.href =
+                            MY_PRODUCTS_PAGE_URL;
                     },
                     1000
                 );
@@ -1627,9 +1652,98 @@
                 );
 
             } finally {
-                setPublishingState(
-                    false
+                setPublishingState(false);
+            }
+        }
+
+        /**
+         * Envoie une image vers Cloudinary et retourne secure_url.
+         */
+        async function uploadImageToCloudinary(
+            file,
+            productName
+        ) {
+            if (!file) {
+                throw new Error(
+                    "Aucune image sélectionnée."
                 );
+            }
+
+            const cloudinaryData =
+                new FormData();
+
+            cloudinaryData.append(
+                "file",
+                file
+            );
+
+            cloudinaryData.append(
+                "upload_preset",
+                CLOUDINARY_UPLOAD_PRESET
+            );
+
+            cloudinaryData.append(
+                "folder",
+                "products"
+            );
+
+            /*
+             * Le nom du produit est envoyé comme contexte.
+             * Cela n'empêche pas Cloudinary de générer
+             * automatiquement un identifiant unique.
+             */
+            if (productName) {
+                cloudinaryData.append(
+                    "context",
+                    `product_name=${productName}`
+                );
+            }
+
+            const response =
+                await fetch(
+                    CLOUDINARY_UPLOAD_URL,
+                    {
+                        method: "POST",
+                        body: cloudinaryData
+                    }
+                );
+
+            let data = null;
+
+            try {
+                data =
+                    await response.json();
+            } catch (error) {
+                data = null;
+            }
+
+            if (
+                !response.ok ||
+                !data?.secure_url
+            ) {
+                throw new Error(
+                    getFirstValue(
+                        data?.error?.message,
+                        data?.message,
+                        "Impossible d’envoyer l’image vers Cloudinary."
+                    )
+                );
+            }
+
+            return data.secure_url;
+        }
+
+        function setPublishButtonText(
+            message
+        ) {
+            const text =
+                document.getElementById(
+                    "publish-button-text"
+                );
+
+            if (text) {
+                text.textContent =
+                    message;
             }
         }
 
@@ -1651,7 +1765,7 @@
 
             text.textContent =
                 publishing
-                    ? "Publication en cours..."
+                    ? "Préparation..."
                     : "Publier le produit";
 
             const icon =
@@ -1759,6 +1873,60 @@
         }
 
         /**
+         * Numéro WhatsApp Côte d’Ivoire :
+         * format obligatoire 225XXXXXXXXXX.
+         */
+        function normalizeSellerPhone(value) {
+            let digits =
+                String(value || "")
+                    .replace(/\D/g, "");
+
+            if (
+                digits.startsWith("00225")
+            ) {
+                digits =
+                    digits.slice(2);
+            }
+
+            if (
+                digits.startsWith("0") &&
+                digits.length <= 10
+            ) {
+                digits =
+                    `225${digits}`;
+            }
+
+            if (
+                !digits.startsWith("225")
+            ) {
+                digits =
+                    `225${digits}`;
+            }
+
+            return digits.slice(0, 13);
+        }
+
+        function enforceSellerPhoneFormat(event) {
+            const input =
+                event.target;
+
+            input.value =
+                normalizeSellerPhone(
+                    input.value
+                );
+
+            const valid =
+                /^225[0-9]{10}$/.test(
+                    input.value
+                );
+
+            setFieldValidity(
+                input.closest(".field"),
+                valid
+            );
+        }
+
+        /**
          * Fonctions générales.
          */
         function getFirstValue(
@@ -1816,6 +1984,28 @@
             "DOMContentLoaded",
             function () {
                 protectPage();
+
+                const sellerPhoneInput =
+                    document.getElementById(
+                        "seller-phone"
+                    );
+
+                if (
+                    !sellerPhoneInput.value
+                ) {
+                    sellerPhoneInput.value =
+                        "225";
+                } else {
+                    sellerPhoneInput.value =
+                        normalizeSellerPhone(
+                            sellerPhoneInput.value
+                        );
+                }
+
+                sellerPhoneInput.addEventListener(
+                    "input",
+                    enforceSellerPhoneFormat
+                );
 
                 document
                     .getElementById(

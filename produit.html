@@ -147,6 +147,8 @@
 
             object-fit: cover;
             object-position: center;
+
+            cursor: zoom-in;
         }
 
         .image-loading {
@@ -376,6 +378,50 @@
             background: #e3e3e3;
         }
 
+        /* Agrandissement de l’image */
+
+        .image-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 5000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.92);
+        }
+
+        .image-modal.active { display: flex; }
+
+        .image-modal-content {
+            max-width: 96vw;
+            max-height: 92vh;
+            display: block;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 8px 35px rgba(0, 0, 0, 0.45);
+        }
+
+        .image-modal-close {
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            z-index: 5001;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            background: rgba(35, 35, 35, 0.78);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 50%;
+            font-size: 25px;
+        }
+
+        .image-modal-close:hover { background: rgba(80, 80, 80, 0.9); }
+        body.modal-open { overflow: hidden; }
+
         .error-box {
             margin: 40px 20px;
             padding: 30px;
@@ -535,6 +581,11 @@
                     class="product-image"
                     id="product-image"
                     alt="Image du produit"
+                    role="button"
+                    tabindex="0"
+                    title="Cliquer pour agrandir"
+                    onclick="openProductImage()"
+                    onkeydown="handleProductImageKey(event)"
                 >
 
             </div>
@@ -680,6 +731,31 @@
 
         </main>
 
+    </div>
+
+    <div
+        class="image-modal"
+        id="image-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Image agrandie du produit"
+        onclick="closeProductImageOnBackdrop(event)"
+    >
+        <button
+            type="button"
+            class="image-modal-close"
+            onclick="closeProductImage()"
+            aria-label="Fermer l’image"
+            title="Fermer"
+        >
+            <i class="fas fa-xmark"></i>
+        </button>
+
+        <img
+            class="image-modal-content"
+            id="image-modal-content"
+            alt="Image agrandie du produit"
+        >
     </div>
 
     <div
@@ -1122,6 +1198,19 @@
                             phone
                         );
 
+                    if (
+                        !/^225[0-9]{10}$/.test(
+                            whatsappNumber
+                        )
+                    ) {
+                        showToast(
+                            "Le numéro WhatsApp du vendeur est invalide.",
+                            "error"
+                        );
+
+                        return;
+                    }
+
                     const whatsappUrl =
                         `https://wa.me/${whatsappNumber}` +
                         `?text=${encodeURIComponent(message)}`;
@@ -1358,6 +1447,9 @@
                 /*
                  * Numéro saisi lors de la publication.
                  */
+                product.vendeurCompte,
+                product.vendeur_compte,
+
                 product.whatsapp,
                 product.whatsappNumber,
                 product.whatsapp_number,
@@ -1502,6 +1594,7 @@
          * Numéros.
          */
         function normalizeWhatsAppNumber(phone) {
+
             let number =
                 String(phone || "")
                     .replace(/\D/g, "");
@@ -1510,22 +1603,25 @@
                 return "";
             }
 
-            if (number.startsWith("00")) {
-                number =
-                    number.substring(2);
+            // 002250707070707 -> 2250707070707
+            if (number.startsWith("00225")) {
+                number = number.substring(2);
             }
 
-            if (
-                number.startsWith("0") &&
-                number.length === 10
-            ) {
-                number =
-                    number.substring(1);
+            // Déjà au bon format : 2250707070707
+            if (/^225\d{10}$/.test(number)) {
+                return number;
             }
 
+            // Format local : 0707070707
+            // On garde le premier 0 et on ajoute seulement 225 devant.
+            if (/^0\d{9}$/.test(number)) {
+                return "225" + number;
+            }
+
+            // Si le préfixe 225 est absent, on l’ajoute sans retirer de chiffre.
             if (!number.startsWith("225")) {
-                number =
-                    `225${number}`;
+                return "225" + number;
             }
 
             return number;
@@ -1744,6 +1840,50 @@
         }
 
         /**
+         * Agrandissement de l’image du produit.
+         */
+        function openProductImage() {
+            const image = document.getElementById("product-image");
+            const modal = document.getElementById("image-modal");
+            const modalImage = document.getElementById("image-modal-content");
+
+            if (!image || !image.src) {
+                return;
+            }
+
+            modalImage.src = image.src;
+            modalImage.alt = image.alt || "Image agrandie du produit";
+            modal.classList.add("active");
+            document.body.classList.add("modal-open");
+        }
+
+        function closeProductImage() {
+            const modal = document.getElementById("image-modal");
+            const modalImage = document.getElementById("image-modal-content");
+
+            if (!modal || !modalImage) {
+                return;
+            }
+
+            modal.classList.remove("active");
+            document.body.classList.remove("modal-open");
+            modalImage.removeAttribute("src");
+        }
+
+        function closeProductImageOnBackdrop(event) {
+            if (event.target.id === "image-modal") {
+                closeProductImage();
+            }
+        }
+
+        function handleProductImageKey(event) {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                openProductImage();
+            }
+        }
+
+        /**
          * Fonctions générales.
          */
         function getProductId(product) {
@@ -1892,6 +2032,15 @@
         document.addEventListener(
             "DOMContentLoaded",
             loadSelectedProduct
+        );
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+                if (event.key === "Escape") {
+                    closeProductImage();
+                }
+            }
         );
     </script>
 
