@@ -852,6 +852,9 @@
         const PROFILE_PAGE_URL =
             "profil.html";
 
+        const LOGIN_PAGE_URL =
+            "connexion.html";
+
         const HOME_PAGE_URL =
             "index.html";
 
@@ -1575,6 +1578,14 @@
                 message ||
                 "Vous devez vous connecter."
             );
+
+            localStorage.setItem(
+                "redirect_after_login",
+                window.location.pathname
+            );
+
+            window.location.href =
+                LOGIN_PAGE_URL;
         }
 
         /**
