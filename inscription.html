@@ -1,0 +1,468 @@
+from pathlib import Path
+
+html = r'''<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Inscription - DJASSACI</title>
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+
+  <style>
+    :root {
+      --primary: #6c55e8;
+      --primary-dark: #5942d8;
+      --background: #f8f9fc;
+      --text: #171717;
+      --muted: #9696a0;
+      --border: #74747e;
+      --error-bg: #ffe5e5;
+      --error-text: #a10000;
+      --success-bg: #e5ffea;
+      --success-text: #08751a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--background);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .page-title {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      border-bottom: 1px solid #eeeeee;
+      color: var(--primary);
+      font-size: 25px;
+      font-weight: 400;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 34px 24px 48px;
+    }
+
+    .register-icon {
+      margin-bottom: 26px;
+      text-align: center;
+      color: var(--primary);
+      font-size: 72px;
+    }
+
+    h1 {
+      margin-bottom: 46px;
+      text-align: center;
+      font-size: 38px;
+      line-height: 1.15;
+    }
+
+    .message {
+      display: none;
+      margin-bottom: 20px;
+      padding: 14px 16px;
+      border-radius: 9px;
+      text-align: center;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .message.error {
+      display: block;
+      background: var(--error-bg);
+      color: var(--error-text);
+    }
+
+    .message.success {
+      display: block;
+      background: var(--success-bg);
+      color: var(--success-text);
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .input-group .field-icon {
+      position: absolute;
+      left: 21px;
+      top: 50%;
+      z-index: 2;
+      transform: translateY(-50%);
+      color: #50505a;
+      font-size: 21px;
+      pointer-events: none;
+    }
+
+    .input-group input {
+      width: 100%;
+      height: 72px;
+      padding: 0 55px 0 65px;
+      border: 1.5px solid var(--border);
+      border-radius: 5px;
+      background: transparent;
+      color: var(--text);
+      font-size: 19px;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .input-group input::placeholder {
+      color: #66666f;
+      opacity: 1;
+    }
+
+    .input-group input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(108, 85, 232, 0.12);
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border: 0;
+      background: transparent;
+      color: #55555d;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .privacy {
+      margin: 28px 4px 36px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .privacy a {
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    .register-button {
+      width: 100%;
+      height: 66px;
+      border: none;
+      border-radius: 19px;
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.17);
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    .register-button:hover {
+      background: var(--primary-dark);
+    }
+
+    .register-button:active {
+      transform: scale(0.99);
+    }
+
+    .register-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .login-link {
+      margin-top: 47px;
+      text-align: center;
+      color: var(--primary);
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .login-link a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 28px 18px 40px;
+      }
+
+      .register-icon {
+        font-size: 62px;
+      }
+
+      h1 {
+        margin-bottom: 38px;
+        font-size: 33px;
+      }
+
+      .input-group input {
+        height: 67px;
+        font-size: 17px;
+      }
+
+      .privacy {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="page-title">Inscription</header>
+
+  <main class="container">
+    <div class="register-icon" aria-hidden="true">
+      <i class="fa-solid fa-user-plus"></i>
+    </div>
+
+    <h1>Créer un compte</h1>
+
+    <div id="message" class="message" role="alert"></div>
+
+    <form id="registerForm">
+      <div class="input-group">
+        <i class="fa-solid fa-user field-icon"></i>
+        <input
+          type="text"
+          id="nom"
+          name="nom"
+          placeholder="Nom"
+          autocomplete="family-name"
+          required
+        >
+      </div>
+
+      <div class="input-group">
+        <i class="fa-regular fa-user field-icon"></i>
+        <input
+          type="text"
+          id="prenom"
+          name="prenom"
+          placeholder="Prénom"
+          autocomplete="given-name"
+          required
+        >
+      </div>
+
+      <div class="input-group">
+        <i class="fa-solid fa-phone field-icon"></i>
+        <input
+          type="tel"
+          id="numero"
+          name="numero"
+          placeholder="Numéro de téléphone"
+          autocomplete="tel"
+          inputmode="tel"
+          required
+        >
+      </div>
+
+      <div class="input-group">
+        <i class="fa-solid fa-location-dot field-icon"></i>
+        <input
+          type="text"
+          id="adresse"
+          name="adresse"
+          placeholder="Adresse"
+          autocomplete="street-address"
+          required
+        >
+      </div>
+
+      <div class="input-group">
+        <i class="fa-solid fa-lock field-icon"></i>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Mot de passe"
+          autocomplete="new-password"
+          minlength="6"
+          required
+        >
+
+        <button
+          type="button"
+          class="toggle-password"
+          id="togglePassword"
+          aria-label="Afficher le mot de passe"
+        >
+          <i class="fa-regular fa-eye"></i>
+        </button>
+      </div>
+
+      <p class="privacy">
+        En vous inscrivant, vous acceptez notre
+        <a
+          href="https://djassaci.github.io/politique-confidentialit-/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          politique de confidentialité
+        </a>
+      </p>
+
+      <button type="submit" class="register-button" id="registerButton">
+        S'inscrire
+      </button>
+    </form>
+
+    <div class="login-link">
+      Déjà un compte ?
+      <a href="connexion.html">Se connecter</a>
+    </div>
+  </main>
+
+  <script>
+    const API_URL = "https://djassa-backend-imxo.onrender.com";
+
+    const form = document.getElementById("registerForm");
+    const message = document.getElementById("message");
+    const registerButton = document.getElementById("registerButton");
+    const passwordInput = document.getElementById("password");
+    const togglePassword = document.getElementById("togglePassword");
+
+    function showMessage(text, type) {
+      message.textContent = text;
+      message.className = "message " + type;
+      message.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function normalizePhone(value) {
+      return value.replace(/[^\d+]/g, "");
+    }
+
+    togglePassword.addEventListener("click", function () {
+      const isHidden = passwordInput.type === "password";
+
+      passwordInput.type = isHidden ? "text" : "password";
+      togglePassword.innerHTML = isHidden
+        ? '<i class="fa-regular fa-eye-slash"></i>'
+        : '<i class="fa-regular fa-eye"></i>';
+
+      togglePassword.setAttribute(
+        "aria-label",
+        isHidden ? "Masquer le mot de passe" : "Afficher le mot de passe"
+      );
+    });
+
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const nom = document.getElementById("nom").value.trim();
+      const prenom = document.getElementById("prenom").value.trim();
+      const numero = normalizePhone(
+        document.getElementById("numero").value.trim()
+      );
+      const adresse = document.getElementById("adresse").value.trim();
+      const password = passwordInput.value;
+
+      if (!nom || !prenom || !numero || !adresse || !password) {
+        showMessage("Veuillez remplir tous les champs.", "error");
+        return;
+      }
+
+      if (password.length < 6) {
+        showMessage(
+          "Le mot de passe doit contenir au moins 6 caractères.",
+          "error"
+        );
+        return;
+      }
+
+      registerButton.disabled = true;
+      registerButton.textContent = "Inscription en cours...";
+
+      try {
+        const response = await fetch(`${API_URL}/api/auth/register`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            nom: nom,
+            prenom: prenom,
+            numero: numero,
+            adresse: adresse,
+            password: password
+          })
+        });
+
+        let data = {};
+
+        try {
+          data = await response.json();
+        } catch (_) {
+          data = {};
+        }
+
+        if (!response.ok) {
+          showMessage(
+            data.message ||
+            data.error ||
+            "Impossible de créer le compte.",
+            "error"
+          );
+          return;
+        }
+
+        if (data.token) {
+          localStorage.setItem("djassaci_token", data.token);
+        }
+
+        if (data.user) {
+          localStorage.setItem(
+            "djassaci_user",
+            JSON.stringify(data.user)
+          );
+        }
+
+        showMessage("Compte créé avec succès.", "success");
+
+        setTimeout(function () {
+          window.location.href = data.token
+            ? "index.html"
+            : "connexion.html";
+        }, 900);
+
+      } catch (error) {
+        console.error("Erreur d'inscription :", error);
+
+        showMessage(
+          "Impossible de contacter le serveur. Vérifiez votre connexion Internet.",
+          "error"
+        );
+      } finally {
+        registerButton.disabled = false;
+        registerButton.textContent = "S'inscrire";
+      }
+    });
+  </script>
+</body>
+</html>
+'''
+
+path = Path("/mnt/data/inscription.html")
+path.write_text(html, encoding="utf-8")
+print(path)

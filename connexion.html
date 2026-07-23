@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Connexion - DJASSACI</title>
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fc;
+      color: #171717;
+      min-height: 100vh;
+    }
+
+    .page-title {
+      height: 75px;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #6c55e8;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 45px 24px 60px;
+    }
+
+    .login-icon {
+      text-align: center;
+      color: #6c55e8;
+      font-size: 78px;
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 38px;
+      margin-bottom: 55px;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .input-group i {
+      position: absolute;
+      left: 22px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 22px;
+      color: #4d4d56;
+    }
+
+    .input-group input {
+      width: 100%;
+      height: 76px;
+      border: 1.5px solid #73737d;
+      border-radius: 5px;
+      background: transparent;
+      padding: 0 20px 0 66px;
+      font-size: 20px;
+      outline: none;
+    }
+
+    .input-group input:focus {
+      border-color: #6c55e8;
+      box-shadow: 0 0 0 2px rgba(108, 85, 232, 0.12);
+    }
+
+    .forgot-password {
+      display: block;
+      margin: 47px 12px 58px;
+      color: #6451c9;
+      font-size: 17px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .login-button {
+      width: 100%;
+      height: 66px;
+      border: none;
+      border-radius: 20px;
+      background: #6c55e8;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 3px 7px rgba(0, 0, 0, 0.18);
+    }
+
+    .login-button:hover {
+      background: #5d48db;
+    }
+
+    .register {
+      margin-top: 55px;
+      text-align: center;
+      color: #6451c9;
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    .register a {
+      color: #6451c9;
+      text-decoration: none;
+    }
+
+    .message {
+      display: none;
+      margin-bottom: 20px;
+      padding: 13px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    .message.error {
+      display: block;
+      background: #ffe4e4;
+      color: #a10000;
+    }
+
+    .message.success {
+      display: block;
+      background: #e4ffe8;
+      color: #08751a;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding-top: 35px;
+      }
+
+      .login-icon {
+        font-size: 65px;
+      }
+
+      h1 {
+        font-size: 34px;
+        margin-bottom: 45px;
+      }
+
+      .input-group input {
+        height: 68px;
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page-title">Connexion</div>
+
+  <main class="container">
+
+    <div class="login-icon">
+      <i class="fa-solid fa-arrow-right-to-bracket"></i>
+    </div>
+
+    <h1>Connexion</h1>
+
+    <div id="message" class="message"></div>
+
+    <form id="loginForm">
+
+      <div class="input-group">
+        <i class="fa-solid fa-phone"></i>
+        <input
+          type="tel"
+          id="numero"
+          placeholder="Numéro de téléphone"
+          autocomplete="tel"
+          required
+        >
+      </div>
+
+      <div class="input-group">
+        <i class="fa-solid fa-lock"></i>
+        <input
+          type="password"
+          id="password"
+          placeholder="Mot de passe"
+          autocomplete="current-password"
+          required
+        >
+      </div>
+
+     <a
+  class="forgot-password"
+  href="https://wa.me/2250715926401?text=Bonjour%20DJASSACI%2C%0A%0AJ%27ai%20oubli%C3%A9%20mon%20mot%20de%20passe%20et%20je%20souhaite%20r%C3%A9cup%C3%A9rer%20mon%20compte.%0A%0AMon%20num%C3%A9ro%20de%20compte%20est%20%3A%20"
+  target="_blank"
+  rel="noopener noreferrer">
+  Mot de passe oublié ? Contacter le support !
+</a>
+
+      <button type="submit" class="login-button">
+        Se connecter
+      </button>
+
+    </form>
+
+    <div class="register">
+      Pas de compte ?
+      <a href="inscription.html">S'inscrire</a>
+    </div>
+
+  </main>
+
+  <script>
+    const API_URL = "https://djassa-backend-imxo.onrender.com";
+
+    const form = document.getElementById("loginForm");
+    const message = document.getElementById("message");
+
+    function showMessage(text, type) {
+      message.textContent = text;
+      message.className = "message " + type;
+    }
+
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const numero = document.getElementById("numero").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!numero || !password) {
+        showMessage("Veuillez remplir tous les champs.", "error");
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/api/auth/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            numero: numero,
+            password: password
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          showMessage(
+            data.message || "Numéro ou mot de passe incorrect.",
+            "error"
+          );
+          return;
+        }
+
+        localStorage.setItem("djassaci_token", data.token);
+        localStorage.setItem("djassaci_user", JSON.stringify(data.user));
+
+        showMessage("Connexion réussie.", "success");
+
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 700);
+
+      } catch (error) {
+        console.error(error);
+        showMessage(
+          "Impossible de contacter le serveur. Réessayez.",
+          "error"
+        );
+      }
+    });
+  </script>
+
+</body>
+</html>
